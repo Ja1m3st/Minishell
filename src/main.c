@@ -6,14 +6,13 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/19 15:57:38 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:07:19 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main()
+int main()
 {
-
-	return (0);
+    return 0;
 }

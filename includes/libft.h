@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/19 15:56:55 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:41:12 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
 
 int			ft_isdigit(int c);
 int			ft_isalnum(int c);

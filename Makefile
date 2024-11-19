@@ -6,14 +6,14 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/11/19 15:59:42 by jaimesan         ###   ########.fr        #
+#    Updated: 2024/11/19 17:41:18 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS =  -I ./includes
+CFLAGS = -W -W -W -I ./includes
 AR = ar rcs
 RM	= rm -rf
 
@@ -41,7 +41,7 @@ $(LIBFT):
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS) $(LIBFT) 
-	$(CC) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 	@echo "[100%] $(GREEN)(Minishell) Compilation  | Minishell | successful!$(RESET)"
 
 # bonus: $(OBJS_BONUS) $(LIBFT)

@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 13:38:35 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/22 12:59:57 by jaimesan          #+#    #+#             */
+/*   Updated: 2024/11/22 13:26:46 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main()
+void	print_history(HIST_ENTRY **hist_entries)
 {
-    t_mini       mini;
-	HIST_ENTRY	**hist_entries;
+	int i;
 
-	while (1)
+	i = 0;
+	hist_entries = history_list();
+	if (hist_entries)
 	{
-		mini.input = readline("➜ ~ ");
-		if (!mini.input)
-			break;
-		if (*mini.input)
-			add_history(mini.input);
-		if (ft_strcmp(mini.input, "history") == 0)
-			print_history(hist_entries);
-        ft_printf("%s\n", mini.input);
-		free(mini.input);
+		while(hist_entries[i])
+		{
+			printf("%d %s\n", i + history_base, hist_entries[i]->line);
+			i++;
+		}
 	}
-	rl_clear_history();
-    return (0);
 }

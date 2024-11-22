@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:41:22 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/16 16:41:26 by ctommasi         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:53:22 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>

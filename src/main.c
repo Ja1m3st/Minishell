@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 13:38:35 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/22 13:39:57 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int main()
 			add_history(mini.input);
 		if (ft_strcmp(mini.input, "history") == 0)
 			print_history(hist_entries);
-        ft_printf("%s\n", mini.input);
 		free(mini.input);
 	}
 	rl_clear_history();

@@ -1,32 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/24 13:04:01 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/24 13:04:03 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+static void	ft_putchar2(char c, int fd)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	write(fd, &c, 1);
+}
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n == -2147483648)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		write(fd, "-2147483648", 11);
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	else if (n < 0)
+	{
+		n = -n;
+		ft_putchar2('-', fd);
+		ft_putnbr_fd(n, fd);
+	}
+	else if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+	{
+		ft_putchar2(n + '0', fd);
+	}
 }

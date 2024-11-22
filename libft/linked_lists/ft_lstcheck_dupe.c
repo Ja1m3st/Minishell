@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_lstcheck_dupe.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/10/30 12:50:59 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/30 12:51:01 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+int	ft_lstcheck_dupe(t_list **stack_x)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	t_list	*current;
+	t_list	*compare;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	current = *stack_x;
+	while (current != NULL)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		compare = current->next;
+		while (compare != NULL)
+		{
+			if (current->value == compare->value)
+				return (1);
+			compare = compare->next;
+		}
+		current = current->next;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (0);
 }

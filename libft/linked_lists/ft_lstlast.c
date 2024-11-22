@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/10/29 16:51:21 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/29 16:51:48 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+t_list	*ft_lstlast(t_list **stack_x)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	t_list	*last;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
-	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
+	if (!stack_x || !*stack_x)
 		return (NULL);
-	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	last = (*stack_x);
+	while (last->next)
+		last = last->next;
+	return (last);
 }

@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/16 15:43:42 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/16 15:43:43 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	size_t	i;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	i = 0;
+	while ((s1[i] || s2[i]) && i < n)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (0);
 }

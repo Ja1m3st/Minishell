@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/27 10:57:00 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/27 10:57:03 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
-
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	while (lst)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		f(lst->content);
+		lst = lst->next;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
 }

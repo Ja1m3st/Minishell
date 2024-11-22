@@ -3,59 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/02 09:40:04 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/10/10 15:43:39 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/09/30 12:22:58 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/30 12:22:59 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/libft.h"
 
-static int	ft_format(va_list args, char format)
+static int	ft_format(char const format, va_list args)
 {
-	int	value;
+	int	len;
 
-	value = 0;
+	len = 0;
 	if (format == 'c')
-		value += ft_putchar(va_arg(args, int));
+		len += ft_putchar(va_arg(args, int));
 	else if (format == 's')
-		value += ft_putstr(va_arg(args, char *));
+		len += ft_putstr(va_arg(args, char *));
 	else if (format == 'p')
-		value += ft_putptr(va_arg(args, unsigned long long));
+		len += ft_putptr(va_arg(args, void *));
 	else if (format == 'd' || format == 'i')
-		value += ft_putnbr(va_arg(args, int));
+		len += ft_putnbr_dec(va_arg(args, int));
 	else if (format == 'u')
-		value += ft_putunsiged(va_arg(args, unsigned int));
-	else if (format == 'x' || format == 'X')
-		value += ft_printf_hexa(va_arg(args, unsigned int), format);
+		len += ft_putnbr_dec(va_arg(args, long));
+	else if (format == 'x')
+		len += ft_putnbr_hex(va_arg(args, unsigned int), 0);
+	else if (format == 'X')
+		len += ft_putnbr_hex(va_arg(args, unsigned int), 1);
 	else if (format == '%')
-		value += ft_putchar('%');
-	return (value);
+		len += ft_putchar('%');
+	return (len);
 }
 
 int	ft_printf(char const *str, ...)
 {
 	va_list	args;
 	int		i;
-	int		value;
+	int		len;
 
 	i = 0;
-	value = 0;
+	len = 0;
 	va_start(args, str);
-	while (str[i])
+	while (str[i] != '\0')
 	{
-		if (str[i] == '%' && str[i] != '\0')
-		{
-			if (!str[i + 1])
-				return (-1);
-			value += ft_format(args, str[i + 1]);
-			i++;
-		}
+		if (str[i] != '%')
+			len += ft_putchar(str[i]);
 		else
-			value += ft_putchar(str[i]);
+		{
+			i++;
+			if (!str[i])
+				return (-1);
+			if (str[i] != '\0')
+				len += ft_format(str[i], args);
+			else
+				len += ft_putchar('%');
+		}
 		i++;
 	}
 	va_end(args);
-	return (value);
+	return (len);
 }

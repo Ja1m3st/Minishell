@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_lst_isordered.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/10/30 12:47:51 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/30 12:47:53 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+int	ft_lst_isordered(t_list **stack_x)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	t_list	*current;
+	int		last_value;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	if (!stack_x || !(*stack_x))
+		return (1);
+	current = *stack_x;
+	last_value = current->value;
+	while (current != NULL)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		if (last_value > current->value)
+			return (0);
+		last_value = current->value;
+		current = current->next;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (1);
 }

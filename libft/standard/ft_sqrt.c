@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/10/29 18:23:44 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/29 18:23:56 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+int	ft_sqrt(int nb)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	int	left;
+	int	right;
+	int	mid;
+	int	result;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	if (nb <= 0)
+		return (0);
+	left = 1;
+	right = nb;
+	result = 0;
+	while (left <= right)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		mid = left + (right - left) / 2;
+		if (mid < nb / mid)
+		{
+			result = mid;
+			left = mid + 1;
+		}
+		else
+			right = mid - 1;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (result);
 }

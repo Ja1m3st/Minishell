@@ -3,70 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 14:59:46 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/10/24 13:28:52 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/01 13:14:34 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/01 13:14:36 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/libft.h"
 
-size_t	ft_strlen_get(char *s)
+void	*ft_calloc_z(size_t nmemb, size_t size)
 {
-	size_t	i;
+	unsigned char	*temp;
+	size_t			i;
 
+	temp = malloc(nmemb * size);
+	if (temp == NULL)
+		return (NULL);
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	while (i < nmemb)
+		temp[i++] = '\0';
+	return (temp);
 }
 
-char	*ft_strchr_get(char *save, int c)
+char	*ft_strjoin_free(char *total_chars, char *temp)
 {
+	char	*res;
 	size_t	i;
+	size_t	total_len;
+	size_t	temp_len;
 
-	if (!save)
-		return (0);
+	if (!total_chars || !temp)
+		return (NULL);
+	total_len = ft_strlen(total_chars);
+	temp_len = ft_strlen(temp);
+	res = malloc(total_len + temp_len + 1);
+	if (!res)
+		return (NULL);
 	i = 0;
-	if (c == '\0')
-		return (&save[ft_strlen_get(save)]);
-	while (save[i] != '\0')
+	while (i < total_len)
 	{
-		if (save[i] == (char) c)
-			return (&save[i]);
+		res[i] = total_chars[i];
 		i++;
 	}
-	return (NULL);
-}
-
-char	*ft_strjoin_get(char *save, char *buffer)
-{
-	size_t		i;
-	size_t		j;
-	size_t		max;
-	char		*str;
-
-	if (!save)
+	while (i < total_len + temp_len)
 	{
-		save = (char *)malloc(1 * sizeof(char));
-		save[0] = '\0';
+		res[i] = temp[i - total_len];
+		i++;
 	}
-	if (!save || !buffer)
-		return (NULL);
-	max = ft_strlen_get(save) + ft_strlen_get(buffer);
-	str = malloc(sizeof(char) * (max + 1));
-	if (str == NULL)
-		return (NULL);
-	i = -1;
-	j = 0;
-	if (save)
-		while (save[++i] != '\0')
-			str[i] = save[i];
-	while (buffer[j] != '\0')
-		str[i++] = buffer[j++];
-	str[ft_strlen_get(save) + ft_strlen_get(buffer)] = '\0';
-	return (free(save), str);
+	res[i] = '\0';
+	return (free(total_chars), res);
 }

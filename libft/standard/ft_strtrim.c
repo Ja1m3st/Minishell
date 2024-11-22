@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/24 10:25:05 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/24 10:25:11 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	size_t	start;
+	size_t	end;
+	char	*str;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
-	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
+	str = NULL;
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	start = 0;
+	end = ft_strlen(s1);
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	while (ft_strchr(set, s1[end - 1]) && end > start)
+		end--;
+	str = malloc((end - start + 1) * sizeof(char));
+	if (str)
+		ft_strlcpy(str, &s1[start], end - start + 1);
+	return (str);
 }

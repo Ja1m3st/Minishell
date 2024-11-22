@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_check_valid_digits.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/10/30 13:13:11 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/30 13:13:13 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+int	ft_check_valid_digits(char **temp, int j)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	int	k;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	k = 0;
+	while (temp[j][k])
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		if (ft_atoi(temp[j]) > 2147483647 || ft_atoi(temp[j]) < -2147483648)
+			return (1);
+		if (temp[j][k] == '-' || temp[j][k] == '+')
+			k++;
+		if (!ft_isdigit(temp[j][k]))
+			return (1);
+		k++;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (0);
 }

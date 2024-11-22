@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/18 17:29:53 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/18 17:29:55 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	unsigned char		*dest_temp;
+	const unsigned char	*src_temp;
+	size_t				i;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	if (!dest && !src)
+		return (NULL);
+	dest_temp = (unsigned char *)dest;
+	src_temp = (const unsigned char *)src;
+	i = 0;
+	while (i < n)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		dest_temp[i] = src_temp[i];
+		i++;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (dest);
 }

@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/16 17:23:27 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/16 17:23:28 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+long	ft_atoi(const char *str)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	long	res;
+	int	minus;
+	int	i;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	i = 0;
+	res = 0;
+	minus = 1;
+	while (str[i] == 32 || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-')
+		minus *= -1;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str >= '0' && *str <= '9')
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		res = res * 10 + *str - '0';
+		str++;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (res * minus);
 }

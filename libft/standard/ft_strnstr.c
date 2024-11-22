@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/18 15:49:48 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/18 15:49:50 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	size_t	i;
+	size_t	j;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	i = 0;
+	if (little[0] == '\0')
+		return ((char *)big);
+	while (big[i] != '\0' && i < len)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		if (big[i] == little[0])
+		{
+			j = 0;
+			while (little[j] != '\0' && (i + j) < len)
+			{
+				if (big[i + j] != little[j])
+					break ;
+				if (little[j + 1] == '\0')
+					return ((char *)&big[i]);
+				j++;
+			}
+		}
+		i++;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	return (NULL);
 }

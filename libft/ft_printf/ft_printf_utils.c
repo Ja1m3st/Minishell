@@ -3,44 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/02 15:13:58 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/10/03 18:32:44 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/10/01 10:24:15 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/01 10:24:17 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/libft.h"
 
-int	ft_putchar(int c)
+int	ft_putchar(char c)
 {
-	return (write(1, &c, 1));
+	write(1, &c, 1);
+	return (1);
 }
 
-int	ft_putstr(char	*str)
+int	ft_putstr(char *s)
 {
 	int	len;
 
-	len = 0;
-	if (!str)
-		len += write(1, "(null)", 6);
-	if (str)
+	if (!s)
 	{
-		while (str[len])
-			write(1, &str[len++], 1);
+		write(1, "(null)", 6);
+		return (6);
+	}
+	len = 0;
+	while (s[len] != '\0')
+	{
+		write(1, &s[len], 1);
+		len++;
 	}
 	return (len);
 }
 
-int	ft_ptrlen(unsigned long long ptr)
+int	ft_putnbr_hex(unsigned long long nb, int up_or_low)
 {
-	int	len;
+	int		len;
+	char	hex_low;
+	char	hex_up;
 
 	len = 0;
-	while (ptr != 0)
+	hex_low = "0123456789abcdef"[nb % 16];
+	hex_up = "0123456789ABCDEF"[nb % 16];
+	if (nb >= 16)
+		len += ft_putnbr_hex(nb / 16, up_or_low);
+	if (up_or_low == 0)
+		len += ft_putchar(hex_low);
+	else
+		len += ft_putchar(hex_up);
+	return (len);
+}
+
+int	ft_putnbr_dec(long nb)
+{
+	int		len;
+
+	len = 0;
+	if (nb < 0)
 	{
-		ptr /= 16;
-		len++;
+		len += ft_putchar('-');
+		nb = -nb;
 	}
+	if (nb >= 10)
+		len += ft_putnbr_dec((nb / 10));
+	len += ft_putchar((nb % 10) + '0');
+	return (len);
+}
+
+int	ft_putptr(void *ptr)
+{
+	int					len;
+	unsigned long long	temp;
+
+	temp = (unsigned long long)ptr;
+	len = 0;
+	if (!ptr)
+	{
+		write(1, "(nil)", 5);
+		return (5);
+	}
+	len += ft_putstr("0x");
+	len += ft_putnbr_hex(temp, 0);
 	return (len);
 }

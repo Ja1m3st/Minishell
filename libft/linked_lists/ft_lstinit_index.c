@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_lstinit_index.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/10/29 16:49:38 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/10/29 16:49:41 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+void	ft_lstinit_index(t_list **stack_x)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	t_list	*current;
+	t_list	*stack_dupe;
+	int		count;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	current = *stack_x;
+	while (current != NULL)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		count = 0;
+		stack_dupe = *stack_x;
+		while (stack_dupe != NULL)
+		{
+			if (current->value > stack_dupe->value)
+				count++;
+			stack_dupe = stack_dupe->next;
+		}
+		current->index = count;
+		current = current->next;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
 }

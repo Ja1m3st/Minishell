@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/26 16:43:47 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/26 16:43:48 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	t_list	*temp;
+	t_list	*next_node;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	temp = *lst;
+	while (temp)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		next_node = temp->next;
+		del(temp->content);
+		free(temp);
+		temp = next_node;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	*lst = NULL;
 }

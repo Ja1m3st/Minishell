@@ -27,29 +27,29 @@ void	echo(t_mini *mini)
 		return ;
 	if (!ft_strncmp(mini->cmds[1], "-n", 2))
 		newline = 1;
-	// if (!ft_strncmp(&mini->cmds[2][0], "\"", 1))
-	// 	quote +;
 	i = 1 + newline;
 	while (mini->cmds[i])
 	{
 		j = 0;
 		while (mini->cmds[i][j])
 		{
-			write(fd, &mini->cmds[i][j], 1);
-			// if (!ft_strncmp(&mini->cmds[i][j], "\"", 1))
-			// 	quote++;
+			if (!ft_strncmp(&mini->cmds[i][j], "\"", 1))
+				quote++;
+			else
+				write(fd, &mini->cmds[i][j], 1);
 			j++;
 		}
-		printf("quote = %d\n", quote);
 		write(fd, " ", 1);
 		i++;
 	}
 	if (!newline)
 		write(fd, "\n", 1);
-	// if (quote % 2 == 0)
-	// 	dquote(fd);
+	if (quote % 2 != 0)
+		dquote(fd);
 	close(fd);
 }
+
+#include <string.h>
 
 void	dquote(int fd)
 {
@@ -60,15 +60,21 @@ void	dquote(int fd)
 	stop = 0;
 	while (1)
 	{
+		write(1, "dquote > ", 10);
 		buf = get_next_line(0);
 		i = 0;
 		while (buf[i])
 		{
-			if (!ft_strcmp(&buf[i], "\""))
+			if (!ft_strncmp(&buf[i], "\"", 1))
+			{
 				stop = 1;
+				break ;
+			}	
 			i++;
 		}
-		write(fd, buf, ft_strlen(buf));
+		write(fd, buf, ft_strlen(buf) - stop - 1);
+		if (!stop)
+			write(fd, "\n", 1);
 		free(buf);
 		if (stop)
 			break ;

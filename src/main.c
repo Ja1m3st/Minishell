@@ -14,9 +14,8 @@
 
 int main()
 {
-    t_mini       mini;
-	HIST_ENTRY	**hist_entries;
-
+    	t_mini       mini;
+	
 	while (1)
 	{
 		mini.input = readline("➜ ~ ");
@@ -24,8 +23,7 @@ int main()
 			break ;
 		if (*mini.input)
 			add_history(mini.input);
-		if (ft_strcmp(mini.input, "history") == 0)
-			print_history(hist_entries);
+		get_commands(&mini);
 		free(mini.input);
 	}
 	rl_clear_history();

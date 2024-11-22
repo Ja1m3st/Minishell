@@ -10,4 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
 
+void	get_commands(t_mini *mini)
+{
+	if (!ft_strcmp(mini->input, "history"))
+		print_history(mini);
+}

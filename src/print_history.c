@@ -12,17 +12,17 @@
 
 #include "minishell.h"
 
-void	print_history(HIST_ENTRY **hist_entries)
+void	print_history(t_mini *mini)
 {
 	int i;
 
 	i = 0;
-	hist_entries = history_list();
-	if (hist_entries)
+	mini->hist_entries = history_list();
+	if (mini->hist_entries)
 	{
-		while(hist_entries[i])
+		while(mini->hist_entries[i])
 		{
-			printf("%d %s\n", i + history_base, hist_entries[i]->line);
+			printf("%d %s\n", i + history_base, mini->hist_entries[i]->line);
 			i++;
 		}
 	}

@@ -20,10 +20,13 @@
 typedef struct s_mini
 {
 	char	*input;
+	HIST_ENTRY	**hist_entries;
 }	t_mini;
 
 
 int		main();
-void	print_history(HIST_ENTRY **hist_entries);
+void	print_history(t_mini *mini);
+void	get_commands(t_mini *mini);
+void	echo(t_mini *mini);
 
 #endif

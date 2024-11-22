@@ -20,5 +20,9 @@ void	get_commands(t_mini *mini)
 			print_history();
 		if (!ft_strcmp(mini->cmds[0], "env"))
 			print_env(mini);
+		if (!ft_strcmp(mini->cmds[0], "echo"))
+			echo(mini);
+		// if (!ft_strcmp(mini->cmds[0], "pwd"))
+		// 	pwd(mini);
 	}
 }

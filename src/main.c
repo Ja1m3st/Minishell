@@ -16,8 +16,9 @@ int main(int argc, char **argv, char **env)
 {
 	t_mini       mini;
 
+	if (argc != 1)
+		return (0);
 	mini.env = env;
-	(void)argc;
 	(void)argv;
 	while (1)
 	{

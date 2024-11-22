@@ -21,7 +21,8 @@ GREEN := \033[1;32m
 RED := \033[1;31m
 RESET := \033[0m
 
-SRCS = ./src/main.c ./src/print_history.c ./src/get_commands.c ./src/save_cmds.c ./src/print_env.c
+SRCS = ./src/main.c ./src/print_history.c ./src/get_commands.c ./src/save_cmds.c ./src/print_env.c \
+	./src/echo.c
 
 # Archivos objeto
 OBJS = $(SRCS:.c=.o)

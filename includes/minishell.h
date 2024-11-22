@@ -22,6 +22,8 @@ typedef struct s_mini
 	char	*input;
 	char	**cmds;
 	char	**env;
+	int	infile;
+	int	outfile;
 }	t_mini;
 
 
@@ -31,5 +33,7 @@ void	get_commands(t_mini *mini);
 void	echo(t_mini *mini);
 void	save_cmds(t_mini *mini);
 void	print_env(t_mini *mini);
+void	echo(t_mini *mini);
+void	dquote(int fd);
 
 #endif

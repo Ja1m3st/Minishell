@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 15:35:24 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/22 15:36:16 by jaimesan          #+#    #+#             */
+/*   Updated: 2024/11/22 15:37:20 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **env)
+void	print_env(t_mini *mini)
 {
-	t_mini       mini;
+	int		i;
 
-	mini.env = env;
-	(void)argc;
-	(void)argv;
-	while (1)
+	i = 0;
+	while (mini->env[i] != NULL)
 	{
-		mini.input = readline("➜ ~ ");
-		if (!mini.input)
-			break ;
-		if (*mini.input)
-			add_history(mini.input);
-		save_cmds(&mini);
-		get_commands(&mini);
-		free(mini.input);
+		printf("%s\n", mini->env[i]);
+		i++;
 	}
-	rl_clear_history();
-    return (0);
 }

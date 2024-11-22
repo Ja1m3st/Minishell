@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 14:59:38 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:38:08 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	get_commands(t_mini *mini)
 {
-	if (!ft_strcmp(mini->cmds[0], "history"))
-		print_history();
+	if  (mini->cmds[0])
+	{
+		if (!ft_strcmp(mini->cmds[0], "history"))
+			print_history();
+		if (!ft_strcmp(mini->cmds[0], "env"))
+			print_env(mini);
+	}
 }

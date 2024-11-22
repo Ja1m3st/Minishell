@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   save_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 14:56:30 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/22 14:50:44 by jaimesan          #+#    #+#             */
+/*   Updated: 2024/11/22 14:55:22 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "../libft/includes/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_mini
+void	save_cmds(t_mini *mini)
 {
-	char	*input;
-	char	**cmds;
-}	t_mini;
-
-
-int		main();
-void	print_history();
-void	get_commands(t_mini *mini);
-void	echo(t_mini *mini);
-void	save_cmds(t_mini *mini);
-
-#endif
+	mini->cmds = ft_split(mini->input, ' ');
+}

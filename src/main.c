@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 13:39:57 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:44:29 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main()
 	{
 		mini.input = readline("➜ ~ ");
 		if (!mini.input)
-			break;
+			break ;
 		if (*mini.input)
 			add_history(mini.input);
 		if (ft_strcmp(mini.input, "history") == 0)

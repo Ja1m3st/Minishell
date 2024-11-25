@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/11/25 11:00:34 by jaimesan         ###   ########.fr        #
+#    Updated: 2024/11/25 13:28:15 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RED := \033[1;31m
 RESET := \033[0m
 
 SRCS = ./src/main.c ./src/print_history.c ./src/get_commands.c ./src/save_cmds.c ./src/print_env.c \
-	./src/echo.c ./src/print_pwd.c ./src/get_full_name.c ./src/cd.c
+	./src/echo.c ./src/print_pwd.c ./src/get_full_name.c ./src/cd.c ./src/utils/mini_ultis.c
 
 # Archivos objeto
 OBJS = $(SRCS:.c=.o)

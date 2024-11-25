@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   save_cmds.c                                        :+:      :+:    :+:   */
+/*   mini_ultis.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/22 14:50:44 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 14:52:31 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
+/*   Updated: 2024/11/25 13:24:56 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	save_cmds(t_mini *mini)
+void free_char_array(char **array)
 {
-	char	**split;
+	int i;
 
-	split = ft_split(mini->input, ' ');
-	mini->cmds = split;
-	free_char_array(split);
+	i = 0;
+    if (!array)
+        return ;
+    while (array[i])
+	{
+        free(array[i]);
+        array[i] = NULL;
+        i++;
+    }
+    free(array);
+    array = NULL;
 }

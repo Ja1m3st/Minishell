@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:50:10 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 13:40:20 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_mini
 	char	*sesion_name;
 	char	*full_name;
 	char	*path;
+	char	*read_line;
 }	t_mini;
 
 int		main(int argc, char **argv, char **envp);
@@ -41,5 +42,6 @@ void	print_env(t_mini *mini);
 void	get_full_name(t_mini *mini);
 void	print_pwd(void);
 void	cd(t_mini *mini);
+void	free_char_array(char **array);
 
 #endif

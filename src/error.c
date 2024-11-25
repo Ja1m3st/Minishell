@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/25 14:59:34 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/25 15:36:56 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_struct(t_mini *mini)
+void	error(t_mini *mini, char c)
 {
-	mini->read_line = NULL;
-	mini->full_name = NULL;
-	mini->log_name = NULL;
-	mini->path = NULL;
-	mini->sesion_name = NULL;
-	mini->input = NULL;
+	if (c == '!')
+		write(1, "Success!\n", 9);
+	free_mini(mini);
+}
+
+void	free_mini(t_mini *mini)
+{
+	if (mini->full_name)
+		free(mini->full_name);
+	if (mini->log_name)
+		free(mini->log_name);
+	if (mini->sesion_name)
+		free(mini->sesion_name);
+	if (mini->read_line)
+		free(mini->read_line);
 }

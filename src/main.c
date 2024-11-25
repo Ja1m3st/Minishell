@@ -36,10 +36,8 @@ int	main(int argc, char **argv, char **env)
 		free(mini.input);
 		free_char_array(mini.cmds);
 	}
-	free(mini.full_name);
-	free(mini.log_name);
-	free(mini.sesion_name);
 	free(read);
+	error(&mini, '!');
 	rl_clear_history();
 	return (0);
 }

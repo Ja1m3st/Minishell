@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:57:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 15:14:04 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:45:00 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void get_name(t_mini *mini)
 	mini->log_name = getenv("LOGNAME");
 }
 
-void get_sesion_name(t_mini *mini)
+void    get_sesion_name(t_mini *mini)
 {
     int i = 0;
     char **split1 = NULL;
@@ -40,9 +40,8 @@ void get_sesion_name(t_mini *mini)
                 return;
             }
             split3 = ft_split(split2[1], '.');
-            if (split3 && split3[0]) {
+            if (split3 && split3[0])
                 mini->sesion_name = ft_strdup(split3[0]);
-            }
             free_char_array(split1);
             free_char_array(split2);
             free_char_array(split3);
@@ -55,13 +54,9 @@ void get_sesion_name(t_mini *mini)
 
 void	get_full_name(t_mini *mini)
 {
-	char    *log_name;
-	char    *full_name;
 
 	get_name(mini);
 	get_sesion_name(mini);
-	log_name = ft_strjoin(mini->log_name, "@");
-    mini->log_name = log_name;
-	full_name = ft_strjoin(mini->log_name, mini->sesion_name);
-	mini->full_name = full_name;
+    mini->log_name = ft_strjoin(mini->log_name, "@");
+	mini->full_name = ft_strjoin(mini->log_name, mini->sesion_name);
 }

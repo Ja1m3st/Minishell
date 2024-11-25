@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 15:18:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:44:33 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*read_line(t_mini *mini)
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
-
+	char	*read;
 
 	if (argc != 1)
 		return (0);
@@ -42,8 +42,8 @@ int	main(int argc, char **argv, char **env)
 	get_full_name(&mini);
 	while (1)
 	{
-		read_line(&mini);
-		mini.input = readline(read_line(&mini));
+		read = read_line(&mini);
+		mini.input = readline(read);
 		if (!mini.input)
 			break ;
 		if (*mini.input)
@@ -53,6 +53,10 @@ int	main(int argc, char **argv, char **env)
 		free(mini.input);
 		free_char_array(mini.cmds);
 	}
+	free(mini.full_name);
+	free(mini.log_name);
+	free(mini.sesion_name);
+	free(read);
 	rl_clear_history();
 	return (0);
 }

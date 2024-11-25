@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:20:58 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:29:58 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	cd(t_mini *mini)
 {
 	char	*path;
-	char	cwd[1024];
 
 	if (!mini->cmds[1])
 	{
@@ -33,8 +32,4 @@ void	cd(t_mini *mini)
 		perror("minishell: cd");
 		return ;
 	}
-	if (getcwd(cwd, sizeof(cwd)))
-		printf("%s\n", cwd);
-	else
-		perror("minishell: cd: getcwd");
 }

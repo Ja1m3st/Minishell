@@ -14,13 +14,21 @@
 
 void	export(t_mini *mini)
 {
-	int		len_i;
 	char	**new_env;
+	int		len;
+	int		i;
 
-	len_i = array_len(mini->env);
-	new_env = mini->env;
-	new_env[len_i] = malloc(ft_strlen(mini->cmds[1]) * sizeof(char));
-	new_env[len_i] = mini->cmds[1];
-	new_env[++len_i] = NULL;
+	len = array_len(mini->env);
+	new_env = malloc((len + 2) * sizeof(char *));
+	if (!new_env)
+		error(mini, 'M');
+	i = 0;
+	while (i < len)
+	{
+		new_env[i] = ft_strdup(mini->env[i]);
+		i++;
+	}
+	new_env[len] = strdup(mini->cmds[1]);
+	new_env[len + 1] = NULL;
 	mini->env = new_env;
 }

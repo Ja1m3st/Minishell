@@ -14,19 +14,26 @@
 
 void	echo(t_mini *mini)
 {
-	int	i;
-	int	j;
 	int	fd;
 	int	newline;
-	int	quote;
 
 	newline = 0;
-	quote = 0;
 	fd = open(".echo", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 		return ;
 	if (!ft_strncmp(mini->cmds[1], "-n", 2))
 		newline = 1;
+	write_to_fd(mini, fd, newline);
+	close(fd);
+}
+
+void	write_to_fd(t_mini *mini, int fd, int newline)
+{
+	int	i;
+	int	j;
+	int	quote;
+
+	quote = 0;
 	i = 1 + newline;
 	while (mini->cmds[i])
 	{
@@ -39,25 +46,25 @@ void	echo(t_mini *mini)
 				write(fd, &mini->cmds[i][j], 1);
 			j++;
 		}
-		write(fd, " ", 1);
+		if (mini->cmds[i + 1])
+			write(fd, " ", 1);
 		i++;
 	}
-	if (!newline)
+	if (newline == 0)
 		write(fd, "\n", 1);
 	if (quote % 2 != 0)
-		dquote(fd);
-	close(fd);
+		dquote(fd, newline);
 }
 
-#include <string.h>
-
-void	dquote(int fd)
+void	dquote(int fd, int newline)
 {
+	int		i;
+	int		stop;
 	char	*buf;
-	int	i;
-	int	stop;
 
 	stop = 0;
+	if (newline)
+		write(fd, "\n", 1);
 	while (1)
 	{
 		write(1, "dquote > ", 10);
@@ -65,17 +72,13 @@ void	dquote(int fd)
 		i = 0;
 		while (buf[i])
 		{
-			if (!ft_strncmp(&buf[i], "\"", 1))
-			{
+			if (!ft_strncmp(&buf[i++], "\"", 1))
 				stop = 1;
-				break ;
-			}	
-			i++;
 		}
 		write(fd, buf, ft_strlen(buf) - stop - 1);
-		if (!stop)
-			write(fd, "\n", 1);
 		free(buf);
+		if (!stop || !newline)
+			write(fd, "\n", 1);
 		if (stop)
 			break ;
 	}

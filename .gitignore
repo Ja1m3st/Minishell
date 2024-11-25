@@ -4,3 +4,6 @@ a.out
 minishell
 .vscode/*
 .gitignore
+test
+*.
+.echo

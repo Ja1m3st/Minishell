@@ -6,27 +6,11 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 15:44:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:46:37 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*read_line(t_mini *mini)
-{
-	char	cwd[1024];
-	char	*join1;
-	char	*join2;
-
-	if (mini->read_line != NULL)
-		free(mini->read_line);
-	join1 = ft_strjoin(mini->full_name,":~");
-	join2 = ft_strjoin(join1, getcwd(cwd, sizeof(cwd)));
-	mini->read_line = ft_strjoin(join2, "$ ");
-	free(join1);
-	free(join2);
-	return (mini->read_line);
-}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -37,8 +21,7 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	mini.env = env;
 	(void)argv;
-	mini.read_line = NULL;
-	mini.cmds = NULL;
+	init_struct(&mini);
 	get_full_name(&mini);
 	while (1)
 	{

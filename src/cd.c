@@ -1,23 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_pwd.c                                        :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/22 15:53:03 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:21:49 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
+/*   Updated: 2024/11/25 11:20:58 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_pwd(void)
+void	cd(t_mini *mini)
 {
+	char	*path;
 	char	cwd[1024];
 
-	if (getcwd(cwd, sizeof(cwd)))
+	if (!mini->cmds[1])
 	{
-		printf("%s\n", cwd);
+		path = getenv("HOME");
+		if (!path)
+		{
+			printf("minishell: cd: HOME not set\n");
+			return ;
+		}
 	}
+	else
+		path = mini->cmds[1];
+	if (chdir(path) == -1)
+	{
+		perror("minishell: cd");
+		return ;
+	}
+	if (getcwd(cwd, sizeof(cwd)))
+		printf("%s\n", cwd);
+	else
+		perror("minishell: cd: getcwd");
 }

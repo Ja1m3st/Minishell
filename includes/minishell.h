@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 17:48:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:18:42 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	print_env(t_mini *mini);
 void	dquote(int fd);
 void	get_full_name(t_mini *mini);
 void	print_pwd();
+void	cd(t_mini *mini);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:57:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 16:59:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:22:06 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	get_sesion_name(t_mini *mini)
 		free(str);
 	}
 }
+
 void	get_full_name(t_mini *mini)
 {
 	get_name(mini);

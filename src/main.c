@@ -6,15 +6,15 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/22 17:51:51 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:23:24 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
-	t_mini       mini;
+	t_mini	mini;
 
 	if (argc != 1)
 		return (0);

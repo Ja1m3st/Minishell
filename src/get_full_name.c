@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:57:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 14:37:11 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:14:04 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	get_full_name(t_mini *mini)
 	get_name(mini);
 	get_sesion_name(mini);
 	log_name = ft_strjoin(mini->log_name, "@");
+    mini->log_name = log_name;
 	full_name = ft_strjoin(mini->log_name, mini->sesion_name);
-	mini->log_name = log_name;
 	mini->full_name = full_name;
 }

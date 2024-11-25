@@ -12,8 +12,10 @@
 
 #include "minishell.h"
 
-void	init_struct(t_mini *mini)
+void	init_struct(t_mini *mini, char **argv, char **env)
 {
+	mini->env = env;
+	(void)argv;
 	mini->read_line = NULL;
 	mini->full_name = NULL;
 	mini->log_name = NULL;

@@ -19,9 +19,7 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc != 1)
 		return (0);
-	mini.env = env;
-	(void)argv;
-	init_struct(&mini);
+	init_struct(&mini, argv, env);
 	get_full_name(&mini);
 	while (1)
 	{

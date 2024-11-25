@@ -14,6 +14,8 @@
 
 void	init_struct(t_mini *mini, char **argv, char **env)
 {
+	mini->infile = STDIN_FILENO;
+	mini->outfile = STDOUT_FILENO;
 	mini->env = env;
 	(void)argv;
 	mini->read_line = NULL;

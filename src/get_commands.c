@@ -26,6 +26,8 @@ void	get_commands(t_mini *mini)
 			print_pwd();
 		if (!ft_strcmp(mini->cmds[0], "cd"))
 			cd(mini);
+		if (!ft_strcmp(mini->cmds[0], "export"))
+			export(mini);
 		if (!ft_strcmp(mini->cmds[0], "exit"))
 		{
 			write(1, "exit\n", 5);

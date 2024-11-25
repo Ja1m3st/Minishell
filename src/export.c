@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_ultis.c                                       :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 13:24:56 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/25 17:10:19 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/25 17:10:20 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_char_array(char **array)
+void	export(t_mini *mini)
 {
-	int i;
+	int		len_i;
+	char	**new_env;
 
-	i = 0;
-    if (!array)
-        return ;
-    while (array[i])
-	{
-        free(array[i]);
-        array[i] = NULL;
-        i++;
-    }
-    free(array);
-    array = NULL;
+	len_i = array_len(mini->env);
+	new_env = mini->env;
+	new_env[len_i] = malloc(ft_strlen(mini->cmds[1]) * sizeof(char));
+	new_env[len_i] = mini->cmds[1];
+	new_env[++len_i] = NULL;
+	mini->env = new_env;
 }

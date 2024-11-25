@@ -42,5 +42,7 @@ void	get_full_name(t_mini *mini);
 void	print_pwd(void);
 void	cd(t_mini *mini);
 void	free_char_array(char **array);
+void	init_struct(t_mini *mini);
+char	*read_line(t_mini *mini);
 
 #endif

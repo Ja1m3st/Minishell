@@ -65,3 +65,19 @@ void	get_full_name(t_mini *mini)
 	full_name = ft_strjoin(mini->log_name, mini->sesion_name);
 	mini->full_name = full_name;
 }
+
+char	*read_line(t_mini *mini)
+{
+	char	cwd[1024];
+	char	*join1;
+	char	*join2;
+
+	if (mini->read_line != NULL)
+		free(mini->read_line);
+	join1 = ft_strjoin(mini->full_name,":~");
+	join2 = ft_strjoin(join1, getcwd(cwd, sizeof(cwd)));
+	mini->read_line = ft_strjoin(join2, "$ ");
+	free(join1);
+	free(join2);
+	return (mini->read_line);
+}

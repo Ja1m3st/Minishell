@@ -22,7 +22,8 @@ RED := \033[1;31m
 RESET := \033[0m
 
 SRCS = ./src/main.c ./src/print_history.c ./src/get_commands.c ./src/print_env.c \
-	./src/echo.c ./src/print_pwd.c ./src/get_full_name.c ./src/cd.c ./src/utils/mini_ultis.c
+	./src/echo.c ./src/print_pwd.c ./src/get_full_name.c ./src/cd.c ./src/utils/mini_ultis.c \
+	./src/init_struct.c
 
 # Archivos objeto
 OBJS = $(SRCS:.c=.o)

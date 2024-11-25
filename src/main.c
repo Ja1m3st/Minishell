@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:23:24 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:49:38 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
+	char	cwd[1024];
 
 	if (argc != 1)
 		return (0);
@@ -23,7 +24,8 @@ int	main(int argc, char **argv, char **env)
 	get_full_name(&mini);
 	while (1)
 	{
-		mini.input = readline(ft_strjoin(mini.full_name, "~$ "));
+		mini.input = readline(ft_strjoin(ft_strjoin(ft_strjoin(mini.full_name,
+							":~"), getcwd(cwd, sizeof(cwd))), "$ "));
 		if (!mini.input)
 			break ;
 		if (*mini.input)

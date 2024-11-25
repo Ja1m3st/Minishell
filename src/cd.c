@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:29:58 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:37:54 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ void	cd(t_mini *mini)
 		perror("minishell: cd");
 		return ;
 	}
+	mini->path = path;
 }

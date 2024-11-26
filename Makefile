@@ -21,7 +21,7 @@ RESET := \033[0m
 SRCS = ./src/main.c ./src/init_struct.c ./src/get_full_name.c  ./src/get_commands.c \
 	./src/builtins/print_env.c ./src/builtins/echo.c ./src/builtins/print_pwd.c  \
 	./src/builtins/cd.c ./src/builtins/export.c ./src/builtins/print_history.c \
-	./src/utils/mini_utils.c ./src/utils/error.c 
+	./src/utils/mini_utils.c ./src/utils/error.c ./src/utils/dup_env.c 
 
 #OBJS--------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) $(NOPRINT) -C $(LIBFT_DIR)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
@@ -44,12 +44,12 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "[100%] $(GREEN)(Minishell) Compilation  | Minishell | successful!$(RESET)"
 
 clean:
-	$(MAKE) clean -C $(LIBFT_DIR)
+	$(MAKE) $(NOPRINT) clean -C $(LIBFT_DIR)
 	$(RM) $(OBJS)
 	@echo "[100%] $(RED)(Minishell) Cleaning up exept compilers ..$(RESET)"
 
 fclean:
-	$(MAKE) fclean -C $(LIBFT_DIR)
+	$(MAKE) $(NOPRINT) fclean -C $(LIBFT_DIR)
 	$(RM) $(OBJS) $(NAME)
 	@echo "[100%] $(RED)(Minishell) Cleaning up...$(RESET)"
 

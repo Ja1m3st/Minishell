@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   dup_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 17:10:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/25 17:10:20 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/11/26 13:05:03 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/26 13:05:04 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export(t_mini *mini)
+void	dup_env(t_mini *mini, char **env)
 {
-	char	**new_env;
-	int		len;
-	int		i;
+	int	len;
+	int	i;
 
-	len = array_len(mini->env);
-	new_env = malloc((len + 2) * sizeof(char *));
-	if (!new_env)
-		error(mini, 'M');
+	len = array_len(env);
+	mini->env = malloc((len + 1 )* sizeof(char *));
+	if (!mini->env)
+		return ;
 	i = 0;
 	while (i < len)
 	{
-		new_env[i] = ft_strdup(mini->env[i]);
+		mini->env[i] = ft_strdup(env[i]);
+		if (!mini->env[i])
+			return ;
 		i++;
 	}
-	new_env[len] = ft_strdup(mini->cmds[1]);
-	new_env[len + 1] = NULL;
-	free_arr(mini->env);
-	mini->env = new_env;
+	mini->env[i] = NULL;
 }

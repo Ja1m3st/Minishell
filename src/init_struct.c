@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/25 16:32:04 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:17:18 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 {
 	mini->infile = STDIN_FILENO;
 	mini->outfile = STDOUT_FILENO;
-	mini->env = env;
+	mini->env = NULL;
 	(void)argv;
 	mini->env_name = NULL;
 	mini->full_name = NULL;
@@ -25,4 +25,5 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->sesion_name = NULL;
 	mini->input = NULL;
 	mini->outfile = STDOUT_FILENO;
+	dup_env(mini, env);
 }

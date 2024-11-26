@@ -27,6 +27,4 @@ void	free_mini(t_mini *mini)
 		free(mini->log_name);
 	if (mini->sesion_name)
 		free(mini->sesion_name);
-	if (mini->read_line)
-		free(mini->read_line);
 }

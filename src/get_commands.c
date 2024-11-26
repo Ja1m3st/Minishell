@@ -28,6 +28,10 @@ void	get_commands(t_mini *mini)
 			cd(mini);
 		if (!ft_strcmp(mini->cmds[0], "export"))
 			export(mini);
+		// if (!ft_strcmp(mini->cmds[0], "unset"))
+		// 	unset(mini);
+		// if (!ft_strcmp(mini->cmds[0], "$"))
+		// 	variables(mini);
 		if (!ft_strcmp(mini->cmds[0], "exit"))
 		{
 			write(1, "exit\n", 5);

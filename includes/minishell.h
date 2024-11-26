@@ -34,6 +34,7 @@ typedef struct s_mini
 int		main(int argc, char **argv, char **envp);
 
 void	init_struct(t_mini *mini, char **argv, char **env);
+void	dup_env(t_mini *mini, char **env);
 
 void	get_env_name(t_mini *mini);
 void	get_session_name(t_mini *mini);

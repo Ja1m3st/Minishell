@@ -12,21 +12,21 @@
 
 #include "minishell.h"
 
-void free_char_array(char **array)
+void	free_arr(char **array)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (!array)
-        return ;
-    while (array[i])
+	i = 0;
+	if (!array)
+		return ;
+	while (array[i])
 	{
-        free(array[i]);
-        array[i] = NULL;
-        i++;
-    }
-    free(array);
-    array = NULL;
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	array = NULL;
 }
 
 int	array_len(char **array)
@@ -34,7 +34,7 @@ int	array_len(char **array)
 	int	i;
 
 	i = 0;
-	while (array[i])
+	while (array && array[i])
 		i++;
 	return (i);
 }

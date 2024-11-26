@@ -15,16 +15,16 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
-	char	*read;
+	char	*env_name;
 
 	if (argc != 1)
 		return (0);
 	init_struct(&mini, argv, env);
-	get_full_name(&mini);
+	get_env_name(&mini);
 	while (1)
 	{
-		read = read_line(&mini);
-		mini.input = readline(read);
+		env_name = join_env_name(&mini);
+		mini.input = readline(env_name);
 		if (!mini.input)
 			break ;
 		if (*mini.input)
@@ -32,9 +32,9 @@ int	main(int argc, char **argv, char **env)
 		mini.cmds = ft_split(mini.input, ' ');
 		get_commands(&mini);
 		free(mini.input);
-		free_char_array(mini.cmds);
+		free_arr(mini.cmds);
 	}
-	free(read);
+	free(env_name);
 	error(&mini, '!');
 	rl_clear_history();
 	return (0);

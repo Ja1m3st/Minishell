@@ -14,8 +14,6 @@
 
 void	export(t_mini *mini)
 {
-	char	**new_env;
-	int		len;
 	int		i;
 
 	if (check_valid_export(mini))
@@ -23,6 +21,43 @@ void	export(t_mini *mini)
 		write(1, "Bad Assignment!\n", 16);
 		return ;
 	}
+	i = export_exists(mini);
+	if (i == -1)
+		new_export(mini);
+	else
+		mini->env[i] = ft_strdup(mini->cmds[1]);
+}
+
+int	export_exists(t_mini *mini)
+{
+	int		i;
+	int		arr_len;
+	char	*var_name;
+
+	i = 0;
+	while (mini->cmds[1][i] != '=')
+		i++;
+	var_name = malloc(i + 1 * sizeof(char));
+	if (!var_name)
+		return (-1);
+	ft_strlcpy(var_name, mini->cmds[1], i + 1);
+	arr_len = array_len(mini->env);
+	i = 0;
+	while (i < arr_len)
+	{
+		if (ft_strncmp(mini->env[i], var_name, ft_strlen(var_name)) == 0)
+			return (free(var_name), i);
+		i++;
+	}
+	return (free(var_name), -1);
+}
+
+void	new_export(t_mini *mini)
+{
+	char	**new_env;
+	int		len;
+	int		i;
+
 	len = array_len(mini->env);
 	new_env = malloc((len + 2) * sizeof(char *));
 	if (!new_env)

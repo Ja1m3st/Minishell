@@ -60,3 +60,12 @@ char	*find_path(t_mini *mini, char *path)
 	}
 	return (NULL);
 }
+
+char	*find_var(char	*str, char c)
+{
+	char	*var_name;
+
+	var_name = ft_strchr(str, c);
+	var_name++;
+	return (var_name);
+}

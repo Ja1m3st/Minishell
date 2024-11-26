@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/11/26 13:19:32 by jaimesan         ###   ########.fr        #
+#    Updated: 2024/11/26 13:21:58 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(LIBFT):
-	$(MAKE) $(NOPRINT) -C $(LIBFT_DIR)
+	@$(MAKE) $(NOPRINT) -C $(LIBFT_DIR)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)

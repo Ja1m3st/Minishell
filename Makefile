@@ -32,7 +32,7 @@ SRCS = ./src/main.c ./src/init_struct.c ./src/get_full_name.c  ./src/get_command
 	./src/builtins/print_env.c ./src/builtins/echo.c ./src/builtins/print_pwd.c  \
 	./src/builtins/cd.c ./src/builtins/export.c ./src/builtins/print_history.c \
 	./src/utils/mini_utils.c ./src/utils/error.c ./src/utils/dup_env.c \
-	./src/builtins/unset.c 
+	./src/builtins/unset.c ./src/builtins/variables.c
 
 #OBJS--------------------------------------------------------------------------------------
 

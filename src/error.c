@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/25 15:36:56 by ctommasi         ###   ########.fr       */
+/*   Updated: 2024/11/26 12:23:39 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,6 @@ void	free_mini(t_mini *mini)
 		free(mini->log_name);
 	if (mini->sesion_name)
 		free(mini->sesion_name);
+	if (mini->env)
+		free(mini->env);
 }

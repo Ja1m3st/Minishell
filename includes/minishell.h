@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 15:18:44 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:57:18 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void	free_mini(t_mini *mini);
 void	init_struct(t_mini *mini, char **argv, char **env);
 void	export(t_mini *mini);
 int		array_len(char **array);
+void	unset(t_mini *mini);
 
 #endif

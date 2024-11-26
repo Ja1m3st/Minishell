@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/11/25 15:18:38 by jaimesan         ###   ########.fr        #
+#    Updated: 2024/11/26 11:54:27 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ RESET := \033[0m
 
 SRCS = ./src/main.c ./src/print_history.c ./src/get_commands.c ./src/print_env.c \
 	./src/echo.c ./src/print_pwd.c ./src/get_full_name.c ./src/cd.c ./src/utils/mini_utils.c \
-	./src/init_struct.c ./src/error.c ./src/export.c
+	./src/init_struct.c ./src/error.c ./src/export.c ./src/unset.c
 
 # Archivos objeto
 OBJS = $(SRCS:.c=.o)

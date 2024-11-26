@@ -6,11 +6,11 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:21:14 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:56:59 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	get_commands(t_mini *mini)
 {
@@ -28,6 +28,8 @@ void	get_commands(t_mini *mini)
 			cd(mini);
 		if (!ft_strcmp(mini->cmds[0], "export"))
 			export(mini);
+		if (!ft_strcmp(mini->cmds[0], "unset"))
+			unset(mini);
 		if (!ft_strcmp(mini->cmds[0], "exit"))
 		{
 			write(1, "exit\n", 5);

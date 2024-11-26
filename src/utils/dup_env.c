@@ -18,7 +18,7 @@ void	dup_env(t_mini *mini, char **env)
 	int	i;
 
 	len = array_len(env);
-	mini->env = malloc((len + 1 )* sizeof(char *));
+	mini->env = malloc((len + 1) * sizeof(char *));
 	if (!mini->env)
 		return ;
 	i = 0;

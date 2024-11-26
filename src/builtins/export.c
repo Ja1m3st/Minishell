@@ -18,6 +18,11 @@ void	export(t_mini *mini)
 	int		len;
 	int		i;
 
+	if (check_valid_export(mini))
+	{
+		write(1, "Bad Assignment!\n", 16);
+		return ;
+	}
 	len = array_len(mini->env);
 	new_env = malloc((len + 2) * sizeof(char *));
 	if (!new_env)
@@ -32,4 +37,22 @@ void	export(t_mini *mini)
 	new_env[len + 1] = NULL;
 	free_arr(mini->env);
 	mini->env = new_env;
+}
+
+int	check_valid_export(t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	while (mini->cmds[1][i] != '=')
+	{
+		if (i == 0 && ft_isdigit(mini->cmds[1][i]))
+			return (1);
+		if (!(ft_isalnum(mini->cmds[1][i]) || mini->cmds[1][i] == '_'))
+			return (1);
+		i++;
+	}
+	if (mini->cmds[1][i] == '=')
+		return (0);
+	return (1);
 }

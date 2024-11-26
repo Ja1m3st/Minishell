@@ -56,5 +56,6 @@ void	error(t_mini *mini, char c);
 void	free_mini(t_mini *mini);
 int		array_len(char **array);
 void	unset(t_mini *mini);
+int		check_valid_export(t_mini *mini);
 
 #endif

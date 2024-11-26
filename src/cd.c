@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 11:37:54 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:19:28 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,17 @@ void	cd(t_mini *mini)
 		}
 	}
 	else
+	{
+		if (!ft_strcmp(mini->cmds[1], "-"))
+		{
+			perror("Error ya lo hare: ");
+			return ;
+		}
 		path = mini->cmds[1];
+	}
 	if (chdir(path) == -1)
 	{
-		perror("minishell: cd");
+		perror("Error");
 		return ;
 	}
 	mini->path = path;

@@ -45,11 +45,11 @@ void	get_commands(t_mini *mini);
 void	print_env(t_mini *mini);
 void	echo(t_mini *mini);
 void	write_to_fd(t_mini *mini, int fd, int newline);
-void	dquote(int fd, int newline);
+void	dquote(int fd, int newline, t_mini *mini);
+void	print_to_stdout(t_mini *mini, int temp_fd);
 void	print_pwd(void);
 void	cd(t_mini *mini);
 void	export(t_mini *mini);
-
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 void	free_mini(t_mini *mini);

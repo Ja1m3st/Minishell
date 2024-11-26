@@ -21,10 +21,12 @@ void	echo(t_mini *mini)
 	fd = open(".echo", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 		return ;
-	if (!ft_strncmp(mini->cmds[1], "-n", 2))
+	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "-n", 2))
 		newline = 1;
 	write_to_fd(mini, fd, newline);
+	print_to_stdout(mini, fd);
 	close(fd);
+	get_next_line(-1);
 }
 
 void	write_to_fd(t_mini *mini, int fd, int newline)
@@ -53,10 +55,10 @@ void	write_to_fd(t_mini *mini, int fd, int newline)
 	if (newline == 0)
 		write(fd, "\n", 1);
 	if (quote % 2 != 0)
-		dquote(fd, newline);
+		dquote(fd, newline, mini);
 }
 
-void	dquote(int fd, int newline)
+void	dquote(int fd, int newline, t_mini *mini)
 {
 	int		i;
 	int		stop;
@@ -67,6 +69,7 @@ void	dquote(int fd, int newline)
 		write(fd, "\n", 1);
 	while (1)
 	{
+		write(1, mini->env_name, ft_strlen(mini->env_name));
 		write(1, "dquote > ", 10);
 		buf = get_next_line(0);
 		i = 0;
@@ -81,6 +84,26 @@ void	dquote(int fd, int newline)
 			write(fd, "\n", 1);
 		if (stop)
 			break ;
+	}
+}
+
+void	print_to_stdout(t_mini *mini, int temp_fd)
+{
+	char	*line;
+
+	temp_fd = open(".echo", O_RDONLY);
+	if (temp_fd == -1)
+		return ;
+	while (1)
+	{
+		line = get_next_line(temp_fd);
+		if (!line)
+		{
+			close(temp_fd);
+			break ;
+		}
+		write(mini->outfile, line, ft_strlen(line));
+		free(line);
 	}
 	get_next_line(-1);
 }

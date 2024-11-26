@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 17:10:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/26 12:00:52 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/26 12:36:56 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export(t_mini *mini)
+void	error(t_mini *mini, char c)
 {
-	int		len_i;
-	char	**new_env;
+	if (c == '!')
+		write(1, "Success!\n", 9);
+	if (c == 'M')
+		write(1, "Malloc Error!\n", 14);
+	free_mini(mini);
+}
 
-	len_i = array_len(mini->env);
-	new_env = mini->env;
-	new_env[len_i] = malloc(ft_strlen(mini->cmds[1]) * sizeof(char));
-	new_env[len_i] = mini->cmds[1];
-	new_env[++len_i] = NULL;
-	mini->env = new_env;
+void	free_mini(t_mini *mini)
+{
+	int		i;
+
+	if (mini->full_name)
+		free(mini->full_name);
+	if (mini->log_name)
+		free(mini->log_name);
+	if (mini->sesion_name)
+		free(mini->sesion_name);
+	if (mini->env)
+		free_arr(mini->env);
 }

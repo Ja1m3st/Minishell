@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/26 12:23:39 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/25 17:10:19 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/26 12:00:52 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error(t_mini *mini, char c)
+void	export(t_mini *mini)
 {
-	if (c == '!')
-		write(1, "Success!\n", 9);
-	free_mini(mini);
-}
+	char	**new_env;
+	int		len;
+	int		i;
 
-void	free_mini(t_mini *mini)
-{
-	if (mini->full_name)
-		free(mini->full_name);
-	if (mini->log_name)
-		free(mini->log_name);
-	if (mini->sesion_name)
-		free(mini->sesion_name);
-	if (mini->env)
-		free(mini->env);
+	len = array_len(mini->env);
+	new_env = malloc((len + 2) * sizeof(char *));
+	if (!new_env)
+		error(mini, 'M');
+	i = 0;
+	while (i < len)
+	{
+		new_env[i] = ft_strdup(mini->env[i]);
+		i++;
+	}
+	new_env[len] = strdup(mini->cmds[1]);
+	new_env[len + 1] = NULL;
+	mini->env = new_env;
 }

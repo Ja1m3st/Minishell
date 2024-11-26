@@ -28,7 +28,8 @@ void	export(t_mini *mini)
 		new_env[i] = ft_strdup(mini->env[i]);
 		i++;
 	}
-	new_env[len] = strdup(mini->cmds[1]);
+	new_env[len] = ft_strdup(mini->cmds[1]);
 	new_env[len + 1] = NULL;
+	free_arr(mini->env);
 	mini->env = new_env;
 }

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/25 13:24:56 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:40:03 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,26 @@ int	array_len(char **array)
 	while (array && array[i])
 		i++;
 	return (i);
+}
+
+char	*find_path(t_mini *mini, char *path)
+{
+	int		len;
+	int		i;
+	int		oldpath_len;
+	char	*find;
+
+	len = array_len(mini->env);
+	i = 0;
+	while (i < len)
+	{
+		if (ft_strncmp(mini->env[i], path, 5) == 0)
+		{
+			find = ft_strrchr(mini->env[i], '=');
+			find++;
+			return (find);
+		}
+		i++;
+	}
+	return (NULL);
 }

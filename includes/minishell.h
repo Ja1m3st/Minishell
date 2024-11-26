@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 12:38:05 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:40:16 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_mini
 	char	*full_name;
 	char	*path;
 	char	*env_name;
+	char	*oldpath;
 }	t_mini;
 
 int		main(int argc, char **argv, char **envp);
@@ -56,5 +57,6 @@ void	error(t_mini *mini, char c);
 void	free_mini(t_mini *mini);
 int		array_len(char **array);
 void	unset(t_mini *mini);
+char	*find_path(t_mini *mini, char *path);
 
 #endif

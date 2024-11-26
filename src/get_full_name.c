@@ -15,7 +15,7 @@
 void	get_env_name(t_mini *mini)
 {
 	mini->log_name = getenv("LOGNAME");
-	get_sesion_name(mini);
+	get_session_name(mini);
 	mini->log_name = ft_strjoin(mini->log_name, "@");
 	mini->full_name = ft_strjoin(mini->log_name, mini->sesion_name);
 }

@@ -36,13 +36,13 @@ int		main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
 
 void	get_env_name(t_mini *mini);
-void	get_sesion_name(t_mini *mini);
+void	get_session_name(t_mini *mini);
 char	*join_env_name(t_mini *mini);
-void	print_env(t_mini *mini);
 
 void	print_history(void);
 
 void	get_commands(t_mini *mini);
+void	print_env(t_mini *mini);
 void	echo(t_mini *mini);
 void	write_to_fd(t_mini *mini, int fd, int newline);
 void	dquote(int fd, int newline);

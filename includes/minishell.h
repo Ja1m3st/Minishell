@@ -59,5 +59,6 @@ int		array_len(char **array);
 void	unset(t_mini *mini);
 char	*find_path(t_mini *mini, char *path);
 int		check_valid_export(t_mini *mini);
+char	*get_var(t_mini *mini);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/11/26 12:36:03 by jaimesan         ###   ########.fr        #
+#    Updated: 2024/11/26 12:37:57 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ RESET := \033[0m
 SRCS = ./src/main.c ./src/init_struct.c ./src/get_full_name.c  ./src/get_commands.c \
 	./src/builtins/print_env.c ./src/builtins/echo.c ./src/builtins/print_pwd.c  \
 	./src/builtins/cd.c ./src/builtins/export.c ./src/builtins/print_history.c \
-	./src/utils/mini_utils.c ./src/utils/error.c 
+	./src/utils/mini_utils.c ./src/utils/error.c ./src/builtins/unset.c 
 
 #OBJS--------------------------------------------------------------------------------------
 

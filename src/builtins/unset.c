@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 11:54:29 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 12:31:56 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:11:47 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,36 @@
 
 void	unset(t_mini *mini)
 {
-	int	len;
-	int i;
-	int j;
-	char **new_env;
+	char	**new_env;
+	int		len;
+	int		i;
+	int		j;
+	int		cmd_len;
+
+	if (!mini->cmds[1])
+		return ;
+	if (!getenv(mini->cmds[1]))
+		return ;
+	len = array_len(mini->env);
+	cmd_len = ft_strlen(mini->cmds[1]);
+
+	new_env = malloc(len * sizeof(char *));
+	if (!new_env)
+		error(mini, 'M');
 
 	i = 0;
-	if (mini->cmds[1])
+	j = 0;
+	while (i < len)
 	{
-		len = ft_strlen(mini->cmds[1]);
-
-		while (mini->env[i])
-			i++;
-
-		new_env = malloc(sizeof(char *) * i);
-		if (!new_env)
-			return ;
-		i = 0;
-		j = 0;
-		while (mini->env[i])
+		if (ft_strncmp(mini->env[i], mini->cmds[1], cmd_len) == 0 && mini->env[i][cmd_len] == '=')
 		{
-			if (ft_strncmp(mini->env[i], mini->cmds[1], len) == 0 && mini->env[i][len] == '=')
-			{
-/* 				free(mini->env[i]); */
-				mini->env[i] = NULL;
-				i++;
-				continue ;
-			}
-			new_env[j] = mini->env[i];
 			i++;
-			j++;
+			continue ;
 		}
-		new_env[j] = NULL;
-/* 		free(mini->env); */
-		mini->env = NULL;
-		mini->env = new_env;
+		new_env[j++] = ft_strdup(mini->env[i]);
+		i++;
 	}
+	new_env[j] = NULL;
+	free_arr(mini->env);
+	mini->env = new_env;
 }

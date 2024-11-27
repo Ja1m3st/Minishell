@@ -18,24 +18,27 @@ void	get_commands(t_mini *mini)
 	{
 		if (!ft_strcmp(mini->cmds[0], "history"))
 			print_history();
-		if (!ft_strcmp(mini->cmds[0], "env"))
+		else if (!ft_strcmp(mini->cmds[0], "env"))
 			print_env(mini);
-		if (!ft_strcmp(mini->cmds[0], "echo"))
+		else if (!ft_strcmp(mini->cmds[0], "echo"))
 			echo(mini);
-		if (!ft_strcmp(mini->cmds[0], "pwd"))
+		else if (!ft_strcmp(mini->cmds[0], "pwd"))
 			print_pwd();
-		if (!ft_strcmp(mini->cmds[0], "cd"))
+		else if (!ft_strcmp(mini->cmds[0], "cd"))
 			cd(mini);
-		if (!ft_strcmp(mini->cmds[0], "export"))
+		else if (!ft_strcmp(mini->cmds[0], "export"))
 			export(mini);
-		if (!ft_strcmp(mini->cmds[0], "unset"))
+		else if (!ft_strcmp(mini->cmds[0], "unset"))
 			unset(mini);
-		if (!ft_strncmp(mini->cmds[0], "$", 1))
+		else if (!ft_strncmp(mini->cmds[0], "$", 1))
 			printf("%s\n", get_var(mini));
-		if (!ft_strcmp(mini->cmds[0], "exit"))
+		else if (!ft_strcmp(mini->cmds[0], "exit"))
 		{
 			write(1, "exit\n", 5);
 			exit(EXIT_SUCCESS);
 		}
+		else
+			get_terminal_commands(mini);
+		//funcion temporal para usar ls, cat, etc...
 	}
 }

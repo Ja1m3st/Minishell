@@ -14,9 +14,6 @@
 
 void	get_terminal_commands(t_mini *mini)
 {
-	mini->cmds = ft_split(mini->cmds[0], ' ');
-	if (!mini->cmds)
-		return ;
 	mini->full_path = ft_strjoin("/usr/bin/", mini->cmds[0]);
 	if (!mini->full_path)
 		return ;

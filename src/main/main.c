@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **env)
 		get_commands(&mini);
 		free(mini.input);
 		free_arr(mini.cmds);
+		free(mini.full_path);
 	}
 	free(env_name);
 	error(&mini, '!');

@@ -31,7 +31,10 @@ void	get_commands(t_mini *mini)
 		if (!ft_strcmp(mini->cmds[0], "unset"))
 			unset(mini);
 		if (!ft_strncmp(mini->cmds[0], "$", 1))
-			printf("%s\n", get_var(mini));
+		{
+			if (get_var(mini) != NULL)
+				printf("%s\n", get_var(mini));
+		}
 		if (!ft_strcmp(mini->cmds[0], "exit"))
 		{
 			write(1, "exit\n", 5);

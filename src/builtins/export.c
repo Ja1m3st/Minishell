@@ -25,7 +25,10 @@ void	export(t_mini *mini)
 	if (i == -1)
 		new_export(mini);
 	else
+	{
+		free(mini->env[i]);
 		mini->env[i] = ft_strdup(mini->cmds[1]);
+	}
 }
 
 int	export_exists(t_mini *mini)

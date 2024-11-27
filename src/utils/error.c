@@ -35,4 +35,6 @@ void	free_mini(t_mini *mini)
 		free_arr(mini->env);
 	if (mini->oldpath)
 		free(mini->oldpath);
+	if (mini->dquote)
+		free(mini->dquote);
 }

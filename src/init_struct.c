@@ -26,5 +26,7 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->input = NULL;
 	mini->outfile = STDOUT_FILENO;
 	mini->oldpath = NULL;
+	mini->dquote = NULL;
 	dup_env(mini, env);
+	dquote_colours(mini);
 }

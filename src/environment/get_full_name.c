@@ -56,10 +56,18 @@ char	*join_env_name(t_mini *mini)
 
 	if (mini->env_name != NULL)
 		free(mini->env_name);
-	join1 = ft_strjoin(mini->full_name, ":~");
-	join2 = ft_strjoin(join1, getcwd(cwd, sizeof(cwd)));
-	mini->env_name = ft_strjoin(join2, "$ ");
+	join1 = ft_strjoin("\033[1;38;5;214m", mini->full_name);
+	join2 = ft_strjoin(join1, "\033[0m");
 	free(join1);
+	join1 = ft_strjoin(join2, ":~");
+	free(join2);
+	join2 = ft_strjoin(join1, "\033[1;95m");
+	free(join1);
+	join1 = ft_strjoin(join2, getcwd(cwd, sizeof(cwd)));
+	free(join2);
+	join2 = ft_strjoin(join1, "\033[0m");
+	free(join1);
+	mini->env_name = ft_strjoin(join2, "$ ");
 	free(join2);
 	return (mini->env_name);
 }

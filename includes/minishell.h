@@ -22,6 +22,7 @@ typedef struct s_mini
 	char	*input;
 	char	**cmds;
 	char	**env;
+	char	*dquote;
 	int		infile;
 	int		outfile;
 	char	*log_name;
@@ -49,6 +50,7 @@ void	echo(t_mini *mini);
 void	write_to_fd(t_mini *mini, int fd, int newline);
 void	dquote(int fd, int newline, t_mini *mini);
 void	print_to_stdout(t_mini *mini, int temp_fd);
+void	dquote_colours(t_mini *mini);
 
 void	print_pwd(void);
 

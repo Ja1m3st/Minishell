@@ -70,7 +70,7 @@ void	dquote(int fd, int newline, t_mini *mini)
 	while (1)
 	{
 		write(1, mini->env_name, ft_strlen(mini->env_name));
-		write(1, "dquote > ", 10);
+		write(1, mini->dquote, ft_strlen(mini->dquote));
 		buf = get_next_line(0);
 		i = 0;
 		while (buf[i])

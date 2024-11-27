@@ -28,12 +28,15 @@ RESET := \033[0m
 
 #FILES------------------------------------------------------------------------------------
 
-SRCS = ./src/main.c ./src/init_struct.c ./src/get_commands.c \
+SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/main/get_commands.c \
+	./src/main/get_terminal_commands.c \
 	./src/builtins/echo.c ./src/builtins/pwd.c ./src/builtins/cd.c \
 	./src/builtins/export.c ./src/builtins/history.c ./src/builtins/unset.c \
 	./src/builtins/variables.c ./src/utils/mini_utils.c ./src/utils/error.c  \
+	./src/utils/dquote_colours.c \
 	./src/environment/print_env.c ./src/environment/dup_env.c \
-	./src/environment/get_full_name.c ./src/utils/dquote_colours.c
+	./src/environment/get_full_name.c
+	
 
 #OBJS--------------------------------------------------------------------------------------
 

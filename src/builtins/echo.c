@@ -15,28 +15,26 @@
 void	echo(t_mini *mini)
 {
 	int	fd;
-	int	newline;
 
-	newline = 0;
 	fd = open(".echo", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 		return ;
 	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "-n", 2))
-		newline = 1;
-	write_to_fd(mini, fd, newline);
+		mini->newline = 1;
+	write_to_fd(mini, fd);
 	print_to_stdout(mini, fd);
 	close(fd);
 	get_next_line(-1);
 }
 
-void	write_to_fd(t_mini *mini, int fd, int newline)
+void	write_to_fd(t_mini *mini, int fd)
 {
 	int	i;
 	int	j;
 	int	quote;
 
 	quote = 0;
-	i = 1 + newline;
+	i = 1 + mini->newline;
 	while (mini->cmds[i])
 	{
 		j = 0;
@@ -52,20 +50,20 @@ void	write_to_fd(t_mini *mini, int fd, int newline)
 			write(fd, " ", 1);
 		i++;
 	}
-	if (newline == 0)
+	if (mini->newline == 0)
 		write(fd, "\n", 1);
 	if (quote % 2 != 0)
-		dquote(fd, newline, mini);
+		dquote(mini, fd);
 }
 
-void	dquote(int fd, int newline, t_mini *mini)
+void	dquote(t_mini *mini, int fd)
 {
 	int		i;
 	int		stop;
 	char	*buf;
 
 	stop = 0;
-	if (newline)
+	if (mini->newline)
 		write(fd, "\n", 1);
 	while (1)
 	{
@@ -80,7 +78,7 @@ void	dquote(int fd, int newline, t_mini *mini)
 		}
 		write(fd, buf, ft_strlen(buf) - stop - 1);
 		free(buf);
-		if (!stop || !newline)
+		if (!stop || !mini->newline)
 			write(fd, "\n", 1);
 		if (stop)
 			break ;
@@ -99,6 +97,8 @@ void	print_to_stdout(t_mini *mini, int temp_fd)
 		line = get_next_line(temp_fd);
 		if (!line)
 		{
+			if (mini->newline)
+				write(mini->outfile, "\033[1;38;5;214m%\033[0m\n", 20);
 			close(temp_fd);
 			break ;
 		}

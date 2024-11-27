@@ -37,4 +37,8 @@ void	free_mini(t_mini *mini)
 		free(mini->oldpath);
 	if (mini->dquote)
 		free(mini->dquote);
+	if (mini->full_path)
+		free(mini->full_path);
+	if (mini->cmds)
+		free_arr(mini->cmds);
 }

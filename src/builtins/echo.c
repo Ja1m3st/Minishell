@@ -98,7 +98,7 @@ void	print_to_stdout(t_mini *mini, int temp_fd)
 		if (!line)
 		{
 			if (mini->newline)
-				write(mini->outfile, "\033[1;38;5;214m%\033[0m\n", 20);
+				write(mini->outfile, "\033[1;38;5;214m%\033[0m\n", 19);
 			close(temp_fd);
 			break ;
 		}

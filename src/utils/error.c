@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/28 13:18:56 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:21:55 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,6 @@ void	free_mini(t_mini *mini)
 		free(mini->dquote);
 	if (mini->full_path)
 		free(mini->full_path);
+	if (mini->env)
+		free(mini->env_name);
 }

@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _GNU_SOURCE
 
 # include "../libft/includes/libft.h"
 # include <readline/readline.h>
@@ -20,7 +21,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
-
 # include <fcntl.h>
 # include <string.h>
 # include <sys/wait.h>

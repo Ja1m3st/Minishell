@@ -23,7 +23,7 @@ void	get_terminal_commands(t_mini *mini)
 	if (mini->pid == -1)
 		return ;
 	if (mini->pid == 0)
-	{	
+	{
 		if (execve(mini->cmds[0], mini->cmds, mini->env) == -1)
 			execve(mini->full_path, mini->cmds, mini->env);
 		return ;

@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   variables.c                                        :+:      :+:    :+:   */
+/*   handle_signals.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 12:57:14 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/26 12:57:15 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/11/28 14:34:47 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/11/28 14:34:48 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var(t_mini *mini)
+void	setup_signals(void)
 {
-	int		i;
-	int		arr_len;
-	char	*value;
-	char	*var_name;
+	struct sigaction	sa;
 
-	arr_len = array_len(mini->env);
-	var_name = find_var(mini->cmds[0], '$');
-	if (ft_strlen(mini->cmds[0]) == 1)
-		return (NULL);
-	i = 0;
-	while (i < arr_len)
-	{
-		if (ft_strncmp(mini->env[i], var_name, ft_strlen(var_name)) == 0)
-		{
-			value = ft_strchr(mini->env[i], '=');
-			value++;
-			return (value);
-		}
-		i++;
-	}
-	return (0);
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = &handle_signal;
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		perror("sigaction");
+}
+
+void	handle_signal(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }

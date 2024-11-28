@@ -48,14 +48,15 @@ typedef struct s_mini
 //-----------------------------------------------------MAIN
 int		main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
-void	handle_signal(int signal);
+void	handle_sigint(int signal);
+void	handle_sigquit(int signal);
 void	setup_signals(void);
 //------------------------------------------------------ENV
 void	get_env_name(t_mini *mini);
 void	get_session_name(t_mini *mini);
-char	*join_env_name(t_mini *mini);
 void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
+char	*join_env_name(t_mini *mini);
 //--------------------------------------------------COMMANDS
 void	get_commands(t_mini *mini);
 void	get_terminal_commands(t_mini *mini);

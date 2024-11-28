@@ -14,19 +14,33 @@
 
 void	setup_signals(void)
 {
-	struct sigaction	sa;
+	struct sigaction	ctrl_c;
+	struct sigaction	ctrl_backslash;
 
-	ft_memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = &handle_signal;
-	sa.sa_flags = SA_RESTART;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
+	ft_memset(&ctrl_c, 0, sizeof(ctrl_c));
+	ft_memset(&ctrl_backslash, 0, sizeof(ctrl_backslash));
+	ctrl_c.sa_handler = &handle_sigint;
+	ctrl_c.sa_flags = SA_RESTART;
+	ctrl_backslash.sa_handler = &handle_sigquit;
+	ctrl_backslash.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
+		perror("sigaction");
+	if (sigaction(SIGQUIT, &ctrl_backslash, NULL) == -1)
 		perror("sigaction");
 }
 
-void	handle_signal(int signal)
+void	handle_sigint(int signal)
 {
 	(void)signal;
 	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	handle_sigquit(int signal)
+{
+	(void)signal;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

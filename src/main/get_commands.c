@@ -39,6 +39,5 @@ void	get_commands(t_mini *mini)
 		}
 		else
 			get_terminal_commands(mini);
-		//funcion temporal para usar ls, cat, etc...
 	}
 }

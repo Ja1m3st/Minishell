@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:26:36 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/28 12:47:52 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:06:36 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	get_terminal_commands(t_mini *mini)
 	if (mini->pid == -1)
 		return ;
 	if (mini->pid == 0)
-	{
-		execve(mini->full_path, mini->cmds, mini->env);
+	{	
+		if (execve(mini->cmds[0], mini->cmds, mini->env) == -1)
+			execve(mini->full_path, mini->cmds, mini->env);
 		return ;
 	}
 	waitpid(mini->pid, NULL, 0);

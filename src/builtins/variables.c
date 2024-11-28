@@ -21,6 +21,8 @@ char	*get_var(t_mini *mini)
 
 	arr_len = array_len(mini->env);
 	var_name = find_var(mini->cmds[0], '$');
+	if (ft_strlen(mini->cmds[0]) == 1)
+		return (NULL);
 	i = 0;
 	while (i < arr_len)
 	{

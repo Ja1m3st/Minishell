@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 16:45:09 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:07:42 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ typedef struct s_mini
 	char	*dquote;
 	int		newline;
 	char	*full_path;
+	int		total_args;
+	char	*full_cmds;
+	char	**split_full_cmds;
 	pid_t	pid;
 }	t_mini;
 
@@ -87,5 +90,8 @@ void	free_mini(t_mini *mini);
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
+void	pipex(t_mini *mini);
+int		check_tub(t_mini *mini);
+void	save_cmds(t_mini *mini);
 
 #endif

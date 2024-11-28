@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/11/26 13:21:58 by jaimesan         ###   ########.fr        #
+#    Updated: 2024/11/28 16:08:10 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/main/get_commands.c \
 	./src/builtins/variables.c ./src/utils/mini_utils.c ./src/utils/error.c  \
 	./src/utils/dquote_colours.c \
 	./src/environment/print_env.c ./src/environment/dup_env.c \
-	./src/environment/get_full_name.c
+	./src/environment/get_full_name.c ./src/builtins/pipex.c ./src/utils/pipex_utils.c 
 	
 
 #OBJS--------------------------------------------------------------------------------------

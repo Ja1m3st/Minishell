@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/28 13:21:35 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:55:38 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		if (*mini.input)
 			add_history(mini.input);
+		mini.full_cmds = mini.input;
 		mini.cmds = ft_split(mini.input, ' ');
 		get_commands(&mini);
 		free(mini.input);

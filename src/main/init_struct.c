@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/26 16:16:08 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:58:37 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->outfile = STDOUT_FILENO;
 	mini->env = NULL;
 	(void)argv;
+	mini->full_cmds = NULL;
 	mini->env_name = NULL;
 	mini->full_name = NULL;
 	mini->log_name = NULL;
@@ -31,4 +32,5 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	dup_env(mini, env);
 	dquote_colours(mini);
 	mini->full_path = NULL;
+	mini->split_full_cmds = NULL;
 }

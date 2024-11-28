@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 13:12:10 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:47:38 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int argc, char **argv, char **env)
 		get_commands(&mini);
 		free(mini.input);
 		free_arr(mini.cmds);
-		free(mini.full_path);
 	}
 	free(env_name);
 	error(&mini, '!');

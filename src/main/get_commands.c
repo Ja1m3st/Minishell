@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 15:21:29 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:25:32 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,5 @@ void	get_commands(t_mini *mini)
 		free_arr(mini->cmds);
 	}
 	else
-	{
 		pipex(mini);
-	}
 }

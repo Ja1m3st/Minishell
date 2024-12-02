@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/29 15:14:51 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:52:05 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,35 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	mini->env = new_env;
 }
 
+static char	*resolve_cd_path(t_mini *mini, char *cwd)
+{
+	char	*path;
+
+	printf("%s\n", cwd);
+	path = NULL;
+	if (!mini->cmds[1])
+	{
+		if (!find_path(mini, "HOME="))
+			return (printf("minishell: cd: HOME not set\n"), NULL);
+		path = ft_strdup(find_path(mini, "HOME="));
+		return (path);
+	}
+	if (!ft_strcmp(mini->cmds[1], "-"))
+	{
+		if (mini->oldpath == NULL)
+			mini->oldpath = ft_strdup(cwd);
+		path = ft_strdup(mini->oldpath);
+		write(mini->outfile, path, ft_strlen(path));
+		write(mini->outfile, "\n", 1);
+		if (!path)
+			printf("minishell: cd: OLDPWD not set\n");
+		return (path);
+	}
+	else
+		path = ft_strdup(mini->cmds[1]);
+	return (path);
+}
+
 void	cd(t_mini *mini)
 {
 	char	*path;
@@ -50,35 +79,13 @@ void	cd(t_mini *mini)
 		oldpath = ft_strdup(cwd);
 	save_oldpath(mini, oldpath);
 	free(oldpath);
-	if (!mini->cmds[1])
-	{
-		if (!find_path(mini, "HOME="))
-			return ;
-		path = ft_strdup(find_path(mini, "HOME="));
-		if (!path)
-		{
-			printf("minishell: cd: HOME not set\n");
-			return ;
-		}
-	}
-	else if (!ft_strcmp(mini->cmds[1], "-"))
-	{
-		path = ft_strdup(mini->oldpath);
-		write(mini->outfile, path, ft_strlen(path));
-		write(mini->outfile,"\n", 1);
-		if (!path)
-		{
-			printf("minishell: cd: OLDPWD not set\n");
-			return ;
-		}
-	}
-	else
-	{
-		path = ft_strdup(mini->cmds[1]);
-	}
+	path = resolve_cd_path(mini, cwd);
+	if (!path)
+		return ;
 	if (chdir(path) == -1)
 	{
 		perror("Error");
+		free(path);
 		return ;
 	}
 	free(path);

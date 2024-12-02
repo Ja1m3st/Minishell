@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 15:13:17 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:56:22 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,7 @@ void	pipex(t_mini *mini)
 		if (mini->pid == -1)
 			return ;
 		if (mini->pid == 0)
-		{
 			ft_redirects(in_fd, fd, i, mini);
-			exit(EXIT_FAILURE);
-		}
 		close(fd[1]);
 		if (in_fd != mini->infile)
 			close(in_fd);

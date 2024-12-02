@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 11:54:29 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 13:38:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:07:21 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,21 @@ char	*find_env_variable(char **env, const char *key)
 void	unset(t_mini *mini)
 {
 	char	**new_env;
-	int		len;
 	int		i;
 	int		j;
-	int		cmd_len;
 
 	if (!mini->cmds[1] || find_env_variable(mini->env, mini->cmds[1]) == NULL)
 		return ;
-	len = array_len(mini->env);
-	cmd_len = ft_strlen(mini->cmds[1]);
-	new_env = malloc(len * sizeof(char *));
+	new_env = malloc(array_len(mini->env) * sizeof(char *));
 	if (!new_env)
 		error(mini, 'M');
 	i = 0;
 	j = 0;
-	while (i < len)
+	while (i < array_len(mini->env))
 	{
-		if (ft_strncmp(mini->env[i], mini->cmds[1], cmd_len) == 0
-			&& mini->env[i][cmd_len] == '=')
+		if (ft_strncmp(mini->env[i], mini->cmds[1],
+				ft_strlen(mini->cmds[1])) == 0
+			&& mini->env[i][ft_strlen(mini->cmds[1])] == '=')
 		{
 			i++;
 			continue ;

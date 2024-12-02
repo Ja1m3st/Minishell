@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:07:14 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/28 16:07:24 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:26:01 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,4 @@ void	save_cmds(t_mini *mini)
 	while (mini->split_full_cmds[i] != NULL)
 		i++;
 	mini->total_args = i;
-}
-
-int	check_tub(t_mini *mini)
-{
-	int i;
-
-	i = 0;
-	while (mini->cmds[i] != NULL)
-	{
-		if (!ft_strcmp(mini->cmds[i], "|"))
-		{
-			save_cmds(mini);
-			return (0);
-		}
-		i++;
-	}
-	return (1);
 }

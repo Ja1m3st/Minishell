@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 14:18:01 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:20:07 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_redirects(int in_fd, int mini_fd[], int i, t_mini *mini)
 		else if (!ft_strcmp(mini->cmds[0], "echo"))
 			echo(mini);
 		else if (!ft_strcmp(mini->cmds[0], "pwd"))
-			print_pwd();
+			print_pwd(mini);
 		else if (!ft_strcmp(mini->cmds[0], "cd"))
 			cd(mini);
 		else if (!ft_strcmp(mini->cmds[0], "export"))

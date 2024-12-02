@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 14:17:43 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:20:42 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	get_commands(t_mini *mini)
 {
-	if (mini->cmds[0] && check_tub(mini) == 1)
+	if (mini->cmds[0])
 	{
 		if (!ft_strcmp(mini->cmds[0], "history"))
 			print_history();
@@ -23,7 +23,7 @@ void	get_commands(t_mini *mini)
 		else if (!ft_strcmp(mini->cmds[0], "echo"))
 			echo(mini);
 		else if (!ft_strcmp(mini->cmds[0], "pwd"))
-			print_pwd();
+			print_pwd(mini);
 		else if (!ft_strcmp(mini->cmds[0], "cd"))
 			cd(mini);
 		else if (!ft_strcmp(mini->cmds[0], "export"))
@@ -43,7 +43,8 @@ void	get_commands(t_mini *mini)
 		else
 			get_terminal_commands(mini);
 	}
-	else if (check_tub(mini) == 0)
+	else
 	{
 		pipex(mini);
+	}
 }

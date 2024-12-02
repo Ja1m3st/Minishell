@@ -35,8 +35,7 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/main/get_commands.c \
 	./src/builtins/variables.c ./src/utils/mini_utils.c ./src/utils/error.c  \
 	./src/utils/dquote_colours.c \
 	./src/environment/print_env.c ./src/environment/dup_env.c \
-	./src/environment/get_full_name.c ./src/builtins/pipex.c ./src/utils/pipex_utils.c \
-	./src/utils/handle_signals.c
+	./src/environment/get_full_name.c ./src/builtins/pipex.c ./src/utils/handle_signals.c
 	
 
 #OBJS--------------------------------------------------------------------------------------

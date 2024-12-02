@@ -57,6 +57,11 @@ void	handle_sigquit(int signal);
 void	handle_sigbackslash(int signal);
 void	disable_echoctl(void);
 void	setup_signals(void);
+//-----------------------------------------------------PIPES
+void	pipex(t_mini *mini);
+void	execute_command(char *cmd, char **envp);
+void	exeve_pipe(int in_fd, int mini_fd[], int i, t_mini *mini);
+int		redirect(int in_fd, int mini_fd[], int i, t_mini *mini);
 //------------------------------------------------------ENV
 void	get_env_name(t_mini *mini);
 void	get_session_name(t_mini *mini);
@@ -65,7 +70,10 @@ void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //--------------------------------------------------COMMANDS
 void	get_commands(t_mini *mini);
+void	save_cmds(t_mini *mini);
 void	get_terminal_commands(t_mini *mini);
+void	execute_builtins(t_mini *mini, int mod);
+void	cmds(t_mini *mini, int mod);
 //------------------------------------------------------ECHO
 void	echo(t_mini *mini);
 void	write_to_fd(t_mini *mini, int fd);
@@ -94,13 +102,6 @@ void	free_mini(t_mini *mini);
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
-void	pipex(t_mini *mini);
-int		check_tub(t_mini *mini);
-void	save_cmds(t_mini *mini);
-void	execute_command(char *cmd, char **envp);
-void	built_int(t_mini *mini);
-void	execute_command(char *cmd, char **envp);
-void	exeve_pipe(int in_fd, int mini_fd[], int i, t_mini *mini);
-int		ft_redirects(int in_fd, int mini_fd[], int i, t_mini *mini);
+int		is_builtin(char *cmd);
 
 #endif

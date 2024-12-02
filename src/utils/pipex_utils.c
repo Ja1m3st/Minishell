@@ -25,7 +25,7 @@ void	save_cmds(t_mini *mini)
 	mini->total_args = i;
 }
 
-int check_tub(t_mini *mini)
+int	check_tub(t_mini *mini)
 {
 	int i;
 

@@ -14,11 +14,12 @@
 
 void	error(t_mini *mini, char c)
 {
-	if (c == '!')
-		write(1, "Success!\n", 9);
 	if (c == 'M')
 		write(1, "Malloc Error!\n", 14);
 	free_mini(mini);
+	if (c == '!')
+		exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }
 
 void	free_mini(t_mini *mini)

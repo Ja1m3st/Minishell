@@ -6,27 +6,18 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 13:19:56 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:18:01 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void exeve_pipe(int in_fd, int mini_fd[], int i, t_mini *mini)
+int	is_builtin(char *cmd)
 {
-	pipe(mini_fd);
-	mini->pid = fork();
-	if (mini->pid == -1)
-		return ;
-	if (mini->pid == 0)
-	{
-		ft_redirects(in_fd, mini_fd, i, mini);
-		exit(EXIT_FAILURE);
-	}
-	close(mini_fd[1]);
-	if (in_fd != mini->infile)
-		close(in_fd);
-	in_fd = mini_fd[0];
+	return (!ft_strcmp(cmd, "history") || !ft_strcmp(cmd, "env") ||
+			!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
+			!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") ||
+			!ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "exit"));
 }
 
 void	execute_command(char *cmd, char **envp)
@@ -64,32 +55,33 @@ int	ft_redirects(int in_fd, int mini_fd[], int i, t_mini *mini)
 	close(mini_fd[0]);
 	close(mini_fd[1]);
 	close(in_fd);
-	if (!ft_strcmp(mini->cmds[0], "history"))
-		print_history();
-	else if (!ft_strcmp(mini->cmds[0], "env"))
-		print_env(mini);
-	else if (!ft_strcmp(mini->cmds[0], "echo"))
-		echo(mini);
-	else if (!ft_strcmp(mini->cmds[0], "cd"))
-		cd(mini);
-	else if (!ft_strcmp(mini->cmds[0], "pwd"))
-		print_pwd(mini);
-	else if (!ft_strcmp(mini->cmds[0], "export"))
-		export(mini);
-	else if (!ft_strcmp(mini->cmds[0], "unset"))
-		unset(mini);
-	else if (!ft_strncmp(mini->cmds[0], "$", 1))
+	if (is_builtin(mini->cmds[0]))
 	{
-		if (get_var(mini) != NULL)
-			printf("%s\n", get_var(mini));
-	}
-	else if (!ft_strcmp(mini->cmds[0], "exit"))
-	{
-		write(1, "exit\n", 5);
+		if (!ft_strcmp(mini->cmds[0], "history"))
+			print_history();
+		else if (!ft_strcmp(mini->cmds[0], "env"))
+			print_env(mini);
+		else if (!ft_strcmp(mini->cmds[0], "echo"))
+			echo(mini);
+		else if (!ft_strcmp(mini->cmds[0], "pwd"))
+			print_pwd();
+		else if (!ft_strcmp(mini->cmds[0], "cd"))
+			cd(mini);
+		else if (!ft_strcmp(mini->cmds[0], "export"))
+			export(mini);
+		else if (!ft_strcmp(mini->cmds[0], "unset"))
+			unset(mini);
+		else if (!ft_strncmp(mini->cmds[0], "$", 1))
+		{
+			if (get_var(mini) != NULL)
+				printf("%s\n", get_var(mini));
+		}
+		else if (!ft_strcmp(mini->cmds[0], "exit"))
+			error(mini, '!');
 		exit(EXIT_SUCCESS);
 	}
 	else
-   		execute_command(mini->split_full_cmds[i], mini->env);
+		execute_command(mini->split_full_cmds[i], mini->env);
 	return (1);
 }
 
@@ -104,10 +96,19 @@ void	pipex(t_mini *mini)
 	while (i < mini->total_args)
 	{
 		mini->cmds = ft_split(mini->split_full_cmds[i], ' ');
-		if (mini->total_args == 1)
-			built_int(in_fd, fd, i, mini);
-		else
-			exeve_pipe(in_fd, fd, i, mini);
+		pipe(fd);
+		mini->pid = fork();
+		if (mini->pid == -1)
+			return ;
+		if (mini->pid == 0)
+		{
+			ft_redirects(in_fd, fd, i, mini);
+			exit(EXIT_FAILURE);
+		}
+		close(fd[1]);
+		if (in_fd != mini->infile)
+			close(in_fd);
+		in_fd = fd[0];
 		i++;
 		free_arr(mini->cmds);
 	}

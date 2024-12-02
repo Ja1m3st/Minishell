@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/02 12:54:13 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:17:34 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void	error(t_mini *mini, char c)
 {
-	if (c == '!')
-		write(1, "Success!\n", 9);
 	if (c == 'M')
 		write(1, "Malloc Error!\n", 14);
 	free_mini(mini);
+	if (c == '!')
+		exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }
 
 void	free_mini(t_mini *mini)

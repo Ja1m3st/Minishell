@@ -35,4 +35,5 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->full_path = NULL;
 	mini->split_full_cmds = NULL;
 	setup_signals();
+	disable_echoctl();
 }

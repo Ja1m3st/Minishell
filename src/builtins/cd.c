@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 15:52:05 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:13:48 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static char	*resolve_cd_path(t_mini *mini, char *cwd)
 {
 	char	*path;
 
-	printf("%s\n", cwd);
 	path = NULL;
 	if (!mini->cmds[1])
 	{

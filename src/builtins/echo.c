@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:41:12 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/22 15:41:13 by ctommasi         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:14:26 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ void	echo(t_mini *mini)
 		return ;
 	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "-n", 2))
 		mini->newline = 1;
+	if (!mini->cmds[1 + mini->newline])
+	{
+		close(fd);
+		return ;
+	}
 	write_to_fd(mini, fd);
 	print_to_stdout(mini, fd);
 	close(fd);

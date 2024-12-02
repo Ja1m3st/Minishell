@@ -6,16 +6,18 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 14:20:42 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:12:44 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_commands(t_mini *mini)
+void	built_int(t_mini *mini)
 {
-	if (mini->cmds[0])
+	save_cmds(mini);
+	if (mini->total_args == 1)
 	{
+		mini->cmds = ft_split(mini->split_full_cmds[0], ' ');
 		if (!ft_strcmp(mini->cmds[0], "history"))
 			print_history();
 		else if (!ft_strcmp(mini->cmds[0], "env"))
@@ -44,7 +46,13 @@ void	get_commands(t_mini *mini)
 			get_terminal_commands(mini);
 	}
 	else
-	{
 		pipex(mini);
-	}
+}
+
+
+void	get_commands(t_mini *mini)
+{
+	save_cmds(mini);
+	if (mini->split_full_cmds[0])
+		pipex(mini);
 }

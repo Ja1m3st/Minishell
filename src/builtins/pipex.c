@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 12:17:55 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:19:56 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	pipex(t_mini *mini)
 		else
 			exeve_pipe(in_fd, fd, i, mini);
 		i++;
+		free_arr(mini->cmds);
 	}
 	while (i-- > 0)
 		waitpid(mini->pid, NULL, 0);

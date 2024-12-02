@@ -36,10 +36,7 @@ void	get_commands(t_mini *mini)
 				printf("%s\n", get_var(mini));
 		}
 		else if (!ft_strcmp(mini->cmds[0], "exit"))
-		{
-			write(1, "exit\n", 5);
-			exit(EXIT_SUCCESS);
-		}
+			error(mini, '!');
 		else
 			get_terminal_commands(mini);
 	}

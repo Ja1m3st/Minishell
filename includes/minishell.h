@@ -25,6 +25,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <termios.h>
 
 typedef struct s_mini
 {
@@ -53,6 +54,8 @@ int		main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
 void	handle_sigint(int signal);
 void	handle_sigquit(int signal);
+void	handle_sigbackslash(int signal);
+void	disable_echoctl(void);
 void	setup_signals(void);
 //------------------------------------------------------ENV
 void	get_env_name(t_mini *mini);

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 16:42:56 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:14:51 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	cd(t_mini *mini)
 	else if (!ft_strcmp(mini->cmds[1], "-"))
 	{
 		path = ft_strdup(mini->oldpath);
-		ft_printf("%s\n", path);
+		write(mini->outfile, path, ft_strlen(path));
+		write(mini->outfile,"\n", 1);
 		if (!path)
 		{
 			printf("minishell: cd: OLDPWD not set\n");

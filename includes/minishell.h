@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/28 16:07:42 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:17:15 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	dquote(t_mini *mini, int fd);
 void	print_to_stdout(t_mini *mini, int temp_fd);
 void	dquote_colours(t_mini *mini);
 //-------------------------------------------------------PWD
-void	print_pwd(void);
+void	print_pwd(t_mini *mini);
 //---------------------------------------------------HISTORY
 void	print_history(void);
 //--------------------------------------------------------CD
@@ -94,5 +94,10 @@ int		array_len(char **array);
 void	pipex(t_mini *mini);
 int		check_tub(t_mini *mini);
 void	save_cmds(t_mini *mini);
+void	execute_command(char *cmd, char **envp);
+void	built_int(int in_fd, int mini_fd[], int i, t_mini *mini);
+void	execute_command(char *cmd, char **envp);
+void	exeve_pipe(int in_fd, int mini_fd[], int i, t_mini *mini);
+int		ft_redirects(int in_fd, int mini_fd[], int i, t_mini *mini);
 
 #endif

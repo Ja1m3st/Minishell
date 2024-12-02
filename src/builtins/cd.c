@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 16:13:48 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:41:20 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,16 @@ static char	*resolve_cd_path(t_mini *mini, char *cwd)
 	char	*path;
 
 	path = NULL;
-	if (!mini->cmds[1])
+	if (!mini->cmds[1] || ft_strchr(mini->cmds[1], '~'))
 	{
-		if (!find_path(mini, "HOME="))
-			return (printf("minishell: cd: HOME not set\n"), NULL);
-		path = ft_strdup(find_path(mini, "HOME="));
-		return (path);
+		if (!mini->cmds[1] || ft_strcmp(mini->cmds[1], "~") == 0)
+			return (ft_strdup(find_path(mini, "HOME=")));
+		if (ft_strncmp(mini->cmds[1], "~", 1) == 0)
+		{
+			path = ft_strjoin(find_path(mini, "HOME="), mini->cmds[1] + 1); // lEAK AQUI
+			if (!path)
+				return (NULL);
+		}
 	}
 	if (!ft_strcmp(mini->cmds[1], "-"))
 	{
@@ -63,7 +67,6 @@ static char	*resolve_cd_path(t_mini *mini, char *cwd)
 			printf("minishell: cd: OLDPWD not set\n");
 		return (path);
 	}
-	else
 		path = ft_strdup(mini->cmds[1]);
 	return (path);
 }
@@ -80,11 +83,16 @@ void	cd(t_mini *mini)
 	free(oldpath);
 	path = resolve_cd_path(mini, cwd);
 	if (!path)
+	{
+		free(path);
+		free(mini->oldpath);
 		return ;
+	}
 	if (chdir(path) == -1)
 	{
-		perror("Error");
 		free(path);
+		free(mini->oldpath);
+		perror("Error");
 		return ;
 	}
 	free(path);

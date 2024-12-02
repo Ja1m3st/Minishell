@@ -16,6 +16,8 @@ void	export(t_mini *mini)
 {
 	int		i;
 
+	if (!mini->cmds[1])
+		return ;
 	if (check_valid_export(mini))
 	{
 		write(1, "Bad Assignment!\n", 16);

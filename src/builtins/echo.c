@@ -21,6 +21,11 @@ void	echo(t_mini *mini)
 		return ;
 	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "-n", 2))
 		mini->newline = 1;
+	if (!mini->cmds[1 + mini->newline])
+	{
+		close(fd);
+		return ;
+	}	
 	write_to_fd(mini, fd);
 	print_to_stdout(mini, fd);
 	close(fd);

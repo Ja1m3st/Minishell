@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 12:17:43 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:23:06 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	built_int(int in_fd, int mini_fd[], int i, t_mini *mini)
 		exeve_pipe(in_fd, mini_fd, i, mini);
 	}
 }
-
 
 void	get_commands(t_mini *mini)
 {

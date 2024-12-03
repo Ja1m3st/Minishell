@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/03 15:29:08 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:38:17 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*resolve_cd_path(t_mini *mini)
 		cleaned_cmd = ft_strdelchar(mini->cmds[1], "'\"");
 	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "\"~", 2))
 	{
-		write(mini->outfile, "cd: invalid path: \"~\"\n", 22);
+		write(2, "cd: invalid path: \"~\"\n", 22);
 		return (free(cleaned_cmd), NULL);
 	}
 	if (!mini->cmds[1] || ft_strchr(cleaned_cmd, '~'))

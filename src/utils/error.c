@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/02 17:35:11 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:11:34 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,7 @@ void	free_mini(t_mini *mini)
 		free_arr(mini->split_full_cmds);
 	if (mini->path)
 		free(mini->path);
+	if (mini->input)
+		free(mini->input);
+	
 }

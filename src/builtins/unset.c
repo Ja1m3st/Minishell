@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 11:54:29 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 16:07:21 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:57:52 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,18 @@ char	*find_env_variable(char **env, const char *key)
 	return (NULL);
 }
 
-void	unset(t_mini *mini)
+char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 {
-	char	**new_env;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
-	if (!mini->cmds[1] || find_env_variable(mini->env, mini->cmds[1]) == NULL)
-		return ;
-	new_env = malloc(array_len(mini->env) * sizeof(char *));
-	if (!new_env)
-		error(mini, 'M');
 	i = 0;
 	j = 0;
 	while (i < array_len(mini->env))
 	{
-		if (ft_strncmp(mini->env[i], mini->cmds[1],
-				ft_strlen(mini->cmds[1])) == 0
-			&& mini->env[i][ft_strlen(mini->cmds[1])] == '=')
+		if (ft_strncmp(mini->env[i], str,
+				ft_strlen(str)) == 0
+			&& mini->env[i][ft_strlen(str)] == '=')
 		{
 			i++;
 			continue ;
@@ -55,6 +49,27 @@ void	unset(t_mini *mini)
 		new_env[j++] = ft_strdup(mini->env[i++]);
 	}
 	new_env[j] = NULL;
+	return (new_env);
+}
+
+void	unset(t_mini *mini)
+{
+	char		**new_env;
+	static int	x;
+	char		*str;
+
+	x++;
+	str = ft_strdelchar(mini->cmds[x], "'\"");
+	if (!str || find_env_variable(mini->env, str) == NULL)
+		return (free(str));
+	new_env = malloc(array_len(mini->env) * sizeof(char *));
+	if (!new_env)
+		error(mini, 'M');
+	new_env = ft_new_env(mini, str, new_env);
+	free(str);
 	free_arr(mini->env);
 	mini->env = new_env;
+	if (mini->cmds[x + 1] && !ft_strchr(mini->cmds[x + 1], '|')
+		&& mini->cmds[x + 1] != NULL)
+		unset(mini);
 }

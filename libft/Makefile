@@ -14,7 +14,7 @@ SRCS_STANDARD = standard/ft_atoi.c standard/ft_isalnum.c standard/ft_isalpha.c s
 	standard/ft_strjoin.c standard/ft_strtrim.c standard/ft_split.c standard/ft_itoa.c \
 	standard/ft_strmapi.c standard/ft_striteri.c standard/ft_putchar_fd.c standard/ft_putstr_fd.c \
 	standard/ft_putendl_fd.c standard/ft_putnbr_fd.c standard/ft_strcmp.c standard/ft_sqrt.c \
-	standard/ft_strstr.c
+	standard/ft_strstr.c standard/ft_strdelchar.c
 
 SRCS_LNKD_LST = linked_lists/ft_lstnew.c linked_lists/ft_lstadd_front.c linked_lists/ft_lstsize.c \
 	linked_lists/ft_lstlast.c linked_lists/ft_lstadd_back.c linked_lists/ft_lstdelone.c \

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 17:41:20 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:29:08 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,35 +40,42 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	mini->env = new_env;
 }
 
-static char	*resolve_cd_path(t_mini *mini, char *cwd)
+static char	*check_per(t_mini *mini, char *path)
+{
+	if (!mini->cmds[1] || ft_strcmp(mini->cmds[1], "~") == 0)
+		path = ft_strdup(find_path(mini, "HOME="));
+	else if (ft_strncmp(mini->cmds[1], "~", 1) == 0 && mini->cmds[1][1] != '\0')
+		path = ft_strjoin(find_path(mini, "HOME="), mini->cmds[1] + 1);
+	return (path);
+}
+
+static char	*resolve_cd_path(t_mini *mini)
 {
 	char	*path;
+	char	*cleaned_cmd;
 
 	path = NULL;
-	if (!mini->cmds[1] || ft_strchr(mini->cmds[1], '~'))
+	cleaned_cmd = NULL;
+	if (mini->cmds[1])
+		cleaned_cmd = ft_strdelchar(mini->cmds[1], "'\"");
+	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "\"~", 2))
 	{
-		if (!mini->cmds[1] || ft_strcmp(mini->cmds[1], "~") == 0)
-			return (ft_strdup(find_path(mini, "HOME=")));
-		if (ft_strncmp(mini->cmds[1], "~", 1) == 0)
-		{
-			path = ft_strjoin(find_path(mini, "HOME="), mini->cmds[1] + 1); // lEAK AQUI
-			if (!path)
-				return (NULL);
-		}
+		write(mini->outfile, "cd: invalid path: \"~\"\n", 22);
+		return (free(cleaned_cmd), NULL);
 	}
-	if (!ft_strcmp(mini->cmds[1], "-"))
+	if (!mini->cmds[1] || ft_strchr(cleaned_cmd, '~'))
+		path = check_per(mini, path);
+	else if (!ft_strcmp(cleaned_cmd, "-"))
 	{
 		if (mini->oldpath == NULL)
-			mini->oldpath = ft_strdup(cwd);
+			return (free(cleaned_cmd), NULL);
 		path = ft_strdup(mini->oldpath);
 		write(mini->outfile, path, ft_strlen(path));
 		write(mini->outfile, "\n", 1);
-		if (!path)
-			printf("minishell: cd: OLDPWD not set\n");
-		return (path);
 	}
-		path = ft_strdup(mini->cmds[1]);
-	return (path);
+	else
+		path = ft_strdup(cleaned_cmd);
+	return (free(cleaned_cmd), path);
 }
 
 void	cd(t_mini *mini)
@@ -80,18 +87,15 @@ void	cd(t_mini *mini)
 	if (getcwd(cwd, sizeof(cwd)))
 		oldpath = ft_strdup(cwd);
 	save_oldpath(mini, oldpath);
+	if (mini->oldpath == NULL)
+		mini->oldpath = ft_strdup(cwd);
 	free(oldpath);
-	path = resolve_cd_path(mini, cwd);
+	path = resolve_cd_path(mini);
 	if (!path)
-	{
-		free(path);
-		free(mini->oldpath);
 		return ;
-	}
 	if (chdir(path) == -1)
 	{
 		free(path);
-		free(mini->oldpath);
 		perror("Error");
 		return ;
 	}

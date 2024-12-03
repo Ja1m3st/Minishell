@@ -31,6 +31,7 @@ typedef struct s_token
 {
 	char	**cmd;
 	char	*mods;
+	char	*path;
 	int	is_builtin;
 	int	redir_count;
 	char	*type;
@@ -73,6 +74,7 @@ void	handle_sigquit(int signal);
 void	handle_sigbackslash(int signal);
 void	disable_echoctl(void);
 void	setup_signals(void);
+void	print_history(void);
 //-----------------------------------------------------PIPES
 void	pipex(t_mini *mini);
 void	execute_command(char *cmd, char **envp);
@@ -115,13 +117,15 @@ void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
-//------------------------------------------------------TEST
+//------------------------------------------------------REDIRECTION
 void	init_commands(t_mini *mini, char **cmds);
 void	ft_tokenadd_back(t_token **lst, t_token *new);
 t_token	*ft_newtoken(t_token *new);
 int	is_redirect(char *cmd);
 int	is_builtins(char *cmd);
 void print_tokens(t_mini *mini);
-void	print_history(void);
+void	redirect_parsing(t_mini *mini, t_token *new_token, char **cmds);
+void	builtin_parsing(t_mini *mini, t_token *new_token, char **cmds);
+void	shell_cmd_parsing(t_mini *mini, t_token *new_token, char **cmds);
 
 #endif

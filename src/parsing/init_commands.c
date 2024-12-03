@@ -15,75 +15,82 @@
 void	init_commands(t_mini *mini, char **cmds)
 {
 	t_token *new_token;
-	char	*temp;
 
 	if (!cmds || !*cmds)
 		return ;
 	new_token = ft_newtoken(NULL);
-	while (*cmds)
+	if (is_redirect(*cmds))
 	{
-		if (is_redirect(*cmds))
-		{
-			new_token->type = ft_strdup(*cmds);
-			cmds++;
-			if (*cmds)
-				new_token->file = ft_strdup(*cmds);
-			else
-				perror("No file found.\n");
-		}
-		else if (is_builtins(*cmds))
-		{
-			new_token->is_builtin = 1;
-			temp = ft_strdup(*cmds);
-			cmds++;
-			if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
-				new_token->mods = ft_strdup(*cmds);
-			new_token->cmd = ft_split(ft_strjoin(ft_strjoin(temp, " "), new_token->mods), ' ');
-			free(temp);
-		}
-		else if (!ft_strcmp(*cmds, "|"))
-		{
-			new_token->type = ft_strdup(*cmds);
-			cmds++;
-			break ;
-		}
-		else
-		{
-			temp = ft_strdup(*cmds);
-			cmds++;
-			if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
-				new_token->mods = ft_strdup(*cmds);
-			new_token->cmd = ft_split(ft_strjoin(ft_strjoin(temp, " "), new_token->mods), ' ');
-			free(temp);
-		}
-		cmds++;
+		redirect_parsing(mini, new_token, cmds);
+	
+	}
+	else if (is_builtins(*cmds))
+	{
+		builtin_parsing(mini, new_token, cmds);
+	}
+	else
+	{
+		shell_cmd_parsing(mini, new_token, cmds);
 	}
 	ft_tokenadd_back((t_token **)mini->list, new_token);
+	if (*cmds && is_redirect(new_token->type))
+		cmds++;
 	if (*cmds)
-		init_commands(mini, cmds);
+		init_commands(mini, cmds + 1);
 	return (print_tokens(mini));
 }
 
-void print_tokens(t_mini *mini)
+void	redirect_parsing(t_mini *mini, t_token *new_token, char **cmds)
 {
-    t_token *current = *(t_token **)mini->list;
-    int		i = 0;
-
-    while (current)
-    {
-        printf("Token %d.- :\n", i);
-        if (current->cmd)
-        {
-            for (int i = 0; current->cmd[i]; i++)
-                printf("  cmd[%d]: %s\n", i, current->cmd[i]);
-        }
-        printf("  is_builtin: %d\n", current->is_builtin);
-        printf("  type: %s\n", current->type);
-        printf("  file: %s\n", current->file);
-        printf("----------------------\n");
-        current = current->next;
-	i++;
-    }
+	new_token->type = ft_strdup(*cmds);
+	cmds++;
+	if (*cmds)
+			new_token->file = ft_strdup(*cmds);
+	else
+		perror("No file found.\n");
 }
+
+void	builtin_parsing(t_mini *mini, t_token *new_token, char **cmds)
+{
+	char	*temp;
+	char	*joined;
+
+	new_token->is_builtin = 1;
+	temp = ft_strdup(*cmds);
+	cmds++;
+	while (*cmds && !is_redirect(*cmds))
+	{
+		joined = ft_strjoin(temp, " ");
+		free(temp);
+		temp = ft_strjoin(joined, *cmds);
+		free(joined);
+		cmds++;
+	}
+	new_token->cmd = ft_split(temp, ' ');
+	// free(temp);
+}
+
+
+void	shell_cmd_parsing(t_mini *mini, t_token *new_token, char **cmds)
+{
+	char	*temp;
+	char	*joined;
+
+	new_token->is_builtin = 0;
+	temp = ft_strdup(*cmds);
+	cmds++;
+	while (*cmds && !is_redirect(*cmds))
+	{
+		joined = ft_strjoin(temp, " ");
+		free(temp);
+		temp = ft_strjoin(joined, *cmds);
+		free(joined);
+		cmds++;
+	}
+	new_token->cmd = ft_split(temp, ' ');
+	new_token->path = ft_strjoin("/usr/bin/", new_token->cmd[0]);
+	// free(temp);
+}
+
 
 

@@ -30,7 +30,8 @@ int	is_redirect(char *cmd)
 	return (!ft_strcmp(cmd, ">>")
 		|| !ft_strcmp(cmd, ">")
 		|| !ft_strcmp(cmd, "<<")
-		|| !ft_strcmp(cmd, "<"));
+		|| !ft_strcmp(cmd, "<")
+		|| !ft_strcmp(cmd, "|"));
 }
 
 t_token	*ft_newtoken(t_token *new)
@@ -45,6 +46,7 @@ t_token	*ft_newtoken(t_token *new)
 	new->file = NULL;
 	new->redir_count = 0;
 	new->next = NULL;
+	new->path = NULL;
 	return (new);
 }
 
@@ -63,4 +65,27 @@ void	ft_tokenadd_back(t_token **lst, t_token *new)
 	while (last->next)
 		last = last->next;
 	last->next = new;
+}
+
+void print_tokens(t_mini *mini)
+{
+    t_token *current = *(t_token **)mini->list;
+    int		i = 0;
+
+    while (current)
+    {
+        printf("Token %d.- :\n", i);
+        if (current->cmd)
+        {
+            for (int i = 0; current->cmd[i]; i++)
+                printf("  cmd[%d]: %s\n", i, current->cmd[i]);
+        }
+        printf("  is_builtin: %d\n", current->is_builtin);
+		printf("  path: %s\n", current->path);
+        printf("  type: %s\n", current->type);
+        printf("  file: %s\n", current->file);
+        printf("----------------------\n");
+        current = current->next;
+	i++;
+    }
 }

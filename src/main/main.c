@@ -30,7 +30,9 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		mini.full_cmds = mini.input;
-		get_commands(&mini);
+		mini.cmds = ft_split(mini.full_cmds, ' ');
+		init_commands(&mini, mini.cmds);
+		// get_commands(&mini);
 		free(mini.input);
 	}
 	error(&mini, '!');

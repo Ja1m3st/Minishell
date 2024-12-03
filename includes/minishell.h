@@ -27,6 +27,18 @@
 # include <sys/types.h>
 # include <termios.h>
 
+typedef struct s_token
+{
+	char	**cmd;
+	char	*mods;
+	int	is_builtin;
+	int	redir_count;
+	char	*type;
+	char	*file;
+	struct s_token *next;
+	
+}		t_token;
+
 typedef struct s_mini
 {
 	char	*input;
@@ -47,6 +59,10 @@ typedef struct s_mini
 	char	*full_cmds;
 	char	**split_full_cmds;
 	pid_t	pid;
+	int	d_quote;
+	int	s_quote;
+	t_token *commands;
+	char	**list;
 }	t_mini;
 
 //-----------------------------------------------------MAIN
@@ -70,20 +86,16 @@ void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //--------------------------------------------------COMMANDS
 void	get_commands(t_mini *mini);
-void	save_cmds(t_mini *mini);
 void	get_terminal_commands(t_mini *mini);
 void	execute_builtins(t_mini *mini, int mod);
 void	cmds(t_mini *mini, int mod);
 //------------------------------------------------------ECHO
 void	echo(t_mini *mini);
-void	write_to_fd(t_mini *mini, int fd);
-void	dquote(t_mini *mini, int fd);
-void	print_to_stdout(t_mini *mini, int temp_fd);
-void	dquote_colours(t_mini *mini);
+void	write_to_fd(t_mini *mini);
+char	*parse_string(t_mini *mini);
 //-------------------------------------------------------PWD
 void	print_pwd(t_mini *mini);
-//---------------------------------------------------HISTORY
-void	print_history(void);
+//-----------------------*cmdsd);
 //--------------------------------------------------------CD
 void	cd(t_mini *mini);
 //----------------------------------------------------EXPORT
@@ -103,5 +115,13 @@ void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
+//------------------------------------------------------TEST
+void	init_commands(t_mini *mini, char **cmds);
+void	ft_tokenadd_back(t_token **lst, t_token *new);
+t_token	*ft_newtoken(t_token *new);
+int	is_redirect(char *cmd);
+int	is_builtins(char *cmd);
+void print_tokens(t_mini *mini);
+void	print_history(void);
 
 #endif

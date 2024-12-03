@@ -36,7 +36,7 @@ void	export(t_mini *mini)
 int	export_exists(t_mini *mini)
 {
 	int		i;
-	int		arr_len;
+	int		len;
 	char	*var_name;
 
 	i = 0;
@@ -46,11 +46,13 @@ int	export_exists(t_mini *mini)
 	if (!var_name)
 		return (-1);
 	ft_strlcpy(var_name, mini->cmds[1], i + 1);
-	arr_len = array_len(mini->env);
 	i = 0;
-	while (i < arr_len)
+	len = ft_strlen(var_name);
+	if (len == 1)
+		len = ft_strlen(mini->env[i]);
+	while (i < array_len(mini->env))
 	{
-		if (ft_strncmp(mini->env[i], var_name, ft_strlen(var_name)) == 0)
+		if (ft_strncmp(mini->env[i], var_name, len) == 0)
 			return (free(var_name), i);
 		i++;
 	}

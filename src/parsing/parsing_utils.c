@@ -25,46 +25,62 @@ int	is_builtins(char *cmd)
 		|| !ft_strncmp(cmd, "$", 1));
 }
 
-int	is_redirect(char *cmd)
+int	is_output_redirect(char *cmd)
 {
-	return (!ft_strcmp(cmd, ">>")
-		|| !ft_strcmp(cmd, ">")
-		|| !ft_strcmp(cmd, "<<")
-		|| !ft_strcmp(cmd, "<")
-		|| !ft_strcmp(cmd, "|"));
+	return (!ft_strcmp(cmd, ">>") || !ft_strcmp(cmd, ">"));
 }
 
-t_token	*ft_newtoken(t_token *new)
+int	is_input_redirect(char *cmd)
 {
-	new = (t_token *)malloc(sizeof(t_token));
-	if (!new)
-		return (new);
-	new->cmd = NULL;
-	new->mods = NULL;
-	new->is_builtin = 0;
-	new->type = NULL;
-	new->file = NULL;
-	new->redir_count = 0;
-	new->next = NULL;
-	new->path = NULL;
-	return (new);
+	return (!ft_strcmp(cmd, "<<") || !ft_strcmp(cmd, "<"));
 }
 
-void	ft_tokenadd_back(t_token **lst, t_token *new)
+int is_redirect(char *cmd)
+{
+	return (is_input_redirect(cmd) || is_output_redirect(cmd));
+}
+
+t_token	*ft_newtoken(t_token *token)
+{
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (token);
+	token->cmd = NULL;
+	token->mods = NULL;
+	token->is_builtin = 0;
+	token->do_swap = 0;
+	token->type = NULL;
+	token->file = NULL;
+	token->redir_count = 0;
+	token->next = NULL;
+	token->path = NULL;
+	return (token);
+}
+
+void	ft_tokenadd_back(t_token **lst, t_token *token)
 {
 	t_token	*last;
+	t_token *temp;
 
-	if (!lst || !new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
+	
+    if (!lst || !token)
+        return;
+
+    if (!*lst)
+    {
+        *lst = token;
+        return;
+    }
 	last = *lst;
 	while (last->next)
 		last = last->next;
-	last->next = new;
+	last->next = token;
+	if (token->do_swap)
+    {
+        temp = last->next;
+        last->next = token->next;
+        token->next = temp;
+    }
 }
 
 void print_tokens(t_mini *mini)
@@ -80,6 +96,7 @@ void print_tokens(t_mini *mini)
             for (int i = 0; current->cmd[i]; i++)
                 printf("  cmd[%d]: %s\n", i, current->cmd[i]);
         }
+		printf("  do_swap???: %d\n", current->do_swap);
         printf("  is_builtin: %d\n", current->is_builtin);
 		printf("  path: %s\n", current->path);
         printf("  type: %s\n", current->type);

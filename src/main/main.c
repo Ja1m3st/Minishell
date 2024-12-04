@@ -29,11 +29,10 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		if (*mini.input)
 			add_history(mini.input);
-		mini.full_cmds = mini.input;
-		mini.cmds = ft_split(mini.full_cmds, ' ');
-		init_commands(&mini, mini.cmds);
-		// get_commands(&mini);
+		mini.cmds = ft_split(mini.input, ' ');
+		tokenize(&mini, mini.cmds);
 		free(mini.input);
+		free_arr(mini.cmds);
 	}
 	error(&mini, '!');
 	rl_clear_history();

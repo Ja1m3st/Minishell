@@ -12,53 +12,68 @@
 
 #include "minishell.h"
 
-void	init_commands(t_mini *mini, char **cmds)
+void	tokenize(t_mini *mini, char **cmds)
 {
-	t_token *new_token;
+	t_token *token;
+	int		redir_check;
 
 	if (!cmds || !*cmds)
 		return ;
-	new_token = ft_newtoken(NULL);
-	if (is_redirect(*cmds))
+	redir_check = 1;
+	while (*cmds)
 	{
-		redirect_parsing(mini, new_token, cmds);
-	
+		if (redir_check)
+		{
+			token = ft_newtoken(NULL);
+			ft_tokenadd_back((t_token **)mini->list, token);
+			redir_check = 0;
+		}
+		if (!ft_strcmp(*cmds, "|"))
+		{
+			token->type = ft_strdup(*cmds);
+			redir_check = 1;
+			cmds++;
+			continue ;
+		}	
+		if (is_redirect(*cmds))
+		{
+			tokenize_redirections(token, cmds);
+			if (is_input_redirect(*cmds))
+				token->do_swap = 1;
+			redir_check = 1;
+			continue ;
+		}
+		if (ft_strcmp(*cmds, "|") && !is_redirect(*cmds))
+		{
+			tokenize_commands(token, cmds);
+		}
+        cmds++;
 	}
-	else if (is_builtins(*cmds))
-	{
-		builtin_parsing(mini, new_token, cmds);
-	}
-	else
-	{
-		shell_cmd_parsing(mini, new_token, cmds);
-	}
-	ft_tokenadd_back((t_token **)mini->list, new_token);
-	if (*cmds && is_redirect(new_token->type))
-		cmds++;
-	if (*cmds)
-		init_commands(mini, cmds + 1);
-	return (print_tokens(mini));
+	print_tokens(mini);
 }
 
-void	redirect_parsing(t_mini *mini, t_token *new_token, char **cmds)
+void	tokenize_redirections(t_token *token, char **cmds)
 {
-	new_token->type = ft_strdup(*cmds);
+	token->type = ft_strdup(*cmds);
 	cmds++;
 	if (*cmds)
-			new_token->file = ft_strdup(*cmds);
+	{
+		token->file = ft_strdup(*cmds);
+		cmds++;
+	}		
 	else
 		perror("No file found.\n");
 }
 
-void	builtin_parsing(t_mini *mini, t_token *new_token, char **cmds)
+void	tokenize_commands(t_token *token, char **cmds)
 {
 	char	*temp;
 	char	*joined;
 
-	new_token->is_builtin = 1;
+	token->is_builtin = is_builtin(*cmds);
 	temp = ft_strdup(*cmds);
 	cmds++;
-	while (*cmds && !is_redirect(*cmds))
+	while (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 	{
 		joined = ft_strjoin(temp, " ");
 		free(temp);
@@ -66,31 +81,8 @@ void	builtin_parsing(t_mini *mini, t_token *new_token, char **cmds)
 		free(joined);
 		cmds++;
 	}
-	new_token->cmd = ft_split(temp, ' ');
-	// free(temp);
+	token->cmd = ft_split(temp, ' ');
+	if (token->is_builtin == 0)
+		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
+	free(temp);
 }
-
-
-void	shell_cmd_parsing(t_mini *mini, t_token *new_token, char **cmds)
-{
-	char	*temp;
-	char	*joined;
-
-	new_token->is_builtin = 0;
-	temp = ft_strdup(*cmds);
-	cmds++;
-	while (*cmds && !is_redirect(*cmds))
-	{
-		joined = ft_strjoin(temp, " ");
-		free(temp);
-		temp = ft_strjoin(joined, *cmds);
-		free(joined);
-		cmds++;
-	}
-	new_token->cmd = ft_split(temp, ' ');
-	new_token->path = ft_strjoin("/usr/bin/", new_token->cmd[0]);
-	// free(temp);
-}
-
-
-

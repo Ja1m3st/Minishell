@@ -31,9 +31,12 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->full_path = NULL;
 	mini->newline = 0;
 	dup_env(mini, env);
-	dquote_colours(mini);
 	mini->full_path = NULL;
 	mini->split_full_cmds = NULL;
+	mini->d_quote = 0;
+	mini->s_quote = 0;
 	setup_signals();
 	disable_echoctl();
+	mini->list = malloc(sizeof(t_token *));
+	*(t_token **)mini->list = NULL;
 }

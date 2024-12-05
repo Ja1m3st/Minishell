@@ -29,9 +29,11 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		if (*mini.input)
 			add_history(mini.input);
-		mini.full_cmds = mini.input;
-		get_commands(&mini);
+		mini.cmds = ft_split(mini.input, ' ');
+		tokenize(&mini, mini.cmds);
+		print_tokens(&mini);
 		free(mini.input);
+		free_arr(mini.cmds);
 	}
 	error(&mini, '!');
 	rl_clear_history();

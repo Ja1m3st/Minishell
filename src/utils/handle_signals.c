@@ -65,7 +65,6 @@ void	handle_sigquit(int signal)
 	t_mini	*mini;
 
 	(void)signal;
-	error(mini, '!');
 }
 
 void	handle_sigbackslash(int signal)

@@ -32,14 +32,15 @@ typedef struct s_token
 	char	**cmd;
 	char	*mods;
 	char	*path;
-	int	is_builtin;
-	int	redir_count;
+	int		is_builtin;
+	int		redir_count;
 	char	*type;
 	char	*file;
 	int		do_swap;
-	struct s_token *next;
-	
-}		t_token;
+	int		complete;
+	char	*delimeter;
+	struct s_token	*next;
+} t_token;
 
 typedef struct s_mini
 {
@@ -61,9 +62,9 @@ typedef struct s_mini
 	char	*full_cmds;
 	char	**split_full_cmds;
 	pid_t	pid;
-	int	d_quote;
-	int	s_quote;
-	t_token *commands;
+	int		d_quote;
+	int		s_quote;
+	t_token	*commands;
 	char	**list;
 }	t_mini;
 
@@ -118,15 +119,17 @@ void	error(t_mini *mini, char c);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
 //--------------------------------------------------------------REDIRECTION
-void	tokenize_commands(t_token *token, char **cmds);
-void	tokenize_redirections(t_token *token, char **cmds);
 void	tokenize(t_mini *mini, char **cmds);
 void	ft_tokenadd_back(t_token **lst, t_token *token);
 t_token	*ft_newtoken(t_token *token);
-int is_redirect(char *cmd);
-int	is_input_redirect(char *cmd);
-int	is_output_redirect(char *cmd);
-int	is_builtins(char *cmd);
-void print_tokens(t_mini *mini);
+int		is_redirect(char *cmd);
+int		is_input_redirect(char *cmd);
+int		is_output_redirect(char *cmd);
+int		is_builtins(char *cmd);
+int		tokenize_redirections(t_token *token, char **cmds);
+int		tokenize_commands(t_token *token, char **cmds);
+void	do_swap(t_token **lst, t_token *token);
+//--------------------------------------------------------------DELETE-AFTER
+void	print_tokens(t_mini *mini);
 
 #endif

@@ -35,7 +35,8 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/main/get_commands.c \
 	./src/builtins/variables.c ./src/utils/mini_utils.c ./src/utils/error.c  \
 	./src/environment/print_env.c ./src/environment/dup_env.c \
 	./src/environment/get_full_name.c ./src/builtins/pipex.c ./src/utils/handle_signals.c \
-	./src/parsing/init_commands.c ./src/parsing/parsing_utils.c
+	./src/parsing/tokenize_commands.c ./src/parsing/parsing_utils.c ./src/parsing/nodes.c \
+	./src/parsing/delete_after.c
 	
 
 #OBJS--------------------------------------------------------------------------------------

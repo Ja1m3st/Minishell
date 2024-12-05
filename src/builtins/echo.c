@@ -27,8 +27,8 @@ void	echo(t_mini *mini)
 
 char	*parse_string(t_mini *mini)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*echo;
 	char	mod;
 

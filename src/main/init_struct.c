@@ -39,5 +39,4 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	disable_echoctl();
 	mini->list = malloc(sizeof(t_token *));
 	*(t_token **)mini->list = NULL;
-	
 }

@@ -31,6 +31,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(mini.input);
 		mini.cmds = ft_split(mini.input, ' ');
 		tokenize(&mini, mini.cmds);
+		print_tokens(&mini);
 		free(mini.input);
 		free_arr(mini.cmds);
 	}

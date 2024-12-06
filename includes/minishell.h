@@ -30,16 +30,15 @@
 typedef struct s_token
 {
 	char	**cmd;
-	char	*mods;
 	char	*path;
-	int		is_builtin;
-	int		redir_count;
 	char	*type;
 	char	*file;
+	char	*delimeter;
+	int		is_builtin;
 	int		do_swap;
 	int		complete;
-	char	*delimeter;
-	struct s_token	*next;
+	struct s_token	*right;
+	struct s_token	*left;
 } t_token;
 
 typedef struct s_mini
@@ -55,7 +54,6 @@ typedef struct s_mini
 	char	*path;
 	char	*env_name;
 	char	*oldpath;
-	char	*dquote;
 	int		newline;
 	char	*full_path;
 	int		total_args;
@@ -66,6 +64,7 @@ typedef struct s_mini
 	int		s_quote;
 	t_token	*commands;
 	char	**list;
+	int	do_swap;
 }	t_mini;
 
 //------------------------------------------------------------------MAIN
@@ -120,16 +119,22 @@ int		array_len(char **array);
 int		is_builtin(char *cmd);
 //--------------------------------------------------------------REDIRECTION
 void	tokenize(t_mini *mini, char **cmds);
-void	ft_tokenadd_back(t_token **lst, t_token *token);
+void	ft_tokenadd_right(t_token **lst, t_token *token);
+void	ft_tokenadd_left(t_token **lst, t_token *token);
+void	do_swap(t_token **lst);
 t_token	*ft_newtoken(t_token *token);
+int		tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini);
+int		tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini);
+int	tokenize_pipedirections(t_token *token, char **cmds, t_mini *mini);
+int		tokenize_commands(t_token *token, char **cmds);
 int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
 int		is_output_redirect(char *cmd);
 int		is_builtins(char *cmd);
-int		tokenize_redirections(t_token *token, char **cmds);
-int		tokenize_commands(t_token *token, char **cmds);
-void	do_swap(t_token **lst, t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
-void	print_tokens(t_mini *mini);
+void	print_tokens_tree(t_mini *mini);
+void	print_tree_structure(t_token *node, int depth, char side);
+
 
 #endif
+

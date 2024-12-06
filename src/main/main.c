@@ -20,7 +20,6 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	init_struct(&mini, argv, env);
-	get_env_name(&mini);
 	while (1)
 	{
 		env_name = join_env_name(&mini);
@@ -31,11 +30,11 @@ int	main(int argc, char **argv, char **env)
 			add_history(mini.input);
 		mini.cmds = ft_split(mini.input, ' ');
 		tokenize(&mini, mini.cmds);
-		print_tokens(&mini);
+		print_tokens_tree(&mini);
+		free_tree(&mini);
 		free(mini.input);
-		free_arr(mini.cmds);
+		// free_arr(mini.cmds);
 	}
 	error(&mini, '!');
-	rl_clear_history();
 	return (0);
 }

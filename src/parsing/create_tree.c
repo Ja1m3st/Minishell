@@ -18,20 +18,19 @@ t_token	*ft_newtoken(t_token *token)
 	if (!token)
 		return (token);
 	token->cmd = NULL;
-	token->mods = NULL;
-	token->is_builtin = 0;
-	token->do_swap = 0;
+	token->path = NULL;
 	token->type = NULL;
 	token->file = NULL;
-	token->redir_count = 0;
-	token->next = NULL;
-	token->path = NULL;
-	token->complete = 0;
 	token->delimeter = NULL;
+	token->is_builtin = 0;
+	token->do_swap = 0;
+	token->complete = 0;
+	token->right = NULL;
+	token->left = NULL;
 	return (token);
 }
 
-void	ft_tokenadd_back(t_token **lst, t_token *token)
+void	ft_tokenadd_right(t_token **lst, t_token *token)
 {
 	t_token	*last;
 
@@ -43,30 +42,29 @@ void	ft_tokenadd_back(t_token **lst, t_token *token)
 		return ;
 	}
 	last = *lst;
-	while (last->next)
-		last = last->next;
-	last->next = token;
-	if (last->do_swap == 1)
-		do_swap(lst, token);
+	while (last->right)
+		last = last->right;
+	last->right = token;
 }
 
-void	do_swap(t_token **lst, t_token *token)
+void	ft_tokenadd_left(t_token **lst, t_token *token)
 {
-	t_token	*cur;
-	t_token	*temp;
-	char	*temp_type;
-	char	*temp_delimeter;
+	t_token	*last;
 
-	cur = *lst;
-	while (cur->next)
-		cur = cur->next;
-	temp = cur->next;
-	temp_type = temp->type;
-	temp_delimeter = temp->delimeter;
-	cur->next = token->next;
-	cur->next->type = token->next->type;
-	cur->next->delimeter = token->next->delimeter;
-	token->next = temp;
-	token->next->type = temp_type;
-	token->next->delimeter = temp_delimeter;
-}
+	if (!lst || !token)
+		return ;
+	if (!*lst)
+	{
+		*lst = token;
+		return ;
+	}
+	last = *lst;
+	if (last->right)
+	{
+		while (last->right)
+			last = last->right;
+	}
+	while (last->left)
+		last = last->left;
+	last->left = token;
+} 

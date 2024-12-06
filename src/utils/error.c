@@ -14,8 +14,7 @@
 
 void	error(t_mini *mini, char c)
 {
-	if (c == 'M')
-		write(1, "Malloc Error!\n", 14);
+	rl_clear_history();
 	free_mini(mini);
 	if (c == '!')
 		exit(EXIT_SUCCESS);
@@ -24,8 +23,6 @@ void	error(t_mini *mini, char c)
 
 void	free_mini(t_mini *mini)
 {
-	int		i;
-
 	if (mini->full_name)
 		free(mini->full_name);
 	if (mini->log_name)
@@ -36,8 +33,6 @@ void	free_mini(t_mini *mini)
 		free_arr(mini->env);
 	if (mini->oldpath)
 		free(mini->oldpath);
-	if (mini->dquote)
-		free(mini->dquote);
 	if (mini->full_path)
 		free(mini->full_path);
 	if (mini->env)
@@ -48,5 +43,27 @@ void	free_mini(t_mini *mini)
 		free(mini->path);
 	if (mini->input)
 		free(mini->input);
-	
 }
+
+// void	free_tree(t_mini *mini)
+// {
+// 	t_token	*cur;
+// 	t_token *temp;
+
+// 	cur = *(t_token **)mini->list;
+	
+// 	while (cur)
+// 	{
+// 		temp = *(t_token **)mini->list;
+// 		if (cur->left)
+// 		{
+// 			while (cur)
+// 			{
+// 				free(cur);
+// 				free(t)
+// 				cur = cur->left;
+					
+// 			}
+// 		}
+// 	}
+// }

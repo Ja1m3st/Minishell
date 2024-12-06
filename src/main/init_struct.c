@@ -14,10 +14,10 @@
 
 void	init_struct(t_mini *mini, char **argv, char **env)
 {
+	(void)argv;
 	mini->infile = STDIN_FILENO;
 	mini->outfile = STDOUT_FILENO;
 	mini->env = NULL;
-	(void)argv;
 	mini->full_cmds = NULL;
 	mini->env_name = NULL;
 	mini->full_name = NULL;
@@ -25,18 +25,20 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->path = NULL;
 	mini->sesion_name = NULL;
 	mini->input = NULL;
-	mini->outfile = STDOUT_FILENO;
 	mini->oldpath = NULL;
-	mini->dquote = NULL;
 	mini->full_path = NULL;
 	mini->newline = 0;
-	dup_env(mini, env);
 	mini->full_path = NULL;
 	mini->split_full_cmds = NULL;
 	mini->d_quote = 0;
 	mini->s_quote = 0;
+	dup_env(mini, env);
 	setup_signals();
 	disable_echoctl();
+	get_env_name(mini);
 	mini->list = malloc(sizeof(t_token *));
+	if (!mini->list)
+		return ;
 	*(t_token **)mini->list = NULL;
+	mini->do_swap = 0;
 }

@@ -22,49 +22,57 @@ void	tokenize(t_mini *mini, char **cmds)
 	if (!token || (token && token->complete))
 	{
 		token = ft_newtoken(NULL);
-		ft_tokenadd_back((t_token **)mini->list, token);
+		if (mini->do_swap)
+			ft_tokenadd_left((t_token **)mini->list, token);
+		else
+			ft_tokenadd_right((t_token **)mini->list, token);
+		mini->do_swap = 0;
 	}
 	if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
-	{
 		cmds += tokenize_commands(token, cmds);
-	}
-	if (*cmds && is_redirect(*cmds))
-	{
-		cmds += tokenize_redirections(token, cmds);
-	}
+	if (*cmds && is_output_redirect(*cmds))
+		cmds += tokenize_rightdirections(token, cmds, mini);
+	if (*cmds && is_input_redirect(*cmds))
+		cmds += tokenize_leftdirections(token, cmds, mini);
 	if (*cmds && !ft_strcmp(*cmds, "|"))
-	{
-		token->type = ft_strdup(*cmds);
-		token->complete = 1;
-		cmds++;
-	}
+		cmds += tokenize_pipedirections(token, cmds, mini);
 	tokenize(mini, cmds);
 }
 
-int	tokenize_redirections(t_token *token, char **cmds)
+int	tokenize_pipedirections(t_token *token, char **cmds, t_mini *mini)
+{
+	token->type = ft_strdup(*cmds);
+	token->complete = 1;
+	mini->do_swap = 0;
+	return (1);
+}
+
+int	tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini)
+{
+	token->type = ft_strdup(*cmds);
+	mini->do_swap = 1;
+	if (!ft_strcmp(*cmds, "<<"))
+	{
+		cmds++;
+		if (*cmds)
+			token->delimeter = ft_strdup(*cmds);
+	}
+	token->complete = 1;
+	return (1);
+}
+
+int	tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini)
 {
 	int	i;
 
 	i = 1;
-	if (!is_redirect(*cmds))
-		return ;
 	token->type = ft_strdup(*cmds);
-	if (!ft_strcmp(*cmds, ">") || !ft_strcmp(*cmds, ">>"))
+	mini->do_swap = 0;
+	cmds++;
+	if (*cmds)
 	{
-		if (++(*cmds))
-		{
-			token->file = ft_strdup(*cmds);
-			i++;
-		}
-	}
-	else if (!ft_strcmp(*cmds, "<<") || !ft_strcmp(*cmds, "<"))
-	{
-		token->do_swap = 1;
-		if (!ft_strcmp(*cmds, "<<"))
-		{
-			if (++(*cmds))
-				token->delimeter = ft_strdup(*cmds);
-		}
+		token->file = ft_strdup(*cmds);
+		i++;
 	}
 	token->complete = 1;
 	return (i);

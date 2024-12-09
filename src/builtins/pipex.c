@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 16:09:50 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/09 14:06:58 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ int	redirect(int in_fd, int mini_fd[], int i, t_mini *mini)
 {
 	if (dup2(in_fd, STDIN_FILENO) == -1)
 		exit(EXIT_FAILURE);
+	if (ft_strchr(mini->split_full_cmds[i], '>') || ft_strchr(mini->split_full_cmds[i], '<'))
+	{
+		t_redir *block = redir(mini, i);
+/* 		print_redir_list(block); */
+		proces(block, mini);
+		exit(EXIT_SUCCESS);
+	}
 	if (i < mini->total_args - 1)
 	{
 		if (dup2(mini_fd[1], STDOUT_FILENO) == -1)

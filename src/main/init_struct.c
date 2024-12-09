@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/02 12:11:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:19:24 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	dquote_colours(mini);
 	mini->full_path = NULL;
 	mini->split_full_cmds = NULL;
-	setup_signals();
-	disable_echoctl();
+/* 	setup_signals();
+	disable_echoctl(); */
 }

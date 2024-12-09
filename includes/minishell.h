@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 15:13:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:54:10 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,16 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <termios.h>
+
+typedef struct s_redir {
+    char *command;         // El comando principal (por ejemplo, "cat", "ls")
+    char **args;           // Lista de argumentos (por ejemplo, ["-l", "archivo.txt", NULL])
+    char *input_file;      // Archivo para redirección de entrada (<)
+    char *output_file;     // Archivo para redirección de salida (>)
+    char *heredoc_delim;   // Delimitador para redirección heredoc (<<)
+	int append;            // Indicador de redirección en modo append (>>)
+    struct s_redir *next;		// Puntero al siguiente comando (para pipelines)
+} t_redir;
 
 typedef struct s_mini
 {
@@ -47,6 +57,7 @@ typedef struct s_mini
 	char	*full_cmds;
 	char	**split_full_cmds;
 	pid_t	pid;
+	t_redir *redir;
 }	t_mini;
 
 //-----------------------------------------------------MAIN
@@ -103,5 +114,13 @@ void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
+
+void	execute_commands_token(char *cmd, char **envp);
+int		redirect_token(int in_fd, int mini_fd[], int i, t_mini *mini);
+void	execute_commands_token(char *cmd, char **envp);
+void	print_redir_list(t_redir *head);
+char	**ft_append_array(char **array, char *new_elem);
+t_redir *redir(t_mini *mini, int j);
+void proces(t_redir *head, t_mini *mini);
 
 #endif

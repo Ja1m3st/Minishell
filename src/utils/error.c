@@ -37,8 +37,6 @@ void	free_mini(t_mini *mini)
 		free(mini->full_path);
 	if (mini->env)
 		free(mini->env_name);
-	if (mini->split_full_cmds)
-		free_arr(mini->split_full_cmds);
 	if (mini->path)
 		free(mini->path);
 	if (mini->input)
@@ -50,20 +48,28 @@ void	free_mini(t_mini *mini)
 // 	t_token	*cur;
 // 	t_token *temp;
 
-// 	cur = *(t_token **)mini->list;
+// 	temp = *(t_token **)mini->list;
+// 	cur = temp;
 	
+// 	if (!temp)
+// 		return ;
 // 	while (cur)
 // 	{
-// 		temp = *(t_token **)mini->list;
-// 		if (cur->left)
+// 		if (cur->cmd)
+// 			free_arr(cur->cmd);
+// 		if (cur->path)
+// 			free(cur->path);
+// 		if (cur->file)
+// 			free(cur->file);
+// 		if (cur->type)
+// 			free(cur->type);
+// 		if (cur->delimeter)
+// 			free(cur->delimeter);
+// 		if (!cur->left)
 // 		{
-// 			while (cur)
-// 			{
-// 				free(cur);
-// 				free(t)
-// 				cur = cur->left;
-					
-// 			}
+// 			temp = temp->right;
+// 			cur = temp;
 // 		}
+// 		cur = cur->left;
 // 	}
 // }

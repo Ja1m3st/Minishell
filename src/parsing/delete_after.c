@@ -13,32 +13,34 @@
 #include "minishell.h"
 
 
-void	print_tree_structure(t_token *node, int depth, char side)
+void	print_tree_structure(t_mini *mini)
 {
-	if (!node)
-		return;
-	for (int i = 0; i < depth; i++)
-		printf("    ");
+	t_token	*cur;
+	int	i;
 
-	if (side == 'L')
-		printf("L---- ");
-	else if (side == 'R')
-		printf("R---- ");
-	printf("%s", node->cmd[0]);
-	if (node->cmd[1])
-		printf(" %s", node->cmd[1]);
-	if (node->type)
-		printf(" (%s)", node->type);
-	printf("\n");
-	print_tree_structure(node->left, depth + 1, 'L');
-	print_tree_structure(node->right, depth + 1, 'R');
+	cur = *(t_token **)mini->list;
+	i = 0;
+	while (cur)
+	{
+		printf("TOKEN [%d]\n", i);
+		if (cur->cmd)
+		{
+			for (int i = 0; cur->cmd[i]; i++)
+				printf("   cmd[%d]: %s\n", i, cur->cmd[i]);
+		}
+		if (!cur->is_builtin)
+			printf("   path: %s\n", cur->path);
+		if (cur->type)
+			printf("   type: (%s)\n", cur->type);
+		if (cur->file)
+			printf("   file: %s\n", cur->file);
+		if (cur->delimeter)
+			printf("   dlmtr: %s\n", cur->delimeter);
+		if (cur->pipe)
+			printf("   pipe: %s\n", cur->pipe);
+		printf("\n");
+		cur = cur->right;
+		i++;
+	}
 }
 
-void	print_tokens_tree(t_mini *mini)
-{
-	if (!mini || !mini->list)
-		return;
-
-	t_token *root = *(t_token **)mini->list;
-	print_tree_structure(root, 0, ' ');
-}

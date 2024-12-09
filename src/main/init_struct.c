@@ -18,7 +18,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->infile = STDIN_FILENO;
 	mini->outfile = STDOUT_FILENO;
 	mini->env = NULL;
-	mini->full_cmds = NULL;
 	mini->env_name = NULL;
 	mini->full_name = NULL;
 	mini->log_name = NULL;
@@ -28,10 +27,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->oldpath = NULL;
 	mini->full_path = NULL;
 	mini->newline = 0;
-	mini->full_path = NULL;
-	mini->split_full_cmds = NULL;
-	mini->d_quote = 0;
-	mini->s_quote = 0;
 	dup_env(mini, env);
 	setup_signals();
 	disable_echoctl();

@@ -12,72 +12,69 @@
 
 #include "minishell.h"
 
-void	pipex(t_mini *mini)
+void	pipex(t_mini *mini, t_token *token)
 {
 	int	fd[2];
-	int	i;
-	int	in_fd;
+	int	temp_fd;
 
-	i = 0;
-	in_fd = mini->infile;
-	while (i < mini->total_args)
+	temp_fd = mini->infile;
+	if (pipe(fd) == -1)
 	{
-		mini->cmds = ft_split(mini->split_full_cmds[i], ' ');
-		pipe(fd);
-		mini->pid = fork();
-		if (mini->pid == -1)
-			return ;
-		if (mini->pid == 0)
-			redirect(in_fd, fd, i, mini);
-		close(fd[1]);
-		if (in_fd != mini->infile)
-			close(in_fd);
-		in_fd = fd[0];
-		i++;
-		free_arr(mini->cmds);
+		perror("pipe error\n");
+		exit(EXIT_FAILURE);
 	}
-	while (i-- > 0)
-		waitpid(mini->pid, NULL, 0);
+	printf("Pipe created: fd[0] = %d, fd[1] = %d\n", fd[0], fd[1]);
+	mini->pid = fork();
+	if (mini->pid == -1)
+	{
+		perror("fork error\n");
+		return ;
+	}
+	if (mini->pid == 0)
+		swap_fds(mini, token, temp_fd, fd);
+	close(fd[1]);
+	if (temp_fd != mini->infile)
+		close(temp_fd);
+	temp_fd = fd[0];
+	waitpid(mini->pid, NULL, 0);
 }
 
-int	redirect(int in_fd, int mini_fd[], int i, t_mini *mini)
+int	swap_fds(t_mini *mini, t_token *token, int temp_fd, int fd[])
 {
-	if (dup2(in_fd, STDIN_FILENO) == -1)
-		exit(EXIT_FAILURE);
-	if (i < mini->total_args - 1)
+	if (dup2(temp_fd, STDIN_FILENO) == -1)
 	{
-		if (dup2(mini_fd[1], STDOUT_FILENO) == -1)
+		perror("dup2 temp_fd\n");
+		exit(EXIT_FAILURE);
+	}	
+	if (token->is_last_cmd)
+	{
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 fd[1]\n");
 			exit(EXIT_FAILURE);
+		}
+			
 	}
 	else
 	{
 		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
+		{
+			perror("dup2 outfile\n");
+			exit(EXIT_FAILURE);
+		}
+			
+	}
+	close(fd[0]);
+	close(fd[1]);
+	close(temp_fd);
+	if (token->is_builtin)
+		builtin_cmds(mini, token);
+	else
+	{
+		if (execve(token->path, token->cmd, mini->env) == -1)
+			perror("executing command\n");
 			exit(EXIT_FAILURE);
 	}
-	close(mini_fd[0]);
-	close(mini_fd[1]);
-	close(in_fd);
-	if (is_builtin(mini->cmds[0]))
-		execute_builtins(mini, 1);
-	else
-		execute_command(mini->split_full_cmds[i], mini->env);
 	return (1);
 }
 
-void	execute_command(char *cmd, char **envp)
-{
-	char	**args;
-	char	*cmd_path;
-
-	args = ft_split(cmd, ' ');
-	if (!args)
-		return (perror("Error\n"), exit(EXIT_FAILURE));
-	cmd_path = ft_strjoin("/usr/bin/", args[0]);
-	if (!cmd_path)
-		return (exit(EXIT_FAILURE));
-	execve(&cmd_path[0], args, envp);
-	perror("Error: execve falló");
-	free_arr(args);
-	free(cmd_path);
-	exit(EXIT_FAILURE);
-}

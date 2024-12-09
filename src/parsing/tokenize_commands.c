@@ -22,60 +22,55 @@ void	tokenize(t_mini *mini, char **cmds)
 	if (!token || (token && token->complete))
 	{
 		token = ft_newtoken(NULL);
-		if (mini->do_swap)
-			ft_tokenadd_left((t_token **)mini->list, token);
-		else
-			ft_tokenadd_right((t_token **)mini->list, token);
-		mini->do_swap = 0;
+		ft_tokenadd_back((t_token **)mini->list, token);
 	}
 	if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 		cmds += tokenize_commands(token, cmds);
 	if (*cmds && is_output_redirect(*cmds))
-		cmds += tokenize_rightdirections(token, cmds, mini);
+		cmds += tokenize_rightdirections(token, cmds);
 	if (*cmds && is_input_redirect(*cmds))
-		cmds += tokenize_leftdirections(token, cmds, mini);
+		cmds += tokenize_leftdirections(token, cmds);
 	if (*cmds && !ft_strcmp(*cmds, "|"))
-		cmds += tokenize_pipedirections(token, cmds, mini);
-	tokenize(mini, cmds);
+		cmds += tokenize_pipedirections(token, cmds);
+	if (cmds)
+		tokenize(mini, cmds);
 }
 
-int	tokenize_pipedirections(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_pipedirections(t_token *token, char **cmds)
 {
-	token->type = ft_strdup(*cmds);
+	token->pipe = ft_strdup(*cmds);
 	token->complete = 1;
-	mini->do_swap = 0;
 	return (1);
 }
 
-int	tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_leftdirections(t_token *token, char **cmds)
 {
 	token->type = ft_strdup(*cmds);
-	mini->do_swap = 1;
 	if (!ft_strcmp(*cmds, "<<"))
 	{
 		cmds++;
 		if (*cmds)
 			token->delimeter = ft_strdup(*cmds);
 	}
-	token->complete = 1;
-	return (1);
+	else if (!ft_strcmp(*cmds, "<"))
+	{
+		cmds++;
+		if (*cmds)
+			token->file = ft_strdup(*cmds);
+	}
+	return (2);
 }
 
-int	tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_rightdirections(t_token *token, char **cmds)
 {
-	int	i;
-
-	i = 1;
 	token->type = ft_strdup(*cmds);
-	mini->do_swap = 0;
 	cmds++;
 	if (*cmds)
 	{
 		token->file = ft_strdup(*cmds);
-		i++;
+		return (2);
 	}
-	token->complete = 1;
-	return (i);
+	return (1);
 }
 
 int	tokenize_commands(t_token *token, char **cmds)

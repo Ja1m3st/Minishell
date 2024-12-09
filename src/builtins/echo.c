@@ -12,42 +12,37 @@
 
 #include "minishell.h"
 
-void	echo(t_mini *mini)
+void	echo(t_token *token)
 {
 	char	*str;
 
-	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "-n", 2))
-		mini->newline = 1;
-	if (!mini->cmds[1 + mini->newline])
+	if (token->cmd[1] && !ft_strncmp(token->cmd[1], "-n", 2))
+		token->newline = 1;
+	if (!token->cmd[1 + token->newline])
 		return ;
-	str = parse_string(mini);
+	str = parse_string(token);
 	write(1, str, ft_strlen(str));
 	free(str);
 }
 
-char	*parse_string(t_mini *mini)
+char	*parse_string(t_token *token)
 {
 	int		i;
-	int		j;
 	char	*echo;
-	char	mod;
+	char	*temp;
 
-	i = 1 + mini->newline;
-	while (mini->cmds[i])
+	i = 1 + token->newline;
+	echo = ft_strdup(token->cmd[i]);
+	i++;
+	while (token->cmd[i])
 	{
-		j = 0;
-		if (!ft_strncmp(&mini->cmds[i][j], "\"", 1)
-			|| !ft_strncmp(&mini->cmds[i][j], "\'", 1))
-			mod = mini->cmds[i][j];
-		while (mini->cmds[i][j])
-		{
-			if (mini->cmds[i][j] != mod)
-				echo = ft_strjoin(echo, &mini->cmds[i][j]);
-			j++;
-		}
+		temp = ft_strjoin(echo, " ");
+		free(echo);
+		echo = ft_strjoin(temp, token->cmd[i]);
 		i++;
 	}
-	if (mini->newline == 0)
+	if (token->newline == 0)
 		echo = ft_strjoin(echo, "\n");
 	return (echo);
 }
+

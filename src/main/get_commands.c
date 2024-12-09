@@ -12,61 +12,49 @@
 
 #include "minishell.h"
 
-void	get_commands(t_mini *mini)
+void	exec_cmds(t_mini *mini)
 {
-	int	i;
+	t_token *cur;
 
-	i = 0;
-	if (mini->split_full_cmds)
-		free_arr(mini->split_full_cmds);
-	mini->split_full_cmds = ft_split(mini->full_cmds, '|');
-	while (mini->split_full_cmds[i] != NULL)
-		i++;
-	mini->total_args = i;
-	execute_builtins(mini, 0);
-}
-
-void	execute_builtins(t_mini *mini, int mod)
-{
-	if (mod == 1)
-	{
-		cmds(mini, mod);
-		exit(EXIT_SUCCESS);
+	if (!mini->list)
 		return ;
-	}
-	if (mini->total_args == 1)
+	cur = *(t_token **)mini->list;
+	while (cur)
 	{
-		mini->cmds = ft_split(mini->split_full_cmds[0], ' ');
-		cmds(mini, mod);
-		free_arr(mini->cmds);
+		if (!cur->right)
+			cur->is_last_cmd = 1;
+		if (!ft_strcmp(cur->type, "<"))
+		{
+			mini->infile = open("test", O_RDONLY, 0644);
+			if (mini->infile == -1)
+				perror("Error opening file.\n");
+				return ;
+		}
+		else
+			pipex(mini, cur);
+		cur = cur->right;
 	}
-	else
-		pipex(mini);
 }
 
-void	cmds(t_mini *mini, int mod)
+void	builtin_cmds(t_mini *mini, t_token *token)
 {
-	if (!ft_strcmp(mini->cmds[0], "history"))
+	if (!ft_strcmp(token->cmd[0], "history"))
 		print_history();
-	else if (!ft_strcmp(mini->cmds[0], "env"))
+	else if (!ft_strcmp(token->cmd[0], "env"))
 		print_env(mini);
-	else if (!ft_strcmp(mini->cmds[0], "echo"))
-		echo(mini);
-	else if (!ft_strcmp(mini->cmds[0], "pwd"))
+	else if (!ft_strcmp(token->cmd[0], "echo"))
+		echo(token);
+	else if (!ft_strcmp(token->cmd[0], "pwd"))
 		print_pwd(mini);
-	else if (!ft_strcmp(mini->cmds[0], "cd"))
+	else if (!ft_strcmp(token->cmd[0], "cd"))
 		cd(mini);
-	else if (!ft_strcmp(mini->cmds[0], "export"))
+	else if (!ft_strcmp(token->cmd[0], "export"))
 		export(mini);
-	else if (!ft_strcmp(mini->cmds[0], "unset"))
+	else if (!ft_strcmp(token->cmd[0], "unset"))
 		unset(mini);
-	else if (!ft_strncmp(mini->cmds[0], "$", 1))
+	else if (!ft_strncmp(token->cmd[0], "$", 1))
 		printf("%s\n", get_var(mini));
-	else if (!ft_strcmp(mini->cmds[0], "exit"))
+	else if (!ft_strcmp(token->cmd[0], "exit"))
 		error(mini, '!');
-	else
-	{
-		if (mod == 0)
-			get_terminal_commands(mini);
-	}
 }
+

@@ -12,40 +12,48 @@
 
 #include "minishell.h"
 
-void	export(t_mini *mini)
+void	export(t_mini *mini, t_token *token)
 {
 	int		i;
+	int		j;
 
-	if (!mini->cmds[1])
+	if (!token->cmd[1])
 		return ;
-	if (check_valid_export(mini))
+	i = 1;
+	while (token->cmd[i])
 	{
-		write(1, "Bad Assignment!\n", 16);
-		return ;
+		if (check_valid_export(mini, token))
+		{
+			write(1, "Bad Assignment!\n", 16);
+			return ;
+		}
+		j = export_exists(mini, token);
+		if (j == -1)
+			new_export(mini, token);
+		else
+		{
+			free(mini->env[j]);
+			mini->env[j] = ft_strdup(token->cmd[i]);
+		}
+		j = -1;
+		i++;
 	}
-	i = export_exists(mini);
-	if (i == -1)
-		new_export(mini);
-	else
-	{
-		free(mini->env[i]);
-		mini->env[i] = ft_strdup(mini->cmds[1]);
-	}
+	
 }
 
-int	export_exists(t_mini *mini)
+int	export_exists(t_mini *mini, t_token *token)
 {
 	int		i;
 	int		len;
 	char	*var_name;
 
 	i = 0;
-	while (mini->cmds[1][i] != '=')
+	while (token->cmd[1][i] != '=')
 		i++;
 	var_name = malloc(i + 1 * sizeof(char));
 	if (!var_name)
 		return (-1);
-	ft_strlcpy(var_name, mini->cmds[1], i + 1);
+	ft_strlcpy(var_name, token->cmd[1], i + 1);
 	i = 0;
 	len = ft_strlen(var_name);
 	if (len == 1)
@@ -59,7 +67,7 @@ int	export_exists(t_mini *mini)
 	return (free(var_name), -1);
 }
 
-void	new_export(t_mini *mini)
+void	new_export(t_mini *mini, t_token *token)
 {
 	char	**new_env;
 	int		len;
@@ -75,26 +83,26 @@ void	new_export(t_mini *mini)
 		new_env[i] = ft_strdup(mini->env[i]);
 		i++;
 	}
-	new_env[len] = ft_strdup(mini->cmds[1]);
+	new_env[len] = ft_strdup(token->cmd[1]);
 	new_env[len + 1] = NULL;
 	free_arr(mini->env);
 	mini->env = new_env;
 }
 
-int	check_valid_export(t_mini *mini)
+int	check_valid_export(t_mini *mini, t_token *token)
 {
 	int	i;
 
 	i = 0;
-	while (mini->cmds[1][i] != '=')
+	while (token->cmd[1][i] != '=')
 	{
-		if (i == 0 && ft_isdigit(mini->cmds[1][i]))
+		if (i == 0 && ft_isdigit(token->cmd[1][i]))
 			return (1);
-		if (!(ft_isalnum(mini->cmds[1][i]) || mini->cmds[1][i] == '_'))
+		if (!(ft_isalnum(token->cmd[1][i]) || token->cmd[1][i] == '_'))
 			return (1);
 		i++;
 	}
-	if (mini->cmds[1][i] == '=')
+	if (token->cmd[1][i] == '=')
 		return (0);
 	return (1);
 }

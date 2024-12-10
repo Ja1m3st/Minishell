@@ -18,7 +18,7 @@ int	main(int argc, char **argv, char **env)
 	char	*env_name;
 
 	if (argc != 1)
-		return (0);
+		return (1);
 	init_struct(&mini, argv, env);
 	while (1)
 	{

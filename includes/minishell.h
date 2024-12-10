@@ -104,10 +104,10 @@ void	print_pwd(t_mini *mini);
 //----------------------------------------------------------------------CD
 void	cd(t_mini *mini);
 //------------------------------------------------------------------EXPORT
-void	export(t_mini *mini);
-void	new_export(t_mini *mini);
-int		export_exists(t_mini *mini);
-int		check_valid_export(t_mini *mini);
+void	export(t_mini *mini, t_token *token);
+void	new_export(t_mini *mini, t_token *token);
+int		export_exists(t_mini *mini, t_token *token);
+int		check_valid_export(t_mini *mini, t_token *token);
 //-------------------------------------------------------------------UNSET
 void	unset(t_mini *mini);
 char	*find_path(t_mini *mini, char *path);

@@ -16,6 +16,8 @@ void	pipex(t_mini *mini, t_token *token)
 {
 	if (token->cmd && token->cmd[0] && !ft_strcmp(token->cmd[0], "exit"))
 		error(mini, '!');
+	if (token->cmd && token->cmd[0] && !ft_strcmp(token->cmd[0], "export"))
+		export(mini, token);
 	mini->temp_fd = mini->infile;
 	if (pipe(mini->fd) == -1)
 		return (perror("Pipe error\n"));

@@ -33,7 +33,7 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/builtins/export.c ./src/builtins/history.c ./src/builtins/unset.c \
 	./src/builtins/variables.c ./src/utils/mini_utils.c ./src/utils/error.c  \
 	./src/environment/print_env.c ./src/environment/dup_env.c \
-	./src/environment/get_full_name.c ./src/parsin/pipex.c ./src/main/handle_signals.c \
+	./src/environment/get_full_name.c ./src/parsing/pipex.c ./src/main/handle_signals.c \
 	./src/parsing/tokenize_commands.c ./src/utils/parsing_utils.c ./src/parsing/create_tree.c \
 	./src/utils/delete_after.c
 	

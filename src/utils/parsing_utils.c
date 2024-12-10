@@ -25,7 +25,7 @@ void	builtin_cmds(t_mini *mini, t_token *token)
 	else if (!ft_strcmp(token->cmd[0], "cd"))
 		cd(mini);
 	else if (!ft_strcmp(token->cmd[0], "export"))
-		export(mini);
+		export(mini, token);
 	else if (!ft_strcmp(token->cmd[0], "unset"))
 		unset(mini);
 	else if (!ft_strncmp(token->cmd[0], "$", 1))

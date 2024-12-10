@@ -14,30 +14,25 @@
 
 void	pipex(t_mini *mini, t_token *token)
 {
+	
 	mini->temp_fd = mini->infile;
 	if (pipe(mini->fd) == -1)
-		return (perror("pipe error\n"));
+		return (perror("Pipe error\n"));
 	mini->pid = fork();
 	if (mini->pid == -1)
-		return (perror("fork error\n"));
+		return (perror("Fork error\n"));
 	if (mini->pid == 0)
 		swap_fds(mini, token);
 	close(mini->fd[1]);
 	if (mini->temp_fd != mini->infile)
 		close(mini->temp_fd);
 	mini->temp_fd = mini->fd[0];
-	    if (mini->outfile != STDOUT_FILENO)
-    {
-        close(mini->outfile);
-        mini->outfile = STDOUT_FILENO;
-    }
 }
 
 int	swap_fds(t_mini *mini, t_token *token)
 {
 	if (dup2(mini->temp_fd, STDIN_FILENO) == -1)
 		return (perror("dup2 temp_fd\n"), exit(EXIT_FAILURE), 1);
-
 	if (!mini->is_last_cmd)
 	{
 		if (dup2(mini->fd[1], STDOUT_FILENO) == -1)
@@ -54,6 +49,7 @@ int	swap_fds(t_mini *mini, t_token *token)
 	if (token->is_builtin)
 	{
 		builtin_cmds(mini, token);
+		exit(EXIT_SUCCESS);
 	}	
 	else
 	{

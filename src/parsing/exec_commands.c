@@ -28,8 +28,8 @@ void	exec_cmds(t_mini *mini)
 		token = token->next;
 	}
 	init_fds(mini);
-	waitpid(mini->pid, NULL, 0);
 	mini->is_last_cmd = 0;
+	waitpid(mini->pid, NULL, 0);
 }
 
 void	set_in_out_file(t_mini *mini, t_token *token)

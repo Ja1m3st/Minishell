@@ -17,42 +17,40 @@ void	exec_cmds(t_mini *mini)
 	t_token *token;
 
 	if (!mini->commands)
-		return (perror("mini->commands is NULL\n"));
+		return ;
 	token = *mini->commands;
 	while (token)
 	{
 		if (!token->next)
 			mini->is_last_cmd = 1;
-		if (token->input_redir || token->output_redir)
-			set_in_out_file(mini, token);
+		set_in_out_file(mini, token);
 		pipex(mini, token);
 		token = token->next;
 	}
+	init_fds(mini);
 	waitpid(mini->pid, NULL, 0);
 	mini->is_last_cmd = 0;
 }
 
 void	set_in_out_file(t_mini *mini, t_token *token)
 {
-	if (!ft_strcmp(token->input_redir, "<"))
+	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
 	{
 		mini->infile = open(token->input_file, O_RDONLY);
 		if (mini->infile == -1)
 			return (perror("Error opening infile.\n"));
 	}
-	else if (!ft_strcmp(token->input_redir, "<<"))
+	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
 		mini->infile = 0;
-		if (mini->infile == -1)
-			return (perror("Error opening outfile.\n"));
 	}
-	if (!ft_strcmp(token->output_redir, ">"))
+	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{
 		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (mini->outfile == -1)
 			return (perror("Error opening outfile.\n"));
 	}
-	else if (!ft_strcmp(token->output_redir, ">>"))
+	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
 	{
 		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (mini->outfile == -1)

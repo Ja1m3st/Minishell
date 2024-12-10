@@ -26,6 +26,11 @@ void	pipex(t_mini *mini, t_token *token)
 	if (mini->temp_fd != mini->infile)
 		close(mini->temp_fd);
 	mini->temp_fd = mini->fd[0];
+	    if (mini->outfile != STDOUT_FILENO)
+    {
+        close(mini->outfile);
+        mini->outfile = STDOUT_FILENO;
+    }
 }
 
 int	swap_fds(t_mini *mini, t_token *token)
@@ -47,7 +52,9 @@ int	swap_fds(t_mini *mini, t_token *token)
 	close(mini->fd[1]);
 	close(mini->temp_fd);
 	if (token->is_builtin)
+	{
 		builtin_cmds(mini, token);
+	}	
 	else
 	{
 		if (execve(token->path, token->cmd, mini->env) == -1)

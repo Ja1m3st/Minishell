@@ -67,6 +67,7 @@ typedef struct s_mini
 //------------------------------------------------------------------MAIN
 int		main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
+void	init_fds(t_mini *mini);
 //------------------------------------------------------------------SIGNALS
 void	handle_sigint(int signal);
 void	handle_sigquit(int signal);

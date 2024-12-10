@@ -15,11 +15,6 @@
 void	init_struct(t_mini *mini, char **argv, char **env)
 {
 	(void)argv;
-	mini->infile = STDIN_FILENO;
-	mini->outfile = STDOUT_FILENO;
-	mini->fd[0] = 0;
-	mini->fd[1] = 1;
-	mini->temp_fd = -1;
 	mini->env = NULL;
 	mini->env_name = NULL;
 	mini->full_name = NULL;
@@ -29,6 +24,7 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->input = NULL;
 	mini->oldpath = NULL;
 	mini->full_path = NULL;
+	init_fds(mini);
 	dup_env(mini, env);
 	setup_signals();
 	disable_echoctl();
@@ -38,4 +34,13 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 		return ;
 	*mini->commands = NULL;
 	mini->is_last_cmd = 0;
+}
+
+void	init_fds(t_mini *mini)
+{
+	mini->infile = STDIN_FILENO;
+	mini->outfile = STDOUT_FILENO;
+	mini->fd[0] = -1;
+	mini->fd[1] = -1;
+	mini->temp_fd = -1;
 }

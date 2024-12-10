@@ -16,12 +16,14 @@ void	echo(t_mini *mini, t_token *token)
 {
 	char	*str;
 
+	(void)mini;
 	if (token->cmd[1] && !ft_strncmp(token->cmd[1], "-n", 2))
 		token->newline = 1;
 	if (!token->cmd[1 + token->newline])
 		return ;
 	str = parse_string(token);
 	write(mini->outfile, str, ft_strlen(str));
+	close(mini->outfile);
 	free(str);
 }
 
@@ -41,8 +43,10 @@ char	*parse_string(t_token *token)
 		echo = ft_strjoin(temp, token->cmd[i]);
 		i++;
 	}
+	temp = ft_strdelchar(echo, "\"");
 	if (token->newline == 0)
-		echo = ft_strjoin(echo, "\n");
+		echo = ft_strjoin(temp, "\n");
+	free(temp);
 	return (echo);
 }
 

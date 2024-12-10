@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 13:10:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/09 14:21:51 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:37:29 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ char **ft_append_array(char **array, char *new_elem)
 
 t_redir *redir(t_mini *mini, int j)
 {
-    t_redir *block = malloc(sizeof(t_redir));
-    char **tokens;
-    int i;
+    t_redir	*block;
+    char	**tokens;
+    int		i;
 
     if (!block)
         return (NULL);
+	block = malloc(sizeof(t_redir));
     block->command = NULL;
     block->args = malloc(sizeof(char *));
     block->args[0] = NULL;

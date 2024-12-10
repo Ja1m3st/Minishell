@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/09 14:18:50 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:45:14 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void proces(t_redir *head, t_mini *mini)
 {
     t_redir *current;
-    pid_t pid;
+    pid_t	pid;
 
     current = head;
     pid = fork();
@@ -24,7 +24,6 @@ void proces(t_redir *head, t_mini *mini)
         perror("Error al hacer fork");
         return;
     }
-
     if (pid == 0)
     {
 		// Queda hacer EOF
@@ -65,6 +64,7 @@ void proces(t_redir *head, t_mini *mini)
 		}
         mini->cmds = head->args;
         get_terminal_commands(mini);
+		free_arr(mini->cmds);
         exit(EXIT_FAILURE);
     }
     else
@@ -84,25 +84,25 @@ void	get_commands(t_mini *mini)
 	while (mini->split_full_cmds[i] != NULL)
 		i++;
 	mini->total_args = i;
-//     if (mini->split_full_cmds[0] != NULL)
-//     {
-//         if (ft_strchr(mini->split_full_cmds[0], '>') || !(ft_strcmp(mini->split_full_cmds[0], ">>"))
-//             || ft_strchr(mini->split_full_cmds[0], '<') || !(ft_strcmp(mini->split_full_cmds[0], "<<")))
-// 		{
-// 			t_redir *block = redir(mini);
-// /* 			print_redir_list(block); */
-// 			proces(block, mini);
-//  		}
-//         else
-//         {
-//             execute_builtins(mini, 0);
-//         }
-//     }
-//     else
-//     {
-// 	    execute_builtins(mini, 0);
-//     }
 	execute_builtins(mini, 0);
+}
+
+void free_redir(t_redir *block)
+{
+    if (block) {
+        if (block->args) 
+		{
+            for (int i = 0; block->args[i] != NULL; i++)
+			{
+                free(block->args[i]);
+            }
+            free(block->args);
+        }
+        free(block->output_file);
+        free(block->input_file);
+        free(block->heredoc_delim);
+        free(block);
+    }
 }
 
 void	execute_builtins(t_mini *mini, int mod)
@@ -120,8 +120,8 @@ void	execute_builtins(t_mini *mini, int mod)
 			|| ft_strchr(mini->split_full_cmds[0], '<') || !(ft_strcmp(mini->split_full_cmds[0], "<<")))
 		{
 			t_redir *block = redir(mini, 0);
-			print_redir_list(block);
 			proces(block, mini);
+/* 			free_redir(block); */
 		}
 		else
 		{

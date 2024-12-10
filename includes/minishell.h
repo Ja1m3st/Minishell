@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/09 13:54:10 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:43:55 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
 # include <termios.h>
 
 typedef struct s_redir {
-    char *command;         // El comando principal (por ejemplo, "cat", "ls")
-    char **args;           // Lista de argumentos (por ejemplo, ["-l", "archivo.txt", NULL])
-    char *input_file;      // Archivo para redirección de entrada (<)
-    char *output_file;     // Archivo para redirección de salida (>)
-    char *heredoc_delim;   // Delimitador para redirección heredoc (<<)
-	int append;            // Indicador de redirección en modo append (>>)
-    struct s_redir *next;		// Puntero al siguiente comando (para pipelines)
+    char			*command;
+    char			**args;
+    char			*input_file;
+    char			*output_file;
+    char			*heredoc_delim;
+	int				append;
+    struct s_redir	*next;
 } t_redir;
 
 typedef struct s_mini
@@ -122,5 +122,6 @@ void	print_redir_list(t_redir *head);
 char	**ft_append_array(char **array, char *new_elem);
 t_redir *redir(t_mini *mini, int j);
 void proces(t_redir *head, t_mini *mini);
+void free_redir(t_redir *block);
 
 #endif

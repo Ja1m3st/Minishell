@@ -12,6 +12,28 @@
 
 #include "minishell.h"
 
+void	builtin_cmds(t_mini *mini, t_token *token)
+{
+	if (!ft_strcmp(token->cmd[0], "history"))
+		print_history();
+	else if (!ft_strcmp(token->cmd[0], "env"))
+		print_env(mini);
+	else if (!ft_strcmp(token->cmd[0], "echo"))
+		echo(token);
+	else if (!ft_strcmp(token->cmd[0], "pwd"))
+		print_pwd(mini);
+	else if (!ft_strcmp(token->cmd[0], "cd"))
+		cd(mini);
+	else if (!ft_strcmp(token->cmd[0], "export"))
+		export(mini);
+	else if (!ft_strcmp(token->cmd[0], "unset"))
+		unset(mini);
+	else if (!ft_strncmp(token->cmd[0], "$", 1))
+		printf("%s\n", get_var(mini));
+	else if (!ft_strcmp(token->cmd[0], "exit"))
+		error(mini, '!');
+}
+
 int	is_builtins(char *cmd)
 {
 	return (!ft_strcmp(cmd, "history")
@@ -38,32 +60,4 @@ int	is_input_redirect(char *cmd)
 int	is_redirect(char *cmd)
 {
 	return (is_input_redirect(cmd) || is_output_redirect(cmd));
-}
-
-void	set_in_out_file(t_mini *mini, t_token *token)
-{
-	if (!ft_strcmp(token->input_redir, "<"))
-	{
-		mini->infile = open(token->input_file, O_RDONLY);
-		if (mini->infile == -1)
-			return (perror("Error opening infile.\n"));
-	}
-	else if (!ft_strcmp(token->input_redir, "<<"))
-	{
-		mini->infile = 0;
-		if (mini->infile == -1)
-			return (perror("Error opening outfile.\n"));
-	}
-	if (!ft_strcmp(token->output_redir, ">"))
-	{
-		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (mini->outfile == -1)
-			return (perror("Error opening outfile.\n"));
-	}
-	else if (!ft_strcmp(token->output_redir, ">>"))
-	{
-		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (mini->outfile == -1)
-			return (perror("Error opening outfile.\n"));
-	}
 }

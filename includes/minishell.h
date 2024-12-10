@@ -108,11 +108,16 @@ char	*get_var(t_mini *mini);
 char	*find_var(char *str, char c);
 //-------------------------------------------------------------------UTILS
 void	free_mini(t_mini *mini);
+void	free_tree(t_mini *mini);
+void	set_in_out_file(t_mini *mini, t_token *token);
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
-void	set_in_out_file(t_mini *mini, t_token *token);
+int		is_redirect(char *cmd);
+int		is_input_redirect(char *cmd);
+int		is_output_redirect(char *cmd);
+int		is_builtins(char *cmd);
 //--------------------------------------------------------------REDIRECTION
 void	tokenize(t_mini *mini, char **cmds);
 void	ft_tokenadd_back(t_mini *mini, t_token *token);
@@ -121,11 +126,6 @@ int		tokenize_rightdirections(t_token *token, char **cmds);
 int		tokenize_leftdirections(t_token *token, char **cmds);
 int		tokenize_pipedirections(t_token *token, char **cmds);
 int		tokenize_commands(t_token *token, char **cmds);
-int		is_redirect(char *cmd);
-int		is_input_redirect(char *cmd);
-int		is_output_redirect(char *cmd);
-int		is_builtins(char *cmd);
-void	free_tree(t_mini *mini);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 

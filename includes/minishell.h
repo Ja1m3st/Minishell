@@ -55,7 +55,6 @@ typedef struct s_mini
 	char	*env_name;
 	char	*oldpath;
 	char	*full_path;
-	int	newline;
 	int		infile;
 	int		outfile;
 	int		fd[2];
@@ -89,7 +88,7 @@ char	*join_env_name(t_mini *mini);
 void	builtin_cmds(t_mini *mini, t_token *token);
 void	exec_cmds(t_mini *mini);
 //-------------------------------------------------------------------ECHO
-void	echo(t_token *token);
+void	echo(t_mini *mini, t_token *token);
 char	*parse_string(t_token *token);
 //--------------------------------------------------------------------PWD
 void	print_pwd(t_mini *mini);

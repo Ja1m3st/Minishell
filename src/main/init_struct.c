@@ -29,7 +29,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->input = NULL;
 	mini->oldpath = NULL;
 	mini->full_path = NULL;
-	mini->newline = 0;
 	dup_env(mini, env);
 	setup_signals();
 	disable_echoctl();

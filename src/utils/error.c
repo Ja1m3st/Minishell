@@ -46,12 +46,14 @@ void	free_mini(t_mini *mini)
 void	free_tree(t_mini *mini)
 {
 	t_token	*cur;
+	t_token	*prev;
 
 	if (!mini->commands)
 		return ;
 	cur = *mini->commands;
 	while (cur)
 	{
+		
 		if (cur->cmd)
 			free_arr(cur->cmd);
 		if (cur->path)
@@ -68,8 +70,9 @@ void	free_tree(t_mini *mini)
 			free(cur->delimeter);
 		if (cur->pipe)
 			free(cur->pipe);
-		cur = cur->next;
+		prev = cur;
+		cur = prev->next;
+		free(prev);
 	}
-	free(cur);
 	*mini->commands = NULL;
 }

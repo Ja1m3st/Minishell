@@ -19,7 +19,7 @@ void	builtin_cmds(t_mini *mini, t_token *token)
 	else if (!ft_strcmp(token->cmd[0], "env"))
 		print_env(mini);
 	else if (!ft_strcmp(token->cmd[0], "echo"))
-		echo(token);
+		echo(mini, token);
 	else if (!ft_strcmp(token->cmd[0], "pwd"))
 		print_pwd(mini);
 	else if (!ft_strcmp(token->cmd[0], "cd"))

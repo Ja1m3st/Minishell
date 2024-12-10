@@ -19,30 +19,31 @@ t_token	*ft_newtoken(t_token *token)
 		return (token);
 	token->cmd = NULL;
 	token->path = NULL;
-	token->type = NULL;
-	token->file = NULL;
+	token->input_redir = NULL;
+	token->output_redir = NULL;
+	token->input_file = NULL;
+	token->output_file = NULL;
 	token->delimeter = NULL;
 	token->is_builtin = 0;
-	token->is_last_cmd = 0;
 	token->complete = 0;
 	token->newline = 0;
-	token->right = NULL;
+	token->next = NULL;
 	return (token);
 }
 
-void	ft_tokenadd_back(t_token **lst, t_token *token)
+void	ft_tokenadd_back(t_mini *mini, t_token *token)
 {
 	t_token	*last;
 
-	if (!lst || !token)
+	if (!mini->commands || !token)
 		return ;
-	if (!*lst)
+	if (!*mini->commands)
 	{
-		*lst = token;
+		*mini->commands = token;
 		return ;
 	}
-	last = *lst;
-	while (last->right)
-		last = last->right;
-	last->right = token;
+	last = *mini->commands;
+	while (last->next)
+		last = last->next;
+	last->next = token;
 }

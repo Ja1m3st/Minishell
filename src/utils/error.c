@@ -43,33 +43,33 @@ void	free_mini(t_mini *mini)
 		free(mini->input);
 }
 
-// void	free_tree(t_mini *mini)
-// {
-// 	t_token	*cur;
-// 	t_token *temp;
+void	free_tree(t_mini *mini)
+{
+	t_token	*cur;
 
-// 	temp = *(t_token **)mini->list;
-// 	cur = temp;
-	
-// 	if (!temp)
-// 		return ;
-// 	while (cur)
-// 	{
-// 		if (cur->cmd)
-// 			free_arr(cur->cmd);
-// 		if (cur->path)
-// 			free(cur->path);
-// 		if (cur->file)
-// 			free(cur->file);
-// 		if (cur->type)
-// 			free(cur->type);
-// 		if (cur->delimeter)
-// 			free(cur->delimeter);
-// 		if (!cur->left)
-// 		{
-// 			temp = temp->right;
-// 			cur = temp;
-// 		}
-// 		cur = cur->left;
-// 	}
-// }
+	if (!mini->commands)
+		return ;
+	cur = *mini->commands;
+	while (cur)
+	{
+		if (cur->cmd)
+			free_arr(cur->cmd);
+		if (cur->path)
+			free(cur->path);
+		if (cur->input_redir)
+			free(cur->input_redir);
+		if (cur->output_redir)
+			free(cur->output_redir);
+		if (cur->input_file)
+			free(cur->input_file);
+		if (cur->output_file)
+			free(cur->output_file);
+		if (cur->delimeter)
+			free(cur->delimeter);
+		if (cur->pipe)
+			free(cur->pipe);
+		cur = cur->next;
+	}
+	free(cur);
+	*mini->commands = NULL;
+}

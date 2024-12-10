@@ -28,13 +28,13 @@ RESET := \033[0m
 
 #FILES------------------------------------------------------------------------------------
 
-SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/main/get_commands.c \
+SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c \
 	./src/builtins/echo.c ./src/builtins/pwd.c ./src/builtins/cd.c \
 	./src/builtins/export.c ./src/builtins/history.c ./src/builtins/unset.c \
 	./src/builtins/variables.c ./src/utils/mini_utils.c ./src/utils/error.c  \
 	./src/environment/print_env.c ./src/environment/dup_env.c \
 	./src/environment/get_full_name.c ./src/builtins/pipex.c ./src/utils/handle_signals.c \
-	./src/parsing/tokenize_commands.c ./src/parsing/parsing_utils.c ./src/parsing/create_tree.c \
+	./src/parsing/tokenize_commands.c ./src/utils/parsing_utils.c ./src/parsing/create_tree.c \
 	./src/parsing/delete_after.c
 	
 

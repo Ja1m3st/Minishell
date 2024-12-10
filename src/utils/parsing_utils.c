@@ -39,3 +39,31 @@ int	is_redirect(char *cmd)
 {
 	return (is_input_redirect(cmd) || is_output_redirect(cmd));
 }
+
+void	set_in_out_file(t_mini *mini, t_token *token)
+{
+	if (!ft_strcmp(token->input_redir, "<"))
+	{
+		mini->infile = open(token->input_file, O_RDONLY);
+		if (mini->infile == -1)
+			return (perror("Error opening infile.\n"));
+	}
+	else if (!ft_strcmp(token->input_redir, "<<"))
+	{
+		mini->infile = 0;
+		if (mini->infile == -1)
+			return (perror("Error opening outfile.\n"));
+	}
+	if (!ft_strcmp(token->output_redir, ">"))
+	{
+		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (mini->outfile == -1)
+			return (perror("Error opening outfile.\n"));
+	}
+	else if (!ft_strcmp(token->output_redir, ">>"))
+	{
+		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (mini->outfile == -1)
+			return (perror("Error opening outfile.\n"));
+	}
+}

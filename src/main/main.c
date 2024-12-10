@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 		tokenize(&mini, mini.cmds);
 		print_tree_structure(&mini);
 		exec_cmds(&mini);
+		free_tree(&mini);
 		free(mini.input);
 		free_arr(mini.cmds);
 	}

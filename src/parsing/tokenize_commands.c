@@ -22,14 +22,14 @@ void	tokenize(t_mini *mini, char **cmds)
 	if (!token || (token && token->complete))
 	{
 		token = ft_newtoken(NULL);
-		ft_tokenadd_back((t_token **)mini->list, token);
+		ft_tokenadd_back(mini, token);
 	}
 	if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 		cmds += tokenize_commands(token, cmds);
-	if (*cmds && is_output_redirect(*cmds))
-		cmds += tokenize_rightdirections(token, cmds);
 	if (*cmds && is_input_redirect(*cmds))
 		cmds += tokenize_leftdirections(token, cmds);
+	if (*cmds && is_output_redirect(*cmds))
+		cmds += tokenize_rightdirections(token, cmds);
 	if (*cmds && !ft_strcmp(*cmds, "|"))
 		cmds += tokenize_pipedirections(token, cmds);
 	if (cmds)
@@ -45,32 +45,33 @@ int	tokenize_pipedirections(t_token *token, char **cmds)
 
 int	tokenize_leftdirections(t_token *token, char **cmds)
 {
-	token->type = ft_strdup(*cmds);
+	token->input_redir = ft_strdup(*cmds);
 	if (!ft_strcmp(*cmds, "<<"))
 	{
 		cmds++;
 		if (*cmds)
 			token->delimeter = ft_strdup(*cmds);
+		
 	}
 	else if (!ft_strcmp(*cmds, "<"))
 	{
 		cmds++;
 		if (*cmds)
-			token->file = ft_strdup(*cmds);
-	}
+			token->input_file = ft_strdup(*cmds);
+	}	
 	return (2);
 }
 
 int	tokenize_rightdirections(t_token *token, char **cmds)
 {
-	token->type = ft_strdup(*cmds);
-	cmds++;
-	if (*cmds)
+	token->output_redir = ft_strdup(*cmds);
+	if (!ft_strcmp(*cmds, ">>") || !ft_strcmp(*cmds, ">"))
 	{
-		token->file = ft_strdup(*cmds);
-		return (2);
+		cmds++;
+		if (*cmds)
+			token->output_file = ft_strdup(*cmds);
 	}
-	return (1);
+	return (2);
 }
 
 int	tokenize_commands(t_token *token, char **cmds)
@@ -98,3 +99,4 @@ int	tokenize_commands(t_token *token, char **cmds)
 	free(temp);
 	return (i);
 }
+

@@ -31,17 +31,16 @@ typedef struct s_token
 {
 	char	**cmd;
 	char	*path;
-	char	*type;
-	char	*file;
+	char	*input_redir;
+	char	*output_redir;
+	char	*input_file;
+	char	*output_file;
 	char	*delimeter;
 	char	*pipe;
 	int		is_builtin;
-	int		do_swap;
 	int		complete;
 	int		newline;
-	int		is_last_cmd;
-	struct s_token	*right;
-	struct s_token	*left;
+	struct s_token	*next;
 } t_token;
 
 typedef struct s_mini
@@ -55,28 +54,31 @@ typedef struct s_mini
 	char	*path;
 	char	*env_name;
 	char	*oldpath;
-	int		newline;
 	char	*full_path;
+	int	newline;
 	int		infile;
 	int		outfile;
-	pid_t	pid;
-	t_token	*commands;
-	char	**list;
-	int	do_swap;
+	int		fd[2];
+	int		temp_fd;
+	pid_t		pid;
+	t_token		**commands;
+	int		is_last_cmd;
 }	t_mini;
 
 //------------------------------------------------------------------MAIN
 int		main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
+//------------------------------------------------------------------SIGNALS
 void	handle_sigint(int signal);
 void	handle_sigquit(int signal);
 void	handle_sigbackslash(int signal);
 void	disable_echoctl(void);
 void	setup_signals(void);
+//------------------------------------------------------------------HISTORY
 void	print_history(void);
 //------------------------------------------------------------------PIPES
 void	pipex(t_mini *mini, t_token *token);
-int	swap_fds(t_mini *mini, t_token *token, int temp_fd, int fd[]);
+int	swap_fds(t_mini *mini, t_token *token);
 //-------------------------------------------------------------------ENV
 void	get_env_name(t_mini *mini);
 void	get_session_name(t_mini *mini);
@@ -110,9 +112,10 @@ void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
+void	set_in_out_file(t_mini *mini, t_token *token);
 //--------------------------------------------------------------REDIRECTION
 void	tokenize(t_mini *mini, char **cmds);
-void	ft_tokenadd_back(t_token **lst, t_token *token);
+void	ft_tokenadd_back(t_mini *mini, t_token *token);
 t_token	*ft_newtoken(t_token *token);
 int		tokenize_rightdirections(t_token *token, char **cmds);
 int		tokenize_leftdirections(t_token *token, char **cmds);
@@ -127,3 +130,4 @@ void	free_tree(t_mini *mini);
 void	print_tree_structure(t_mini *mini);
 
 #endif
+

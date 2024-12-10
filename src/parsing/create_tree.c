@@ -16,7 +16,7 @@ t_token	*ft_newtoken(t_token *token)
 {
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
-		return (token);
+		return (NULL);
 	token->cmd = NULL;
 	token->path = NULL;
 	token->input_redir = NULL;
@@ -24,6 +24,7 @@ t_token	*ft_newtoken(t_token *token)
 	token->input_file = NULL;
 	token->output_file = NULL;
 	token->delimeter = NULL;
+	token->pipe = NULL;
 	token->is_builtin = 0;
 	token->complete = 0;
 	token->newline = 0;

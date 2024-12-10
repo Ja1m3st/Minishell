@@ -34,7 +34,7 @@ void	builtin_cmds(t_mini *mini, t_token *token)
 		error(mini, '!');
 }
 
-int	is_builtins(char *cmd)
+int	is_builtin(char *cmd)
 {
 	return (!ft_strcmp(cmd, "history")
 		|| !ft_strcmp(cmd, "env")

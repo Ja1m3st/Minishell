@@ -14,7 +14,8 @@
 
 void	pipex(t_mini *mini, t_token *token)
 {
-	
+	if (token->cmd && token->cmd[0] && !ft_strcmp(token->cmd[0], "exit"))
+		error(mini, '!');
 	mini->temp_fd = mini->infile;
 	if (pipe(mini->fd) == -1)
 		return (perror("Pipe error\n"));
@@ -50,11 +51,9 @@ int	swap_fds(t_mini *mini, t_token *token)
 	{
 		builtin_cmds(mini, token);
 		exit(EXIT_SUCCESS);
-	}	
+	}
 	else
-	{
 		if (execve(token->path, token->cmd, mini->env) == -1)
 			return (perror("executing command\n"), exit(EXIT_FAILURE), 1);
-	}
 	return (0);
 }

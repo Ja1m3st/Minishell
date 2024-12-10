@@ -14,7 +14,7 @@
 
 void	exec_cmds(t_mini *mini)
 {
-	t_token *token;
+	t_token	*token;
 
 	if (!mini->commands)
 		return ;
@@ -46,13 +46,15 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 	}
 	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{
-		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		mini->outfile = open(token->output_file,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (mini->outfile == -1)
 			return (perror("Error opening outfile.\n"));
 	}
 	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
 	{
-		mini->outfile = open(token->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		mini->outfile = open(token->output_file,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (mini->outfile == -1)
 			return (perror("Error opening outfile.\n"));
 	}

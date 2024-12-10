@@ -51,14 +51,13 @@ int	tokenize_leftdirections(t_token *token, char **cmds)
 		cmds++;
 		if (*cmds)
 			token->delimeter = ft_strdup(*cmds);
-		
 	}
 	else if (!ft_strcmp(*cmds, "<"))
 	{
 		cmds++;
 		if (*cmds)
 			token->input_file = ft_strdup(*cmds);
-	}	
+	}
 	return (2);
 }
 
@@ -99,4 +98,3 @@ int	tokenize_commands(t_token *token, char **cmds)
 	free(temp);
 	return (i);
 }
-

@@ -9,3 +9,5 @@ test
 .echo
 .tempin
 .tempout
+infile
+outfile

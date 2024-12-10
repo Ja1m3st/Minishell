@@ -30,7 +30,6 @@ int	main(int argc, char **argv, char **env)
 			add_history(mini.input);
 		mini.cmds = ft_split(mini.input, ' ');
 		tokenize(&mini, mini.cmds);
-		// print_tree_structure(&mini);
 		exec_cmds(&mini);
 		free_tree(&mini);
 		free(mini.input);

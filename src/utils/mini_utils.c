@@ -17,7 +17,7 @@ void	free_arr(char **array)
 	int	i;
 
 	i = 0;
-	if (!array)
+	if (!array || !*array)
 		return ;
 	while (array[i])
 	{
@@ -68,16 +68,4 @@ char	*find_var(char	*str, char c)
 	var_name = ft_strchr(str, c);
 	var_name++;
 	return (var_name);
-}
-
-int	is_builtin(char *cmd)
-{
-	return (!ft_strcmp(cmd, "history")
-		|| !ft_strcmp(cmd, "env")
-		|| !ft_strcmp(cmd, "echo")
-		|| !ft_strcmp(cmd, "cd")
-		|| !ft_strcmp(cmd, "pwd")
-		|| !ft_strcmp(cmd, "export")
-		|| !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "exit"));
 }

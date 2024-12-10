@@ -15,6 +15,7 @@
 void	error(t_mini *mini, char c)
 {
 	rl_clear_history();
+	free_tree(mini);
 	free_mini(mini);
 	if (c == '!')
 		exit(EXIT_SUCCESS);
@@ -41,38 +42,47 @@ void	free_mini(t_mini *mini)
 		free(mini->path);
 	if (mini->input)
 		free(mini->input);
+	if (mini->commands)
+		free(mini->commands);
 }
 
 void	free_tree(t_mini *mini)
 {
-	t_token	*cur;
-	t_token	*prev;
+	t_token	*token;
+	t_token	*next_node;
 
-	if (!mini->commands)
+	if (!mini->commands || !*mini->commands)
 		return ;
-	cur = *mini->commands;
-	while (cur)
+	token = *mini->commands;
+	next_node = NULL;
+	while (token)
 	{
-		
-		if (cur->cmd)
-			free_arr(cur->cmd);
-		if (cur->path)
-			free(cur->path);
-		if (cur->input_redir)
-			free(cur->input_redir);
-		if (cur->output_redir)
-			free(cur->output_redir);
-		if (cur->input_file)
-			free(cur->input_file);
-		if (cur->output_file)
-			free(cur->output_file);
-		if (cur->delimeter)
-			free(cur->delimeter);
-		if (cur->pipe)
-			free(cur->pipe);
-		prev = cur;
-		cur = prev->next;
-		free(prev);
+		next_node = token->next;
+		free_tree2(token);
+		free(token);
+		token = next_node;
 	}
 	*mini->commands = NULL;
+}
+
+void	free_tree2(t_token *token)
+{
+	if (!token)
+		return ;
+	if (token->cmd)
+		free_arr(token->cmd);
+	if (token->path)
+		free(token->path);
+	if (token->input_redir)
+		free(token->input_redir);
+	if (token->output_redir)
+		free(token->output_redir);
+	if (token->input_file)
+		free(token->input_file);
+	if (token->output_file)
+		free(token->output_file);
+	if (token->delimeter)
+		free(token->delimeter);
+	if (token->pipe)
+		free(token->pipe);
 }

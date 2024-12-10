@@ -41,7 +41,7 @@ typedef struct s_token
 	int		complete;
 	int		newline;
 	struct s_token	*next;
-} t_token;
+}	t_token;
 
 typedef struct s_mini
 {
@@ -59,8 +59,8 @@ typedef struct s_mini
 	int		outfile;
 	int		fd[2];
 	int		temp_fd;
-	pid_t		pid;
-	t_token		**commands;
+	pid_t	pid;
+	t_token	**commands;
 	int		is_last_cmd;
 }	t_mini;
 
@@ -68,34 +68,42 @@ typedef struct s_mini
 int		main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
 void	init_fds(t_mini *mini);
-//------------------------------------------------------------------SIGNALS
+//----------------------------------------------------------------SIGNALS
 void	handle_sigint(int signal);
 void	handle_sigquit(int signal);
 void	handle_sigbackslash(int signal);
 void	disable_echoctl(void);
 void	setup_signals(void);
-//------------------------------------------------------------------HISTORY
+//----------------------------------------------------------------HISTORY
 void	print_history(void);
-//------------------------------------------------------------------PIPES
-void	pipex(t_mini *mini, t_token *token);
-int	swap_fds(t_mini *mini, t_token *token);
-//-------------------------------------------------------------------ENV
+//--------------------------------------------------------------------ENV
 void	get_env_name(t_mini *mini);
 void	get_session_name(t_mini *mini);
 void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
-//---------------------------------------------------------------COMMANDS
+//----------------------------------------------------------------COMMANDS
 void	builtin_cmds(t_mini *mini, t_token *token);
 void	exec_cmds(t_mini *mini);
-//-------------------------------------------------------------------ECHO
+void	tokenize(t_mini *mini, char **cmds);
+void	ft_tokenadd_back(t_mini *mini, t_token *token);
+void	set_in_out_file(t_mini *mini, t_token *token);
+t_token	*ft_newtoken(t_token *token);
+int		tokenize_rightdirections(t_token *token, char **cmds);
+int		tokenize_leftdirections(t_token *token, char **cmds);
+int		tokenize_pipedirections(t_token *token, char **cmds);
+int		tokenize_commands(t_token *token, char **cmds);
+//-------------------------------------------------------------------PIPES
+void	pipex(t_mini *mini, t_token *token);
+int		swap_fds(t_mini *mini, t_token *token);
+//--------------------------------------------------------------------ECHO
 void	echo(t_mini *mini, t_token *token);
 char	*parse_string(t_token *token);
-//--------------------------------------------------------------------PWD
+//---------------------------------------------------------------------PWD
 void	print_pwd(t_mini *mini);
-//---------------------------------------------------------------------CD
+//----------------------------------------------------------------------CD
 void	cd(t_mini *mini);
-//-----------------------------------------------------------------EXPORT
+//------------------------------------------------------------------EXPORT
 void	export(t_mini *mini);
 void	new_export(t_mini *mini);
 int		export_exists(t_mini *mini);
@@ -109,7 +117,7 @@ char	*find_var(char *str, char c);
 //-------------------------------------------------------------------UTILS
 void	free_mini(t_mini *mini);
 void	free_tree(t_mini *mini);
-void	set_in_out_file(t_mini *mini, t_token *token);
+void	free_tree2(t_token *token);
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
@@ -117,17 +125,8 @@ int		is_builtin(char *cmd);
 int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
 int		is_output_redirect(char *cmd);
-int		is_builtins(char *cmd);
-//--------------------------------------------------------------REDIRECTION
-void	tokenize(t_mini *mini, char **cmds);
-void	ft_tokenadd_back(t_mini *mini, t_token *token);
-t_token	*ft_newtoken(t_token *token);
-int		tokenize_rightdirections(t_token *token, char **cmds);
-int		tokenize_leftdirections(t_token *token, char **cmds);
-int		tokenize_pipedirections(t_token *token, char **cmds);
-int		tokenize_commands(t_token *token, char **cmds);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
+void	print_tree_structure2(t_token *token);
 
 #endif
-

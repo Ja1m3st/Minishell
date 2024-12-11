@@ -21,7 +21,7 @@ void	here_doc(t_mini *mini, t_token *token)
 		return (perror("Pipe Error\n"));
 	while (1)
 	{
-		line = get_next_line(STDIN_FILENO);
+		line = get_next_line(0);
 		if (!line)
 			break ;
 		if (!ft_strncmp(line, token->delimeter, ft_strlen(token->delimeter))
@@ -34,5 +34,5 @@ void	here_doc(t_mini *mini, t_token *token)
 		free(line);
 	}
 	close(fd[1]);
-	mini->infile = fd[0];
+	mini->temp_fd = fd[0];
 }

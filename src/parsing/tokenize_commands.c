@@ -81,7 +81,7 @@ int	tokenize_commands(t_token *token, char **cmds)
 
 	i = 1;
 	token->is_builtin = is_builtin(*cmds);
-	temp = ft_strdup(*cmds);
+	temp = ft_strdelchar(*cmds, "\"");
 	cmds++;
 	while (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 	{

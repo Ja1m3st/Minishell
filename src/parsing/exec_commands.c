@@ -19,6 +19,7 @@ void	exec_cmds(t_mini *mini)
 	if (!mini->commands)
 		return ;
 	token = *mini->commands;
+	mini->temp_fd = mini->infile;
 	while (token)
 	{
 		if (!token->next)

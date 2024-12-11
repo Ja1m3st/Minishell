@@ -18,14 +18,16 @@ void	pipex(t_mini *mini, t_token *token)
 		error(mini, '!');
 	if (token->cmd && token->cmd[0] && !ft_strcmp(token->cmd[0], "export"))
 		export(mini, token);
-	mini->temp_fd = mini->infile;
 	if (pipe(mini->fd) == -1)
 		return (perror("Pipe error\n"));
 	mini->pid = fork();
 	if (mini->pid == -1)
 		return (perror("Fork error\n"));
 	if (mini->pid == 0)
+	{
+		close(mini->fd[0]);
 		swap_fds(mini, token);
+	}
 	close(mini->fd[1]);
 	if (mini->temp_fd != mini->infile)
 		close(mini->temp_fd);

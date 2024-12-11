@@ -87,7 +87,7 @@ int	tokenize_commands(t_token *token, char **cmds)
 	{
 		joined = ft_strjoin(temp, " ");
 		free(temp);
-		temp = ft_strjoin(joined, *cmds);
+		temp = ft_strjoin(joined, ft_strdelchar(*cmds, "\""));
 		free(joined);
 		cmds++;
 		i++;

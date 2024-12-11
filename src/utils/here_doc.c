@@ -21,6 +21,7 @@ void	here_doc(t_mini *mini, t_token *token)
 		return (perror("Pipe Error\n"));
 	while (1)
 	{
+		write(1, "> ", 2);
 		line = get_next_line(0);
 		if (!line)
 			break ;

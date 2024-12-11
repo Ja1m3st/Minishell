@@ -42,7 +42,7 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
-		mini->infile = 0;
+		here_doc(mini, token);
 	}
 	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{

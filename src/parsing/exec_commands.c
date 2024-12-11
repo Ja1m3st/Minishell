@@ -37,9 +37,7 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 {
 	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
 	{
-		mini->infile = open(token->input_file, O_RDONLY);
-		if (mini->infile == -1)
-			return (perror("Error opening infile.\n"));
+		input_redirection(mini, token);
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{

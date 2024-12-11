@@ -116,6 +116,7 @@ char	*get_var(t_mini *mini);
 char	*find_var(char *str, char c);
 //-------------------------------------------------------------------UTILS
 void	here_doc(t_mini *mini, t_token *token);
+void	input_redirection(t_mini *mini, t_token *token);
 void	free_mini(t_mini *mini);
 void	free_tree(t_mini *mini);
 void	free_tree2(t_token *token);

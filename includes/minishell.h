@@ -29,18 +29,18 @@
 
 typedef struct s_token
 {
-	char	**cmd;
-	char	*path;
-	char	*input_redir;
-	char	*output_redir;
-	char	*input_file;
-	char	*output_file;
-	char	*delimeter;
-	char	*pipe;
-	int		is_builtin;
-	int		complete;
-	int		newline;
+	char			**cmd;
+	char			*path;
+	char			*input_redir;
+	char			*output_redir;
+	char			*input_file;
+	char			*output_file;
+	char			*delimeter;
+	char			*pipe;
 	struct s_token	*next;
+	int				is_builtin;
+	int				complete;
+	int				newline;
 }	t_token;
 
 typedef struct s_mini
@@ -105,9 +105,9 @@ void	print_pwd(t_mini *mini);
 void	cd(t_mini *mini);
 //------------------------------------------------------------------EXPORT
 void	export(t_mini *mini, t_token *token);
-void	new_export(t_mini *mini, t_token *token);
-int		export_exists(t_mini *mini, t_token *token);
-int		check_valid_export(t_mini *mini, t_token *token);
+void	new_export(t_mini *mini, t_token *token, int n);
+int		check_valid_export(t_token *token, int n);
+int		export_exists(t_mini *mini, t_token *token, int n);
 //-------------------------------------------------------------------UNSET
 void	unset(t_mini *mini);
 char	*find_path(t_mini *mini, char *path);

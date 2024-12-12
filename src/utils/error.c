@@ -15,7 +15,6 @@
 void	error(t_mini *mini, char c)
 {
 	rl_clear_history();
-	free_arr_cmds(mini->mini_cmds);
 	free_tree(mini);
 	free_mini(mini);
 	if (c == '!')
@@ -43,13 +42,10 @@ void	free_mini(t_mini *mini)
 		free(mini->path);
 	if (mini->input)
 		free(mini->input);
-	if (mini->commands)
-		free(mini->commands);
-/* 	if (mini->quote_types)
-        free(mini->quote_types); */
-/* 	if (mini->mini_cmds)
-        free(mini->mini_cmds); */
-		
+	if (mini->quote_types)
+        	free(mini->quote_types);
+	if (mini->mini_cmds)
+        	free_arr(mini->mini_cmds);	
 }
 
 void	free_tree(t_mini *mini)

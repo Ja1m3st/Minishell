@@ -14,52 +14,63 @@
 
 void process_command(t_mini *mini)
 {
-    int i = 0, j = 0;
-    int len = strlen(mini->input);
-    mini->quote_types = NULL;
-    mini->mini_cmds = malloc(sizeof(char*) * len); // Para almacenar los comandos procesados
-    
-    t_quote_type current_quote = NO_QUOTE;
-    char *current_cmd = malloc(len + 1);
-    int current_cmd_len = 0;
+    int     i;
+    int     j;
+    int     len; 
+    t_quote_type current_quote;
+    char    *current_cmd;
+    int     current_cmd_len;
+    char    ch; 
 
+    len = ft_strlen(mini->input);
+    mini->quote_types = malloc(sizeof(char*) * len);
+    mini->mini_cmds = malloc(sizeof(char*) * len); // Para almacenar los comandos procesados
+    current_cmd = malloc(len + 1);
+    current_quote = NO_QUOTE;
+    current_cmd_len = 0;
+    i = 0;
+    j = 0;
     while (i < len)
     {
-        char ch = mini->input[i];
-
+        ch = mini->input[i];
         // Detectar apertura de comillas
-        if (ch == '\'' && (current_quote == NO_QUOTE || current_quote == SINGLE_QUOTE)) {
-            current_quote = (current_quote == SINGLE_QUOTE) ? NO_QUOTE : SINGLE_QUOTE;
-        } else if (ch == '\"' && (current_quote == NO_QUOTE || current_quote == DOUBLE_QUOTE)) {
-            current_quote = (current_quote == DOUBLE_QUOTE) ? NO_QUOTE : DOUBLE_QUOTE;
+        if (ch == '\'')
+        {
+            if (current_quote == NO_QUOTE)
+                current_quote = SINGLE_QUOTE;
+            else if (current_quote == SINGLE_QUOTE)
+                current_quote = NO_QUOTE;
+        }
+        else if (ch == '\"')
+        {
+            if (current_quote == NO_QUOTE)
+                current_quote = DOUBLE_QUOTE;
+            else if (current_quote == DOUBLE_QUOTE)
+                current_quote = NO_QUOTE;
         }
 
         // Si estamos dentro de comillas, almacenamos el carácter
-        if (current_quote != NO_QUOTE || ch != ' ') {
+        if (current_quote != NO_QUOTE || ch != ' ')
             current_cmd[current_cmd_len++] = ch;
-        }
 
         // Cuando encontramos un espacio fuera de las comillas, es un separador de argumento
-        if (ch == ' ' && current_quote == NO_QUOTE && current_cmd_len > 0) {
+        if (ch == ' ' && current_quote == NO_QUOTE && current_cmd_len > 0)
+        {
             current_cmd[current_cmd_len] = '\0';
             mini->mini_cmds[j++] = ft_strdup(current_cmd);
             current_cmd_len = 0;
         }
         i++;
     }
-
     // Añadir el último comando si es necesario
     if (current_cmd_len > 0)
     {
         current_cmd[current_cmd_len] = '\0';
-        mini->mini_cmds[j++] = ft_strdup(current_cmd);
+        mini->mini_cmds[j] = ft_strdup(current_cmd);
+        j++;
     }
-
-    // Finalizar el array de comandos
     mini->mini_cmds[j] = NULL;
-    // if (mini->quote_types)
     free(current_cmd);
-    free(mini->quote_types);
 }
 
 void	ft_ptrdelchar(char *str, const char *chars)
@@ -69,7 +80,6 @@ void	ft_ptrdelchar(char *str, const char *chars)
 
 	if (!str || !chars)
 		return;
-
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -103,11 +113,11 @@ int	main(int argc, char **argv, char **env)
        	while (mini.mini_cmds[i])
             ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");
 		tokenize(&mini, mini.mini_cmds);
-		print_tree_structure(&mini);
+		// print_tree_structure(&mini);
 		exec_cmds(&mini);
         free_tree(&mini);
         free(mini.input);
-        free_arr_cmds(mini.mini_cmds);
+        free_arr(mini.mini_cmds);
 	}
 	error(&mini, '!');
 	return (0);

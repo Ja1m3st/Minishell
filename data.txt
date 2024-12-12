@@ -1,6 +1,0 @@
-John 25
-Alice 30
-Bob 22
-Eve 28
-Charlie 35
-Dave 40

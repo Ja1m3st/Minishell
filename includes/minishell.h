@@ -138,5 +138,7 @@ void	free_arr_cmds(char **array);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
+void process_command(t_mini *mini);
+void	ft_ptrdelchar(char *str, const char *chars);
 
 #endif

@@ -52,14 +52,21 @@ int	tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini)
 		cmds++;
 		mini->mini_cmds++;
 		if (*cmds)
+		{
 			token->delimeter = ft_strdup(*cmds);
+			mini->mini_cmds++;
+		}
 	}
 	else if (!ft_strcmp(*cmds, "<"))
 	{
 		cmds++;
 		mini->mini_cmds++;
 		if (*cmds)
+		{
 			token->input_file = ft_strdup(*cmds);
+			mini->mini_cmds++;
+		}
+			
 	}
 	return (2);
 }
@@ -72,7 +79,10 @@ int	tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini)
 		cmds++;
 		mini->mini_cmds++;
 		if (*cmds)
+		{
 			token->output_file = ft_strdup(*cmds);
+			mini->mini_cmds++;
+		}	
 	}
 	return (2);
 }

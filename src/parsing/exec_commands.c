@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	exec_cmds(t_mini *mini)
+void	execute_commands(t_mini *mini)
 {
 	t_token	*token;
 

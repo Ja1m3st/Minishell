@@ -16,7 +16,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 {
 	(void)argv;
 	mini->input = NULL;
-	mini->input = NULL;
 	mini->mini_cmds = NULL;
 	mini->env = NULL;
 	mini->log_name = NULL;
@@ -27,16 +26,16 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->oldpath = NULL;
 	mini->full_path = NULL;
 	mini->quote_types = NULL;
+	mini->is_last_cmd = 0;
+	mini->commands = malloc(sizeof(t_token *));
+	if (!mini->commands)
+		return ;
+	*mini->commands = NULL;
 	init_fds(mini);
 	dup_env(mini, env);
 	setup_signals();
 	disable_echoctl();
 	get_env_name(mini);
-	mini->commands = malloc(sizeof(t_token *));
-	if (!mini->commands)
-		return ;
-	*mini->commands = NULL;
-	mini->is_last_cmd = 0;
 }
 
 void	init_fds(t_mini *mini)

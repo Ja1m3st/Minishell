@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	builtin_cmds(t_mini *mini, t_token *token)
+void	builtin_commands(t_mini *mini, t_token *token)
 {
 	if (!ft_strcmp(token->cmd[0], "history"))
 		print_history();

@@ -53,7 +53,7 @@ int	swap_fds(t_mini *mini, t_token *token)
 	close(mini->temp_fd);
 	if (token->is_builtin)
 	{
-		builtin_cmds(mini, token);
+		builtin_commands(mini, token);
 		exit(EXIT_SUCCESS);
 	}
 	else

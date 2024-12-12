@@ -15,7 +15,7 @@
 void	error(t_mini *mini, char c)
 {
 	rl_clear_history();
-	free_tree(mini);
+	free_commands(mini);
 	free_mini(mini);
 	if (c == '!')
 		exit(EXIT_SUCCESS);
@@ -43,12 +43,14 @@ void	free_mini(t_mini *mini)
 	if (mini->input)
 		free(mini->input);
 	if (mini->quote_types)
-        	free(mini->quote_types);
+		free(mini->quote_types);
 	if (mini->mini_cmds)
-        	free_arr(mini->mini_cmds);	
+		free_arr(mini->mini_cmds);
+	if (mini->commands)
+		free(mini->commands);
 }
 
-void	free_tree(t_mini *mini)
+void	free_commands(t_mini *mini)
 {
 	t_token	*token;
 	t_token	*next_node;
@@ -60,14 +62,14 @@ void	free_tree(t_mini *mini)
 	while (token)
 	{
 		next_node = token->next;
-		free_tree2(token);
+		free_commands2(token);
 		free(token);
 		token = next_node;
 	}
 	*mini->commands = NULL;
 }
 
-void	free_tree2(t_token *token)
+void	free_commands2(t_token *token)
 {
 	if (!token)
 		return ;

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	tokenize(t_mini *mini, char **cmds)
+void	tokenize_commands(t_mini *mini, char **cmds)
 {
 	t_token	*token;
 
@@ -25,69 +25,55 @@ void	tokenize(t_mini *mini, char **cmds)
 		ft_tokenadd_back(mini, token);
 	}
 	if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
-		cmds += tokenize_commands(token, cmds, mini);
+		cmds += tokenize_cmds(token, cmds);
 	if (*cmds && is_input_redirect(*cmds))
-		cmds += tokenize_leftdirections(token, cmds, mini);
+		cmds += tokenize_leftdirections(token, cmds);
 	if (*cmds && is_output_redirect(*cmds))
-		cmds += tokenize_rightdirections(token, cmds, mini);
+		cmds += tokenize_rightdirections(token, cmds);
 	if (*cmds && !ft_strcmp(*cmds, "|"))
-		cmds += tokenize_pipedirections(token, cmds, mini);
-	if (cmds)
-		tokenize(mini, cmds);
+		cmds += tokenize_pipedirections(token, cmds);
+	if (*cmds)
+		tokenize_commands(mini, cmds);
 }
 
-int	tokenize_pipedirections(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_pipedirections(t_token *token, char **cmds)
 {
 	token->pipe = ft_strdup(*cmds);
-	mini->mini_cmds++;
 	token->complete = 1;
 	return (1);
 }
 
-int	tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_leftdirections(t_token *token, char **cmds)
 {
 	token->input_redir = ft_strdup(*cmds);
 	if (!ft_strcmp(*cmds, "<<"))
 	{
 		cmds++;
-		mini->mini_cmds++;
 		if (*cmds)
-		{
 			token->delimeter = ft_strdup(*cmds);
-			mini->mini_cmds++;
-		}
 	}
 	else if (!ft_strcmp(*cmds, "<"))
 	{
 		cmds++;
-		mini->mini_cmds++;
 		if (*cmds)
-		{
 			token->input_file = ft_strdup(*cmds);
-			mini->mini_cmds++;
-		}
-			
 	}
 	return (2);
 }
 
-int	tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_rightdirections(t_token *token, char **cmds)
 {
 	token->output_redir = ft_strdup(*cmds);
 	if (!ft_strcmp(*cmds, ">>") || !ft_strcmp(*cmds, ">"))
 	{
 		cmds++;
-		mini->mini_cmds++;
 		if (*cmds)
-		{
 			token->output_file = ft_strdup(*cmds);
-			mini->mini_cmds++;
-		}	
 	}
 	return (2);
 }
 
-int	tokenize_commands(t_token *token, char **cmds, t_mini *mini)
+int	tokenize_cmds(t_token *token, char **cmds)
 {
 	char	*temp;
 	char	*joined;
@@ -95,14 +81,13 @@ int	tokenize_commands(t_token *token, char **cmds, t_mini *mini)
 
 	i = 0;
 	token->is_builtin = is_builtin(*cmds);
-	while (mini->mini_cmds[i] && ft_strcmp(mini->mini_cmds[i], "|") && !is_redirect(mini->mini_cmds[i]))
+	while (cmds[i] && ft_strcmp(cmds[i], "|") && !is_redirect(cmds[i]))
 		i++;
 	token->cmd = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 	{
 		token->cmd[i] = ft_strdup(*cmds);
-		mini->mini_cmds++;
 		cmds++;
 		i++;
 	}

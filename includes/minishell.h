@@ -27,11 +27,12 @@
 # include <sys/types.h>
 # include <termios.h>
 
-typedef enum {
-    NO_QUOTE,
-    SINGLE_QUOTE,
-    DOUBLE_QUOTE
-} t_quote_type;
+typedef enum s_quote_type
+{
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
+}	t_quote_type;
 
 typedef struct s_token
 {
@@ -65,10 +66,10 @@ typedef struct s_mini
 	int		outfile;
 	int		fd[2];
 	int		temp_fd;
-	pid_t	pid;
-	t_quote_type *quote_types;
-	t_token	**commands;
 	int		is_last_cmd;
+	pid_t	pid;
+	t_token	**commands;
+	t_quote_type	*quote_types;
 }	t_mini;
 
 //------------------------------------------------------------------MAIN
@@ -90,16 +91,17 @@ void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-void	builtin_cmds(t_mini *mini, t_token *token);
-void	exec_cmds(t_mini *mini);
-void	tokenize(t_mini *mini, char **cmds);
+void	process_commands(t_mini *mini);
+void	builtin_commands(t_mini *mini, t_token *token);
+void	execute_commands(t_mini *mini);
+void	tokenize_commands(t_mini *mini, char **cmds);
 void	ft_tokenadd_back(t_mini *mini, t_token *token);
 void	set_in_out_file(t_mini *mini, t_token *token);
 t_token	*ft_newtoken(t_token *token);
-int		tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini);
-int		tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini);
-int		tokenize_pipedirections(t_token *token, char **cmds, t_mini *mini);
-int		tokenize_commands(t_token *token, char **cmds, t_mini *mini);
+int		tokenize_rightdirections(t_token *token, char **cmds);
+int		tokenize_leftdirections(t_token *token, char **cmds);
+int		tokenize_pipedirections(t_token *token, char **cmds);
+int		tokenize_cmds(t_token *token, char **cmds);
 //-------------------------------------------------------------------PIPES
 void	pipex(t_mini *mini, t_token *token);
 int		swap_fds(t_mini *mini, t_token *token);
@@ -125,8 +127,8 @@ char	*find_var(char *str, char c);
 void	here_doc(t_mini *mini, t_token *token);
 void	input_redirection(t_mini *mini, t_token *token);
 void	free_mini(t_mini *mini);
-void	free_tree(t_mini *mini);
-void	free_tree2(t_token *token);
+void	free_commands(t_mini *mini);
+void	free_commands2(t_token *token);
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
 int		array_len(char **array);
@@ -138,7 +140,6 @@ void	free_arr_cmds(char **array);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
-void process_command(t_mini *mini);
 void	ft_ptrdelchar(char *str, const char *chars);
 
 #endif

@@ -69,6 +69,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_strdelchar(const char *str, const char *chars);
+void	*ft_realloc(void *ptr, size_t cur_size, size_t new_size);
 
 //linked_lists
 void	ft_lstadd_front(t_list **lst, t_list *new);

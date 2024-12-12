@@ -25,7 +25,6 @@ void	free_arr_cmds(char **array)
 		array[i] = NULL;
 		i++;
 	}
-	// free(array);
 	array = NULL;
 }
 

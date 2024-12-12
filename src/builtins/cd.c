@@ -44,7 +44,8 @@ static char	*check_per(t_mini *mini, char *path)
 {
 	if (!mini->mini_cmds[1] || ft_strcmp(mini->mini_cmds[1], "~") == 0)
 		path = ft_strdup(find_path(mini, "HOME="));
-	else if (ft_strncmp(mini->mini_cmds[1], "~", 1) == 0 && mini->mini_cmds[1][1] != '\0')
+	else if (ft_strncmp(mini->mini_cmds[1], "~", 1) == 0
+		&& mini->mini_cmds[1][1] != '\0')
 		path = ft_strjoin(find_path(mini, "HOME="), mini->mini_cmds[1] + 1);
 	return (path);
 }

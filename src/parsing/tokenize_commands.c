@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+int	check_valid_var(char **cmds);
 void	tokenize(t_mini *mini, char **cmds)
 {
 	t_token	*token;
@@ -87,14 +87,16 @@ int	tokenize_commands(t_token *token, char **cmds)
 	{
 		joined = ft_strjoin(temp, " ");
 		free(temp);
-		temp = ft_strjoin(joined, ft_strdelchar(*cmds, "\""));
+		temp = ft_strjoin(joined, *cmds);
 		free(joined);
 		cmds++;
 		i++;
 	}
-	token->cmd = ft_split(temp, ' ');
+	joined = ft_strdelchar(temp, "\"");
+	token->cmd = ft_split(joined, ' ');
 	if (token->is_builtin == 0)
 		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 	free(temp);
+	free(joined);
 	return (i);
 }

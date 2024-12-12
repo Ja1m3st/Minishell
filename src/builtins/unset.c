@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 11:54:29 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/03 16:57:52 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:01:31 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	unset(t_mini *mini)
 	char		*str;
 
 	x++;
-	str = ft_strdelchar(mini->cmds[x], "'\"");
+	str = ft_strdelchar(mini->mini_cmds[x], "'\"");
 	if (!str || find_env_variable(mini->env, str) == NULL)
 		return (free(str));
 	new_env = malloc(array_len(mini->env) * sizeof(char *));
@@ -69,7 +69,7 @@ void	unset(t_mini *mini)
 	free(str);
 	free_arr(mini->env);
 	mini->env = new_env;
-	if (mini->cmds[x + 1] && !ft_strchr(mini->cmds[x + 1], '|')
-		&& mini->cmds[x + 1] != NULL)
+	if (mini->mini_cmds[x + 1] && !ft_strchr(mini->mini_cmds[x + 1], '|')
+		&& mini->mini_cmds[x + 1] != NULL)
 		unset(mini);
 }

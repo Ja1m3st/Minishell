@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/02 12:11:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:54:57 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 void	init_struct(t_mini *mini, char **argv, char **env)
 {
 	(void)argv;
-	mini->env = NULL;
-	mini->env_name = NULL;
-	mini->full_name = NULL;
-	mini->log_name = NULL;
-	mini->path = NULL;
-	mini->sesion_name = NULL;
 	mini->input = NULL;
+	mini->input = NULL;
+	mini->mini_cmds = NULL;
+	mini->env = NULL;
+	mini->log_name = NULL;
+	mini->sesion_name = NULL;
+	mini->full_name = NULL;
+	mini->path = NULL;
+	mini->env_name = NULL;
 	mini->oldpath = NULL;
 	mini->full_path = NULL;
+	mini->quote_types = NULL;
 	init_fds(mini);
 	dup_env(mini, env);
 	setup_signals();

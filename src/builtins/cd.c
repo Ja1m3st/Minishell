@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/03 15:38:17 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:01:05 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 
 static char	*check_per(t_mini *mini, char *path)
 {
-	if (!mini->cmds[1] || ft_strcmp(mini->cmds[1], "~") == 0)
+	if (!mini->mini_cmds[1] || ft_strcmp(mini->mini_cmds[1], "~") == 0)
 		path = ft_strdup(find_path(mini, "HOME="));
-	else if (ft_strncmp(mini->cmds[1], "~", 1) == 0 && mini->cmds[1][1] != '\0')
-		path = ft_strjoin(find_path(mini, "HOME="), mini->cmds[1] + 1);
+	else if (ft_strncmp(mini->mini_cmds[1], "~", 1) == 0 && mini->mini_cmds[1][1] != '\0')
+		path = ft_strjoin(find_path(mini, "HOME="), mini->mini_cmds[1] + 1);
 	return (path);
 }
 
@@ -56,14 +56,14 @@ static char	*resolve_cd_path(t_mini *mini)
 
 	path = NULL;
 	cleaned_cmd = NULL;
-	if (mini->cmds[1])
-		cleaned_cmd = ft_strdelchar(mini->cmds[1], "'\"");
-	if (mini->cmds[1] && !ft_strncmp(mini->cmds[1], "\"~", 2))
+	if (mini->mini_cmds[1])
+		cleaned_cmd = ft_strdelchar(mini->mini_cmds[1], "'\"");
+	if (mini->mini_cmds[1] && !ft_strncmp(mini->mini_cmds[1], "\"~", 2))
 	{
 		write(2, "cd: invalid path: \"~\"\n", 22);
 		return (free(cleaned_cmd), NULL);
 	}
-	if (!mini->cmds[1] || ft_strchr(cleaned_cmd, '~'))
+	if (!mini->mini_cmds[1] || ft_strchr(cleaned_cmd, '~'))
 		path = check_per(mini, path);
 	else if (!ft_strcmp(cleaned_cmd, "-"))
 	{

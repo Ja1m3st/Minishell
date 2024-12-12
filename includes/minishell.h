@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 15:13:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:04:39 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@
 # include <sys/types.h>
 # include <termios.h>
 
+typedef enum {
+    NO_QUOTE,
+    SINGLE_QUOTE,
+    DOUBLE_QUOTE
+} t_quote_type;
+
 typedef struct s_token
 {
 	char			**cmd;
@@ -46,7 +52,7 @@ typedef struct s_token
 typedef struct s_mini
 {
 	char	*input;
-	char	**cmds;
+	char	**mini_cmds;
 	char	**env;
 	char	*log_name;
 	char	*sesion_name;
@@ -60,6 +66,7 @@ typedef struct s_mini
 	int		fd[2];
 	int		temp_fd;
 	pid_t	pid;
+	t_quote_type *quote_types;
 	t_token	**commands;
 	int		is_last_cmd;
 }	t_mini;
@@ -89,10 +96,10 @@ void	tokenize(t_mini *mini, char **cmds);
 void	ft_tokenadd_back(t_mini *mini, t_token *token);
 void	set_in_out_file(t_mini *mini, t_token *token);
 t_token	*ft_newtoken(t_token *token);
-int		tokenize_rightdirections(t_token *token, char **cmds);
-int		tokenize_leftdirections(t_token *token, char **cmds);
-int		tokenize_pipedirections(t_token *token, char **cmds);
-int		tokenize_commands(t_token *token, char **cmds);
+int		tokenize_rightdirections(t_token *token, char **cmds, t_mini *mini);
+int		tokenize_leftdirections(t_token *token, char **cmds, t_mini *mini);
+int		tokenize_pipedirections(t_token *token, char **cmds, t_mini *mini);
+int		tokenize_commands(t_token *token, char **cmds, t_mini *mini);
 //-------------------------------------------------------------------PIPES
 void	pipex(t_mini *mini, t_token *token);
 int		swap_fds(t_mini *mini, t_token *token);
@@ -127,6 +134,7 @@ int		is_builtin(char *cmd);
 int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
 int		is_output_redirect(char *cmd);
+void	free_arr_cmds(char **array);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);

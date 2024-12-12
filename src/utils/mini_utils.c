@@ -6,11 +6,28 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/11/26 16:40:03 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:04:26 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_arr_cmds(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array || !*array)
+		return ;
+	while (array[i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	// free(array);
+	array = NULL;
+}
 
 void	free_arr(char **array)
 {

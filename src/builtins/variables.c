@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:57:14 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/26 12:57:15 by ctommasi         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:01:52 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*get_var(t_mini *mini)
 	char	*var_name;
 
 	arr_len = array_len(mini->env);
-	var_name = find_var(mini->cmds[0], '$');
-	if (ft_strlen(mini->cmds[0]) == 1)
+	var_name = find_var(mini->mini_cmds[0], '$');
+	if (ft_strlen(mini->mini_cmds[0]) == 1)
 		return (NULL);
 	i = 0;
 	while (i < arr_len)

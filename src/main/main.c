@@ -32,9 +32,10 @@ int	main(int argc, char **argv, char **env)
 		tokenize_commands(&mini, mini.mini_cmds);
 		print_tree_structure(&mini);
 		execute_commands(&mini);
+		free_arr(mini.mini_cmds);
 		free_commands(&mini);
 		free(mini.input);
-		free_arr(mini.mini_cmds);
+		
 	}
 	error(&mini, '!');
 	return (0);

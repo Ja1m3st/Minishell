@@ -84,6 +84,8 @@ int	tokenize_cmds(t_token *token, char **cmds)
 	while (cmds[i] && ft_strcmp(cmds[i], "|") && !is_redirect(cmds[i]))
 		i++;
 	token->cmd = malloc(sizeof(char *) * (i + 1));
+	if (!token->cmd)
+		return (-1);
 	i = 0;
 	while (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 	{

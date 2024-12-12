@@ -38,39 +38,48 @@ void	process_commands(t_mini *mini)
 	int		k;
 	char	*cmd;
 	t_quote_type	quote;
+	char	c;
  
 	i = 0;
 	j = 0;
 	k = 0;
 	cmd = NULL;
 	quote = NO_QUOTE;
-	mini->mini_cmds = malloc(sizeof(char *));
+	mini->mini_cmds = malloc(sizeof(char *) * ft_strlen(mini->input));
 	if (!mini->mini_cmds)
 		return ;
 	while (mini->input[i])
 	{
-		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE || mini->input[i] != ' ')
+		c = mini->input[i];
+		quote = get_quote(quote, c);
+		if (quote != NO_QUOTE || c != ' ')
 		{
 			cmd = ft_realloc(cmd, k, k + 2);
-			cmd[k++] = mini->input[i];
+			cmd[k++] = c;
 			cmd[k] = '\0';
 		}
-		if (quote == NO_QUOTE && mini->input[i] == ' ' && k > 0)
+		if (quote == NO_QUOTE && c == ' ' && k > 0)
 		{
-			mini->mini_cmds = ft_realloc(mini->mini_cmds, j * sizeof(char *), (j + 2) * sizeof(char *));
-			mini->mini_cmds[j++] = cmd;
-			mini->mini_cmds[j] = NULL;
+			if (cmd)
+			{
+				mini->mini_cmds[j++] = ft_strdup(cmd);
+				free(cmd);
+				mini->mini_cmds[j] = NULL;
+			}
 			k = 0;
 		}
 		i++;
 	}
 	if (k > 0)
 	{
-		mini->mini_cmds = ft_realloc(mini->mini_cmds, j * sizeof(char *), (j + 2) * sizeof(char *));
-		mini->mini_cmds[j++] = cmd;
+		if (cmd)
+		{
+			mini->mini_cmds[j++] = ft_strdup(cmd);
+			free(cmd);
+			mini->mini_cmds[j] = NULL;
+		}
+		
 	}
-	mini->mini_cmds = ft_realloc(mini->mini_cmds, j * sizeof(char *), (j + 2) * sizeof(char *));
 	mini->mini_cmds[j] = NULL;
 }
 

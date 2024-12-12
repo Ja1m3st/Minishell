@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-int	check_valid_var(char **cmds);
+
 void	tokenize(t_mini *mini, char **cmds)
 {
 	t_token	*token;

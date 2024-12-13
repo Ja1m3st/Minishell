@@ -91,6 +91,7 @@ void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
+void	get_terminal_commands(t_mini *mini, t_token *token);
 void	process_commands(t_mini *mini);
 void	builtin_commands(t_mini *mini, t_token *token);
 void	execute_commands(t_mini *mini);

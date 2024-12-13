@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-#include "minishell.h"
-
 char	*find_env_variable(char **env, const char *key)
 {
 	int	i;

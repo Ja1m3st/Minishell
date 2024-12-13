@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 14:05:09 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:25:37 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	execute_commands(t_mini *mini)
 	if (!mini->commands)
 		return ;
 	token = *mini->commands;
-	if (!token->next)
-		return (get_terminal_commands(mini, token));
+/* 	if (!token->next)
+		builtin_commands(mini, token); */
 	mini->temp_fd = mini->infile;
 	while (token)
 	{

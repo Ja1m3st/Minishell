@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/12 16:04:39 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:25:37 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,23 @@ typedef struct s_token
 
 typedef struct s_mini
 {
-	char	*input;
-	char	**mini_cmds;
-	char	**env;
-	char	*log_name;
-	char	*sesion_name;
-	char	*full_name;
-	char	*path;
-	char	*env_name;
-	char	*oldpath;
-	char	*full_path;
-	int		infile;
-	int		outfile;
-	int		fd[2];
-	int		temp_fd;
-	int		is_last_cmd;
-	pid_t	pid;
-	t_token	**commands;
+	char			*input;
+	char			**mini_cmds;
+	char			**env;
+	char			*log_name;
+	char			*sesion_name;
+	char			*full_name;
+	char			*path;
+	char			*env_name;
+	char			*oldpath;
+	char			*full_path;
+	int				infile;
+	int				outfile;
+	int				fd[2];
+	int				temp_fd;
+	int				is_last_cmd;
+	pid_t			pid;
+	t_token			**commands;
 	t_quote_type	*quote_types;
 }	t_mini;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/12 16:40:20 by ctommasi         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:29:02 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,53 +33,46 @@ t_quote_type	get_quote(t_quote_type quote, char c)
 
 void	process_commands(t_mini *mini)
 {
-	int		i;
-	int		j;
-	int		k;
-	char	*cmd;
+	int				i;
+	int				j;
+	int				k;
+	char			*cmd;
 	t_quote_type	quote;
-	char	c;
- 
+
 	i = 0;
 	j = 0;
 	k = 0;
 	cmd = NULL;
 	quote = NO_QUOTE;
-	mini->mini_cmds = malloc(sizeof(char *) * ft_strlen(mini->input));
+	mini->mini_cmds = malloc(sizeof(char *) * (ft_strlen(mini->input) / 2 + 2));
 	if (!mini->mini_cmds)
 		return ;
 	while (mini->input[i])
 	{
-		c = mini->input[i];
-		quote = get_quote(quote, c);
-		if (quote != NO_QUOTE || c != ' ')
+		quote = get_quote(quote, mini->input[i]);
+		if (quote != NO_QUOTE || mini->input[i] != ' ')
 		{
 			cmd = ft_realloc(cmd, k, k + 2);
-			cmd[k++] = c;
+			cmd[k++] = mini->input[i];
 			cmd[k] = '\0';
 		}
-		if (quote == NO_QUOTE && c == ' ' && k > 0)
+		if (quote == NO_QUOTE && mini->input[i] == ' ' && k > 0)
 		{
 			if (cmd)
 			{
 				mini->mini_cmds[j++] = ft_strdup(cmd);
 				free(cmd);
-				mini->mini_cmds[j] = NULL;
+				cmd = NULL;
 			}
 			k = 0;
 		}
 		i++;
 	}
-	if (k > 0)
+	if (k > 0 && cmd)
 	{
-		if (cmd)
-		{
-			mini->mini_cmds[j++] = ft_strdup(cmd);
-			free(cmd);
-			mini->mini_cmds[j] = NULL;
-		}
-		
+		mini->mini_cmds[j++] = ft_strdup(cmd);
+		free(cmd);
+		cmd = NULL;
 	}
 	mini->mini_cmds[j] = NULL;
 }
-

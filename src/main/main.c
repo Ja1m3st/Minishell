@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/12 16:36:36 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:29:36 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
+	int		i;
 	char	*env_name;
 
 	if (argc != 1)
@@ -22,6 +23,7 @@ int	main(int argc, char **argv, char **env)
 	init_struct(&mini, argv, env);
 	while (1)
 	{
+		i = 0;
 		env_name = join_env_name(&mini);
 		mini.input = readline(env_name);
 		if (!mini.input)
@@ -29,13 +31,15 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
+		while (mini.mini_cmds[i])
+			ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");
 		tokenize_commands(&mini, mini.mini_cmds);
 		print_tree_structure(&mini);
 		execute_commands(&mini);
-		free_arr(mini.mini_cmds);
+		free_arr_cmds(mini.mini_cmds);
+		mini.mini_cmds = NULL;
 		free_commands(&mini);
 		free(mini.input);
-		
 	}
 	error(&mini, '!');
 	return (0);

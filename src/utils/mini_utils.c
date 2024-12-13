@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/12 16:04:26 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:26:47 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ void	free_arr_cmds(char **array)
 	while (array[i])
 	{
 		free(array[i]);
-		array[i] = NULL;
 		i++;
 	}
-	array = NULL;
+	free(array);
 }
 
 void	free_arr(char **array)

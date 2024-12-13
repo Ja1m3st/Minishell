@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:36:54 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/12 16:09:23 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:12:10 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_mini(t_mini *mini)
 	if (mini->quote_types)
 		free(mini->quote_types);
 	if (mini->mini_cmds)
-		free_arr(mini->mini_cmds);
+		free_arr_cmds(mini->mini_cmds);
 	if (mini->commands)
 		free(mini->commands);
 }

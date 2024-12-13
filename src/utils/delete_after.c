@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_after.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:20:28 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/05 17:20:43 by ctommasi         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:29:56 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,3 @@ void	print_tree_structure(t_mini *mini)
 		i++;
 	}
 }
-

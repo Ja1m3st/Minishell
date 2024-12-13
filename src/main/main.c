@@ -31,16 +31,15 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
-		while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
-			ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");
 		tokenize_commands(&mini, mini.mini_cmds);
-		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_arr_cmds(mini.mini_cmds);
 		mini.mini_cmds = NULL;
 		free_commands(&mini);
 		free(mini.input);
 	}
-	error(&mini, '!');
-	return (0);
+	return (error(&mini, '!'), 0);
 }
+// while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
+// 	ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");
+// print_tree_structure(&mini);

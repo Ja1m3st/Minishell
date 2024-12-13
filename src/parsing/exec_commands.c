@@ -20,26 +20,34 @@ void	execute_commands(t_mini *mini)
 		return ;
 	token = *mini->commands;
 	if (!token->next)
-		return (get_terminal_commands(mini, token));
-	mini->temp_fd = mini->infile;
+	{
+		get_terminal_commands(mini, token);
+		return ;
+	}
+	init_fds(mini);
+	mini->temp_fd = STDIN_FILENO;
 	while (token)
 	{
 		if (!token->next)
 			mini->is_last_cmd = 1;
 		set_in_out_file(mini, token);
 		pipex(mini, token);
+		restore_fds(mini);
 		token = token->next;
 	}
-	init_fds(mini);
 	mini->is_last_cmd = 0;
 	waitpid(mini->pid, NULL, 0);
+	close(mini->og_infile);
+	close(mini->og_outfile);
 }
 
 void	set_in_out_file(t_mini *mini, t_token *token)
 {
 	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
 	{
-		input_redirection(mini, token);
+		mini->infile = open(token->input_file, O_RDONLY);
+		if (mini->infile == -1)
+			return (perror("Error opening file.\n"));
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
@@ -50,22 +58,20 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 		mini->outfile = open(token->output_file,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (mini->outfile == -1)
-			return (perror("Error opening outfile.\n"));
+			return (perror("Error redirecting to file.\n"));
 	}
 	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
 	{
 		mini->outfile = open(token->output_file,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (mini->outfile == -1)
-			return (perror("Error opening outfile.\n"));
+			return (perror("Error appending to file.\n"));
 	}
 }
 
 void	get_terminal_commands(t_mini *mini, t_token *token)
 {
-	if (!token)
-		return ;
-	if (!mini)
+	if (!token || !mini)
 		return ;
 	if (token->input_redir || token->output_redir)
 		set_in_out_file(mini, token);
@@ -76,9 +82,12 @@ void	get_terminal_commands(t_mini *mini, t_token *token)
 		return ;
 	if (mini->pid == 0)
 	{
+		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
+			return (perror("Dup2 outfile error.\n"));
+		if (dup2(mini->infile, STDIN_FILENO) == -1)
+			return (perror("Dup2 infile error\n"));
 		if (execve(token->path, token->cmd, mini->env) == -1)
-			perror("Error: execve falló");
-		return ;
+			return (perror("Execve fail.\n"));
 	}
 	waitpid(mini->pid, NULL, 0);
 }

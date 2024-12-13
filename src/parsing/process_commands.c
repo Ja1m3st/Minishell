@@ -73,7 +73,6 @@ void	process_commands(t_mini *mini)
 	k = 0;
 	cmd = NULL;
 	quote = NO_QUOTE;
-	printf("%d\n", count_commands(mini));
 	mini->mini_cmds = malloc(sizeof(char *) * (count_commands(mini) + 1));
 	if (!mini->mini_cmds)
 		return ;

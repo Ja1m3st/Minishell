@@ -64,6 +64,8 @@ typedef struct s_mini
 	char			*full_path;
 	int				infile;
 	int				outfile;
+	int				og_infile;
+	int				og_outfile;
 	int				fd[2];
 	int				temp_fd;
 	int				is_last_cmd;
@@ -126,7 +128,6 @@ char	*get_var(t_mini *mini);
 char	*find_var(char *str, char c);
 //-------------------------------------------------------------------UTILS
 void	here_doc(t_mini *mini, t_token *token);
-void	input_redirection(t_mini *mini, t_token *token);
 void	free_mini(t_mini *mini);
 void	free_commands(t_mini *mini);
 void	free_commands2(t_token *token);
@@ -142,5 +143,6 @@ void	free_arr_cmds(char **array);
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
 void	ft_ptrdelchar(char *str, const char *chars);
+void	restore_fds(t_mini *mini);
 
 #endif

@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-void	get_terminal_commands(t_mini *mini, t_token *token)
-{
-	if (mini->full_path)
-		free(mini->full_path);
-	mini->full_path = ft_strjoin("/usr/bin/", token->cmd[0]);
-	if (!mini->full_path)
-		return ;
-	mini->pid = fork();
-	if (mini->pid == -1)
-		return ;
-	if (mini->pid == 0)
-	{
-		if (execve(token->cmd[0], token->cmd, mini->env) == -1)
-		{
-			execve(mini->full_path, token->cmd, mini->env);
-			perror("Error: execve falló");
-		}
-		return ;
-	}
-	waitpid(mini->pid, NULL, 0);
-}
-
 void	execute_commands(t_mini *mini)
 {
 	t_token	*token;
@@ -42,21 +20,7 @@ void	execute_commands(t_mini *mini)
 		return ;
 	token = *mini->commands;
 	if (!token->next)
-	{
-		if (token->input_file || token->input_redir
-			|| token->output_file || token->output_redir)
-			set_in_out_file(mini, token);
-		if (token->is_builtin)
-		{
-			builtin_commands(mini, token);
-			return ;
-		}
-		else
-		{
-			get_terminal_commands(mini, token);
-			return ;
-		}
-	}
+		return (get_terminal_commands(mini, token));
 	mini->temp_fd = mini->infile;
 	while (token)
 	{
@@ -95,4 +59,26 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 		if (mini->outfile == -1)
 			return (perror("Error opening outfile.\n"));
 	}
+}
+
+void	get_terminal_commands(t_mini *mini, t_token *token)
+{
+	if (!token)
+		return ;
+	if (!mini)
+		return ;
+	if (token->input_redir || token->output_redir)
+		set_in_out_file(mini, token);
+	if (token->is_builtin)
+		return (builtin_commands(mini, token));
+	mini->pid = fork();
+	if (mini->pid == -1)
+		return ;
+	if (mini->pid == 0)
+	{
+		if (execve(token->path, token->cmd, mini->env) == -1)
+			perror("Error: execve falló");
+		return ;
+	}
+	waitpid(mini->pid, NULL, 0);
 }

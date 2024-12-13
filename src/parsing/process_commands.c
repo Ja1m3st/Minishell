@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/13 12:29:02 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:49:06 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,40 @@ t_quote_type	get_quote(t_quote_type quote, char c)
 	return (quote);
 }
 
+int	count_commands(t_mini *mini)
+{
+	int				i;
+	int				count;
+	int				is_in_word;
+	t_quote_type	quote;
+
+	i = 0;
+	count = 0;
+	is_in_word = 0;
+	quote = NO_QUOTE;
+
+	while (mini->input[i])
+	{
+		quote = get_quote(quote, mini->input[i]);
+
+		if (quote != NO_QUOTE || mini->input[i] != ' ')
+		{
+			if (!is_in_word)
+			{
+				count++;
+				is_in_word = 1;
+			}
+		}
+		else if (mini->input[i] == ' ' && quote == NO_QUOTE)
+		{
+			is_in_word = 0;
+		}
+		i++;
+	}
+
+	return count;
+}
+
 void	process_commands(t_mini *mini)
 {
 	int				i;
@@ -44,7 +78,8 @@ void	process_commands(t_mini *mini)
 	k = 0;
 	cmd = NULL;
 	quote = NO_QUOTE;
-	mini->mini_cmds = malloc(sizeof(char *) * (ft_strlen(mini->input) / 2 + 2));
+	printf("%d\n", count_commands(mini));
+	mini->mini_cmds = malloc(sizeof(char *) * (count_commands(mini) + 1));
 	if (!mini->mini_cmds)
 		return ;
 	while (mini->input[i])

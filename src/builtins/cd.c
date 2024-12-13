@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/12 15:01:05 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:28:44 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,32 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	mini->env = new_env;
 }
 
-static char	*check_per(t_mini *mini, char *path)
+static char	*check_per(t_mini *mini, t_token *token, char *path)
 {
-	if (!mini->mini_cmds[1] || ft_strcmp(mini->mini_cmds[1], "~") == 0)
+	if (!token->cmd[1] || ft_strcmp(token->cmd[1], "~") == 0)
 		path = ft_strdup(find_path(mini, "HOME="));
-	else if (ft_strncmp(mini->mini_cmds[1], "~", 1) == 0
-		&& mini->mini_cmds[1][1] != '\0')
-		path = ft_strjoin(find_path(mini, "HOME="), mini->mini_cmds[1] + 1);
+	else if (ft_strncmp(token->cmd[1], "~", 1) == 0 && token->cmd[1][1] != '\0')
+		path = ft_strjoin(find_path(mini, "HOME="), token->cmd[1] + 1);
 	return (path);
 }
 
-static char	*resolve_cd_path(t_mini *mini)
+static char	*resolve_cd_path(t_mini *mini, t_token *token)
 {
 	char	*path;
 	char	*cleaned_cmd;
 
 	path = NULL;
 	cleaned_cmd = NULL;
-	if (mini->mini_cmds[1])
-		cleaned_cmd = ft_strdelchar(mini->mini_cmds[1], "'\"");
-	if (mini->mini_cmds[1] && !ft_strncmp(mini->mini_cmds[1], "\"~", 2))
+	if (token->cmd[1])
+		cleaned_cmd = ft_strdelchar(token->cmd[1], "'\"");
+	if (token->cmd[1] && (!ft_strncmp(token->cmd[1], "\"~", 2)
+		|| !ft_strncmp(token->cmd[1], "\'~", 2)))
 	{
-		write(2, "cd: invalid path: \"~\"\n", 22);
+		write(2, "cd: ~: No such file or directory\n", 34);
 		return (free(cleaned_cmd), NULL);
 	}
-	if (!mini->mini_cmds[1] || ft_strchr(cleaned_cmd, '~'))
-		path = check_per(mini, path);
+	if (!token->cmd[1] || ft_strchr(cleaned_cmd, '~'))
+		path = check_per(mini, token, path);
 	else if (!ft_strcmp(cleaned_cmd, "-"))
 	{
 		if (mini->oldpath == NULL)
@@ -79,7 +79,7 @@ static char	*resolve_cd_path(t_mini *mini)
 	return (free(cleaned_cmd), path);
 }
 
-void	cd(t_mini *mini)
+void	cd(t_mini *mini, t_token *token)
 {
 	char	*path;
 	char	*oldpath;
@@ -91,7 +91,7 @@ void	cd(t_mini *mini)
 	if (mini->oldpath == NULL)
 		mini->oldpath = ft_strdup(cwd);
 	free(oldpath);
-	path = resolve_cd_path(mini);
+	path = resolve_cd_path(mini, token);
 	if (!path)
 		return ;
 	if (chdir(path) == -1)

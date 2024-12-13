@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/13 12:49:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:56:30 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,9 @@ int	count_commands(t_mini *mini)
 	count = 0;
 	is_in_word = 0;
 	quote = NO_QUOTE;
-
 	while (mini->input[i])
 	{
 		quote = get_quote(quote, mini->input[i]);
-
 		if (quote != NO_QUOTE || mini->input[i] != ' ')
 		{
 			if (!is_in_word)
@@ -56,13 +54,10 @@ int	count_commands(t_mini *mini)
 			}
 		}
 		else if (mini->input[i] == ' ' && quote == NO_QUOTE)
-		{
 			is_in_word = 0;
-		}
 		i++;
 	}
-
-	return count;
+	return (count);
 }
 
 void	process_commands(t_mini *mini)

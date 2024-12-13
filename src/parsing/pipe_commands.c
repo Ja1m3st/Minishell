@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 12:55:03 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:33:25 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 void	pipex(t_mini *mini, t_token *token)
 {
-	if (token->cmd && token->cmd[0] && !ft_strcmp(token->cmd[0], "exit"))
-		error(mini, '!');
-	if (token->cmd && token->cmd[0] && !ft_strcmp(token->cmd[0], "export"))
-		export(mini, token);
 	if (pipe(mini->fd) == -1)
 		return (perror("Pipe error\n"));
 	mini->pid = fork();

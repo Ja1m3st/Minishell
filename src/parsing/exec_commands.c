@@ -1,16 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_commands.c                                     :+:      :+:    :+:   */
+/*   exec_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/02 16:10:26 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:37:39 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	get_terminal_commands(t_mini *mini, t_token *token)
+{
+	if (mini->full_path)
+		free(mini->full_path);
+	mini->full_path = ft_strjoin("/usr/bin/", token->cmd[0]);
+	if (!mini->full_path)
+		return ;
+	mini->pid = fork();
+	if (mini->pid == -1)
+		return ;
+	if (mini->pid == 0)
+	{
+		if (execve(token->cmd[0], token->cmd, mini->env) == -1)
+		{
+			execve(mini->full_path, token->cmd, mini->env);
+			perror("Error: execve falló");
+		}
+		return ;
+	}
+	waitpid(mini->pid, NULL, 0);
+}
 
 void	execute_commands(t_mini *mini)
 {
@@ -19,6 +41,22 @@ void	execute_commands(t_mini *mini)
 	if (!mini->commands)
 		return ;
 	token = *mini->commands;
+	if (!token->next)
+	{
+		if (token->input_file || token->input_redir
+			|| token->output_file || token->output_redir)
+			set_in_out_file(mini, token);
+		if (token->is_builtin)
+		{
+			builtin_commands(mini, token);
+			return ;
+		}
+		else
+		{
+			get_terminal_commands(mini, token);
+			return ;
+		}
+	}
 	mini->temp_fd = mini->infile;
 	while (token)
 	{

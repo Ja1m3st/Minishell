@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 12:53:40 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:59:11 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
-		while (mini.mini_cmds[i])
+		while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
 			ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");
 		tokenize_commands(&mini, mini.mini_cmds);
 		print_tree_structure(&mini);

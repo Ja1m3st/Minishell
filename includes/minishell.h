@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 12:25:37 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:25:48 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char	*parse_string(t_token *token);
 //---------------------------------------------------------------------PWD
 void	print_pwd(t_mini *mini);
 //----------------------------------------------------------------------CD
-void	cd(t_mini *mini);
+void	cd(t_mini *mini, t_token *token);
 //------------------------------------------------------------------EXPORT
 void	export(t_mini *mini, t_token *token);
 void	new_export(t_mini *mini, t_token *token, int n);

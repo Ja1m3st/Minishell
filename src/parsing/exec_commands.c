@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:37:39 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:41:57 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	get_terminal_commands(t_mini *mini, t_token *token)
 {
-	if (mini->full_path)
-		free(mini->full_path);
-	mini->full_path = ft_strjoin("/usr/bin/", token->cmd[0]);
-	if (!mini->full_path)
+	if (token->path)
+		free(token->path);
+	token->path= ft_strjoin("/usr/bin/", token->cmd[0]);
+	if (!token->path)
 		return ;
 	mini->pid = fork();
 	if (mini->pid == -1)
@@ -26,7 +26,7 @@ void	get_terminal_commands(t_mini *mini, t_token *token)
 	{
 		if (execve(token->cmd[0], token->cmd, mini->env) == -1)
 		{
-			execve(mini->full_path, token->cmd, mini->env);
+			execve(token->path, token->cmd, mini->env);
 			perror("Error: execve falló");
 		}
 		return ;

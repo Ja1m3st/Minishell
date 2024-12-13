@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:25:48 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:53:58 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	new_export(t_mini *mini, t_token *token, int n);
 int		check_valid_export(t_token *token, int n);
 int		export_exists(t_mini *mini, t_token *token, int n);
 //-------------------------------------------------------------------UNSET
-void	unset(t_mini *mini);
+void	unset(t_token *token, t_mini *mini);
 char	*find_path(t_mini *mini, char *path);
 //----------------------------------------------------------VARIABLE CALLS
 char	*get_var(t_mini *mini);

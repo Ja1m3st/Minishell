@@ -6,9 +6,11 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 11:54:29 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/12 15:01:31 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:54:45 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 #include "minishell.h"
 
@@ -52,24 +54,24 @@ char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 	return (new_env);
 }
 
-void	unset(t_mini *mini)
+void unset(t_token *token, t_mini *mini)
 {
-	char		**new_env;
-	static int	x;
-	char		*str;
+    char **new_env;
+    int x;
 
-	x++;
-	str = ft_strdelchar(mini->mini_cmds[x], "'\"");
-	if (!str || find_env_variable(mini->env, str) == NULL)
-		return (free(str));
-	new_env = malloc(array_len(mini->env) * sizeof(char *));
-	if (!new_env)
-		error(mini, 'M');
-	new_env = ft_new_env(mini, str, new_env);
-	free(str);
-	free_arr(mini->env);
-	mini->env = new_env;
-	if (mini->mini_cmds[x + 1] && !ft_strchr(mini->mini_cmds[x + 1], '|')
-		&& mini->mini_cmds[x + 1] != NULL)
-		unset(mini);
+    x = 1;
+    while (token->cmd[x])
+    {
+        if (find_env_variable(mini->env, token->cmd[x]) != NULL)
+        {
+            new_env = malloc(array_len(mini->env) * sizeof(char *));
+            if (!new_env)
+                error(mini, 'M');
+            new_env = ft_new_env(mini, token->cmd[x], new_env);
+            free_arr(mini->env);
+            mini->env = new_env;
+        }
+        x++;
+    }
 }
+

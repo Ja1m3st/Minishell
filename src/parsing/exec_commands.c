@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:41:57 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:05:09 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 
 void	get_terminal_commands(t_mini *mini, t_token *token)
 {
-	if (!token)
-		return ;
-	if (!mini)
+	if (!token || !mini)
 		return ;
 	if (token->input_redir || token->output_redir)
 		set_in_out_file(mini, token);

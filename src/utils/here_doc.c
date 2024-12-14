@@ -35,5 +35,6 @@ void	here_doc(t_mini *mini, t_token *token)
 		free(line);
 	}
 	close(fd[1]);
-	mini->temp_fd = fd[0];
+	if (dup2(fd[0], mini->infile) == -1)
+		return (perror("Here Doc Error.\n"), exit(EXIT_FAILURE));
 }

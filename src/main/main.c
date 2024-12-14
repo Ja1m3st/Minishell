@@ -42,4 +42,3 @@ int	main(int argc, char **argv, char **env)
 }
 // while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
 // 	ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");
-// print_tree_structure(&mini);

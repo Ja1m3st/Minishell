@@ -18,27 +18,21 @@ void	execute_commands(t_mini *mini)
 
 	if (!mini->commands)
 		return ;
-	token = *mini->commands;
-	if (!token->next)
-	{
-		get_terminal_commands(mini, token);
-		return ;
-	}
 	init_fds(mini);
-	mini->temp_fd = STDIN_FILENO;
+	token = *mini->commands;
+	if (token && !token->next && is_builtin(token->cmd[0]))
+		return (set_in_out_file(mini, token), builtin_commands(mini, token));
+	if (pipe(mini->fd) == -1)
+		return (perror("Pipe error\n"));
 	while (token)
 	{
 		if (!token->next)
-			mini->is_last_cmd = 1;
-		set_in_out_file(mini, token);
+			mini->is_last_cmd = !mini->is_last_cmd;
 		pipex(mini, token);
-		restore_fds(mini);
+		mini->is_first_cmd = 0;
 		token = token->next;
 	}
-	mini->is_last_cmd = 0;
-	waitpid(mini->pid, NULL, 0);
-	close(mini->og_infile);
-	close(mini->og_outfile);
+	restore_fds(mini);
 }
 
 void	set_in_out_file(t_mini *mini, t_token *token)
@@ -67,27 +61,4 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 		if (mini->outfile == -1)
 			return (perror("Error appending to file.\n"));
 	}
-}
-
-void	get_terminal_commands(t_mini *mini, t_token *token)
-{
-	if (!token || !mini)
-		return ;
-	if (token->input_redir || token->output_redir)
-		set_in_out_file(mini, token);
-	if (token->is_builtin)
-		return (builtin_commands(mini, token));
-	mini->pid = fork();
-	if (mini->pid == -1)
-		return ;
-	if (mini->pid == 0)
-	{
-		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
-			return (perror("Dup2 outfile error.\n"));
-		if (dup2(mini->infile, STDIN_FILENO) == -1)
-			return (perror("Dup2 infile error\n"));
-		if (execve(token->path, token->cmd, mini->env) == -1)
-			return (perror("Execve fail.\n"));
-	}
-	waitpid(mini->pid, NULL, 0);
 }

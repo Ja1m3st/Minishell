@@ -16,17 +16,23 @@ void	init_fds(t_mini *mini)
 {
 	mini->infile = STDIN_FILENO;
 	mini->outfile = STDOUT_FILENO;
-	mini->og_infile = dup(STDIN_FILENO);
-	mini->og_outfile = dup(STDOUT_FILENO);
 	mini->fd[0] = -1;
 	mini->fd[1] = -1;
-	mini->temp_fd = STDIN_FILENO;
+	mini->is_first_cmd = 1; 
+	mini->is_last_cmd = 0;
 }
 
 void	restore_fds(t_mini *mini)
 {
-	if (dup2(mini->og_infile, STDIN_FILENO) == -1)
-		perror("Error restoring stdin");
-	if (dup2(mini->og_outfile, STDOUT_FILENO) == -1)
-		perror("Error restoring stdout");
+	if (mini->infile != STDIN_FILENO)
+	{
+		close(mini->infile);
+		mini->infile = STDIN_FILENO;
+	}
+	if (mini->outfile != STDOUT_FILENO)
+	{
+		close(mini->outfile);
+		mini->outfile = STDOUT_FILENO;
+	}
 }
+

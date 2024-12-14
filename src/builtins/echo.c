@@ -28,7 +28,6 @@ void	echo(t_mini *mini, t_token *token)
 		write(mini->outfile, str, ft_strlen(str));
 		free(str);
 	}
-	close(mini->outfile);
 }
 
 char	*parse_string(t_token *token)

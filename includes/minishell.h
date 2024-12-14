@@ -64,11 +64,9 @@ typedef struct s_mini
 	char			*full_path;
 	int				infile;
 	int				outfile;
-	int				og_infile;
-	int				og_outfile;
 	int				fd[2];
-	int				temp_fd;
 	int				is_last_cmd;
+	int				is_first_cmd;
 	pid_t			pid;
 	t_token			**commands;
 	t_quote_type	*quote_types;

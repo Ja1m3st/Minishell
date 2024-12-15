@@ -90,3 +90,13 @@ void	free_commands2(t_token *token)
 	if (token->pipe)
 		free(token->pipe);
 }
+
+void	free_main(t_mini *mini)
+{
+	if (!mini)
+		return ;
+	free_arr_cmds(mini->mini_cmds);
+	mini->mini_cmds = NULL;
+	free_commands(mini);
+	free(mini->input);
+}

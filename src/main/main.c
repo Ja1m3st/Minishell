@@ -15,7 +15,6 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
-	int		i;
 	char	*env_name;
 
 	if (argc != 1)
@@ -23,22 +22,24 @@ int	main(int argc, char **argv, char **env)
 	init_struct(&mini, argv, env);
 	while (1)
 	{
-		i = 0;
 		env_name = join_env_name(&mini);
 		mini.input = readline(env_name);
 		if (!mini.input)
 			break ;
+		if (*mini.input == '\0')
+		{
+			free(mini.input);
+			continue ;
+		}
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
 		tokenize_commands(&mini, mini.mini_cmds);
 		execute_commands(&mini);
-		free_arr_cmds(mini.mini_cmds);
-		mini.mini_cmds = NULL;
-		free_commands(&mini);
-		free(mini.input);
+		free_main(&mini);
 	}
-	return (error(&mini, '!'), 0);
+	error(&mini, '!');
+	return (0);
 }
 // while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
 // 	ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");

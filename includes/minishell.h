@@ -91,7 +91,6 @@ void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-void	get_terminal_commands(t_mini *mini, t_token *token);
 void	process_commands(t_mini *mini);
 void	builtin_commands(t_mini *mini, t_token *token);
 void	execute_commands(t_mini *mini);
@@ -125,6 +124,8 @@ char	*find_path(t_mini *mini, char *path);
 char	*get_var(t_mini *mini);
 char	*find_var(char *str, char c);
 //-------------------------------------------------------------------UTILS
+void	free_main(t_mini *mini);
+void	restore_fds(t_mini *mini);
 void	here_doc(t_mini *mini, t_token *token);
 void	free_mini(t_mini *mini);
 void	free_commands(t_mini *mini);
@@ -141,6 +142,5 @@ void	free_arr_cmds(char **array);
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
 void	ft_ptrdelchar(char *str, const char *chars);
-void	restore_fds(t_mini *mini);
 
 #endif

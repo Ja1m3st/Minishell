@@ -52,24 +52,23 @@ char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 	return (new_env);
 }
 
-void unset(t_token *token, t_mini *mini)
+void	unset(t_token *token, t_mini *mini)
 {
-    char **new_env;
-    int x;
+	char	**new_env;
+	int		x;
 
-    x = 1;
-    while (token->cmd[x])
-    {
-        if (find_env_variable(mini->env, token->cmd[x]) != NULL)
-        {
-            new_env = malloc(array_len(mini->env) * sizeof(char *));
-            if (!new_env)
-                error(mini, 'M');
-            new_env = ft_new_env(mini, token->cmd[x], new_env);
-            free_arr(mini->env);
-            mini->env = new_env;
-        }
-        x++;
-    }
+	x = 1;
+	while (token->cmd[x])
+	{
+		if (find_env_variable(mini->env, token->cmd[x]) != NULL)
+		{
+			new_env = malloc(array_len(mini->env) * sizeof(char *));
+			if (!new_env)
+				error(mini, 'M');
+			new_env = ft_new_env(mini, token->cmd[x], new_env);
+			free_arr(mini->env);
+			mini->env = new_env;
+		}
+		x++;
+	}
 }
-

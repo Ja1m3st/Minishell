@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 11:38:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:03:04 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,45 +61,26 @@ int process_input_single(char *str, char chr)
 		i++;
 		while (str[i] != '\0')
 		{
-			if (str[i] == '\\')
-			{	
-				if (str[i + 1] == '\"')
-				{
-					str[j++] ='\\';
-					str[j++] ='\"';
-					i+=2;
-				}
-				else if (str[i + 1] == '\'')
-				{
-					str[j++] ='\\';
-					str[j++] ='\'';
-					i+=2;
-				}
-				else if (str[i + 1] == 'n')
-				{
-					str[j++] ='\\';
-					str[j++] ='n';
-					i+=2;
-				}
-				if (str[i + 1] == '\\')
-				{
-					str[j++] ='\\';
-					i++;
-				}
-				else if (str[i+ 1] != '\0')
-					str[j++] = str[i++];
-				else
-				{
-					i++;
-					break ;
-				}
-			}
-			else
-				str[j++] = str[i++];
+            if (str[i] == '\\' && (str[i + 1] == '\"' || str[i + 1] == '\'' || str[i + 1] == '\\'))
+            {
+                str[j++] = '\\';
+                str[j++] = str[++i];
+            }
+            else if (str[i] == '\\' && str[i + 1] == 'n')
+            {
+                str[j++] = '\\';
+                str[j++] = 'n';
+                i++;
+            }
+            else
+            {
+                str[j++] = str[i];
+            }
+            i++;
 		}
-		if (str[i - 1] == chr)
+        if (i > 0 && str[i - 1] == chr)
             j--;
-		str[j] = '\0';
+        str[j] = '\0';
 		return (1);
 	}
 	return (0);

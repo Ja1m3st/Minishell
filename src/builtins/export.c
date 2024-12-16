@@ -20,6 +20,7 @@ void	export(t_mini *mini, t_token *token)
 	if (!token->cmd[1])
 		return ;
 	n = 1;
+	pos = -1;
 	while (token->cmd[n])
 	{
 		if (check_valid_export(token, n))

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 14:25:37 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:44:25 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,30 @@ void	execute_commands(t_mini *mini)
 
 	if (!mini->commands)
 		return ;
+	init_fds(mini);
 	token = *mini->commands;
-/* 	if (!token->next)
-		builtin_commands(mini, token); */
-	mini->temp_fd = mini->infile;
+	if (token && !token->next && is_builtin(token->cmd[0]))
+		return (set_in_out_file(mini, token), builtin_commands(mini, token));
+	if (pipe(mini->fd) == -1)
+		return (perror("Pipe error\n"));
 	while (token)
 	{
 		if (!token->next)
-			mini->is_last_cmd = 1;
-		set_in_out_file(mini, token);
+			mini->is_last_cmd = !mini->is_last_cmd;
 		pipex(mini, token);
+		mini->is_first_cmd = 0;
 		token = token->next;
 	}
-	init_fds(mini);
-	mini->is_last_cmd = 0;
-	waitpid(mini->pid, NULL, 0);
+	restore_fds(mini);
 }
 
 void	set_in_out_file(t_mini *mini, t_token *token)
 {
 	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
 	{
-		input_redirection(mini, token);
+		mini->infile = open(token->input_file, O_RDONLY);
+		if (mini->infile == -1)
+			return (perror("Error opening file.\n"));
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
@@ -50,33 +52,13 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 		mini->outfile = open(token->output_file,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (mini->outfile == -1)
-			return (perror("Error opening outfile.\n"));
+			return (perror("Error redirecting to file.\n"));
 	}
 	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
 	{
 		mini->outfile = open(token->output_file,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (mini->outfile == -1)
-			return (perror("Error opening outfile.\n"));
+			return (perror("Error appending to file.\n"));
 	}
-}
-
-void	get_terminal_commands(t_mini *mini, t_token *token)
-{
-	if (!token || !mini)
-		return ;
-	if (token->input_redir || token->output_redir)
-		set_in_out_file(mini, token);
-	if (token->is_builtin)
-		return (builtin_commands(mini, token));
-	mini->pid = fork();
-	if (mini->pid == -1)
-		return ;
-	if (mini->pid == 0)
-	{
-		if (execve(token->path, token->cmd, mini->env) == -1)
-			perror("Error: execve falló");
-		return ;
-	}
-	waitpid(mini->pid, NULL, 0);
 }

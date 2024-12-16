@@ -62,25 +62,3 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 			return (perror("Error appending to file.\n"));
 	}
 }
-
-void	get_terminal_commands(t_mini *mini, t_token *token)
-{
-	if (!token)
-		return ;
-	if (!mini)
-		return ;
-	if (token->input_redir || token->output_redir)
-		set_in_out_file(mini, token);
-	if (token->is_builtin)
-		return (builtin_commands(mini, token));
-	mini->pid = fork();
-	if (mini->pid == -1)
-		return ;
-	if (mini->pid == 0)
-	{
-		if (execve(token->path, token->cmd, mini->env) == -1)
-			perror("Error: execve falló");
-		return ;
-	}
-	waitpid(mini->pid, NULL, 0);
-}

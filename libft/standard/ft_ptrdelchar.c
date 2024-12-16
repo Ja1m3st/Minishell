@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:23:32 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 12:23:49 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:41:32 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@ void	ft_ptrdelchar(char *str, const char *chars)
 {
 	int		i;
 	int		j;
+	int		len;
 
 	if (!str || !chars)
 		return ;
 	i = 0;
 	j = 0;
+	len = ft_strlen(str);
 	while (str[i])
 	{
-		if (!ft_strchr(chars, str[i]))
+/* 		if (!ft_strchr(chars, str[i]) && i != 0 && i != (len - 1))
+			str[j++] = str[i];
+		i++; */
+		if (i != 0 && i != (len - 1))
 			str[j++] = str[i];
 		i++;
 	}

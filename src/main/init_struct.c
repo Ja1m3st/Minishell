@@ -37,12 +37,3 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	disable_echoctl();
 	get_env_name(mini);
 }
-
-void	init_fds(t_mini *mini)
-{
-	mini->infile = STDIN_FILENO;
-	mini->outfile = STDOUT_FILENO;
-	mini->fd[0] = -1;
-	mini->fd[1] = -1;
-	mini->temp_fd = -1;
-}

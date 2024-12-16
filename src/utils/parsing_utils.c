@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:29:04 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/13 13:25:28 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:12:09 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ void	builtin_commands(t_mini *mini, t_token *token)
 	else if (!ft_strcmp(token->cmd[0], "export"))
 		export(mini, token);
 	else if (!ft_strcmp(token->cmd[0], "unset"))
-		unset(mini);
+		unset(token, mini);
 	else if (!ft_strncmp(token->cmd[0], "$", 1))
 		printf("%s\n", get_var(mini));
 	else if (!ft_strcmp(token->cmd[0], "exit"))
+	{
+		write(mini->outfile, "exit\n", 5);
 		error(mini, '!');
+	}
 }
 
 int	is_builtin(char *cmd)

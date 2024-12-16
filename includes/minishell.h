@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:25:48 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:38:46 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ typedef struct s_mini
 	int				infile;
 	int				outfile;
 	int				fd[2];
-	int				temp_fd;
 	int				is_last_cmd;
+	int				is_first_cmd;
 	pid_t			pid;
 	t_token			**commands;
 	t_quote_type	*quote_types;
@@ -119,14 +119,15 @@ void	new_export(t_mini *mini, t_token *token, int n);
 int		check_valid_export(t_token *token, int n);
 int		export_exists(t_mini *mini, t_token *token, int n);
 //-------------------------------------------------------------------UNSET
-void	unset(t_mini *mini);
+void	unset(t_token *token, t_mini *mini);
 char	*find_path(t_mini *mini, char *path);
 //----------------------------------------------------------VARIABLE CALLS
 char	*get_var(t_mini *mini);
 char	*find_var(char *str, char c);
 //-------------------------------------------------------------------UTILS
+void	free_main(t_mini *mini);
+void	restore_fds(t_mini *mini);
 void	here_doc(t_mini *mini, t_token *token);
-void	input_redirection(t_mini *mini, t_token *token);
 void	free_mini(t_mini *mini);
 void	free_commands(t_mini *mini);
 void	free_commands2(t_token *token);
@@ -138,6 +139,8 @@ int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
 int		is_output_redirect(char *cmd);
 void	free_arr_cmds(char **array);
+int		process_input_multi(char *str, char chr);
+int		process_input_single(char *str, char chr);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);

@@ -59,7 +59,7 @@ static char	*resolve_cd_path(t_mini *mini, t_token *token)
 	if (token->cmd[1])
 		cleaned_cmd = ft_strdelchar(token->cmd[1], "'\"");
 	if (token->cmd[1] && (!ft_strncmp(token->cmd[1], "\"~", 2)
-		|| !ft_strncmp(token->cmd[1], "\'~", 2)))
+			|| !ft_strncmp(token->cmd[1], "\'~", 2)))
 	{
 		write(2, "cd: ~: No such file or directory\n", 34);
 		return (free(cleaned_cmd), NULL);

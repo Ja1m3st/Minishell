@@ -28,11 +28,11 @@ void	setup_signals(void)
 	ctrl_backslash.sa_handler = SIG_IGN;
 	ctrl_backslash.sa_flags = 0;
 	if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
-		perror("sigaction");
+		perror("sigaction ctrl + c");
 	if (sigaction(SIGQUIT, &ctrl_d, NULL) == -1)
-		perror("sigaction");
+		perror("sigaction ctrl + d");
 	if (sigaction(SIGQUIT, &ctrl_backslash, NULL) == -1)
-		perror("sigaction");
+		perror("sigaction ctrl + \\");
 }
 
 void	disable_echoctl(void)

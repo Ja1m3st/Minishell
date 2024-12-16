@@ -35,27 +35,6 @@ void	here_doc(t_mini *mini, t_token *token)
 		free(line);
 	}
 	close(fd[1]);
-	mini->temp_fd = fd[0];
-}
-
-void	input_redirection(t_mini *mini, t_token *token)
-{
-	char	*line;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		return (perror("Pipe Error\n"));
-	mini->infile = open(token->input_file, O_RDONLY);
-	if (mini->infile == -1)
-		return (perror("Error opening infile.\n"));
-	while (1)
-	{
-		line = get_next_line(mini->infile);
-		if (!line)
-			break ;
-		write(fd[1], line, ft_strlen(line));
-		free(line);
-	}
-	close(fd[1]);
-	mini->temp_fd = fd[0];
+	if (dup2(fd[0], mini->infile) == -1)
+		return (perror("Here Doc Error.\n"), exit(EXIT_FAILURE));
 }

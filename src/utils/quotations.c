@@ -125,11 +125,11 @@ int check_quotation(t_mini *mini, int i)
 	{
 		if (mini->mini_cmds[i] && mini->mini_cmds[i][0] != '\'')
 		{
-			if (check_input_multi(mini->mini_cmds[i]) == 0)
-			{
-				ft_printf("Error dquote\n");
-				return (0);
-			}
+			// if (check_input_multi(mini->mini_cmds[i]) == 0)
+			// {
+			// 	ft_printf("Error dquote\n");
+			// 	return (0);
+			// }
 			process_input_multi(mini->mini_cmds[i++], '"');
 		}
 		else
@@ -137,3 +137,4 @@ int check_quotation(t_mini *mini, int i)
 	}
 	return (1);
 }
+// echo $LOL

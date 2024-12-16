@@ -36,15 +36,13 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
-/* 		if (check_quotation(&mini, i) == 0)
-			continue ; */
+		// if (check_quotation(&mini, i) == 0)
+		// 	continue ;
+		variable_expansion(&mini);
 		tokenize_commands(&mini, mini.mini_cmds);
-		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}
 	error(&mini, '!');
 	return (0);
 }
-// while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
-// 	ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");

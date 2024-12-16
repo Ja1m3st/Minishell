@@ -147,5 +147,7 @@ int		check_quotation(t_mini *minim, int i);
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
 void	ft_ptrdelchar(char *str, const char *chars);
+void	variable_expansion(t_mini *mini);
+char	*get_var_value(t_mini *mini, char *mini_cmds);
 
 #endif

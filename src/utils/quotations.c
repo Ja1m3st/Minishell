@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 12:32:07 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:54:09 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,41 @@ int	check_input_multi(char *str)
 {
 	int	i;
 	int	count;
+	int	has_delimiters;
 
 	i = 0;
 	count = 0;
-/* 	while (str[i] != 0)
+	has_delimiters = 0;
+	if (str[i] == '\"')
 	{
-		if (str[i] == '\"' && str[])
+		has_delimiters = 1;
+	}
+	while (str[i] != 0)
+	{
+		if (str[i] == '\\')
 			count++;
 		i++;
 	}
-	if (count % 2 != 0) */
+	if (count % 2 == 0)
+		return (0);
+	return (1);
+}
+
+int check_quotation(t_mini *mini, int i)
+{
+	while (mini->mini_cmds[i] && !ft_strchr(mini->mini_cmds[i], '~'))
+	{
+		if (mini->mini_cmds[i] && mini->mini_cmds[i][0] != '\'')
+		{
+			if (check_input_multi(mini->mini_cmds[i]) == 0)
+			{
+				ft_printf("Error dquote\n");
+				return (0);
+			}
+			process_input_multi(mini->mini_cmds[i++], '"');
+		}
+		else
+			process_input_single(mini->mini_cmds[i++], '\'');
+	}
 	return (1);
 }

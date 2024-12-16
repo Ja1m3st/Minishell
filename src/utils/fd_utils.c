@@ -18,7 +18,7 @@ void	init_fds(t_mini *mini)
 	mini->outfile = STDOUT_FILENO;
 	mini->fd[0] = -1;
 	mini->fd[1] = -1;
-	mini->is_first_cmd = 1; 
+	mini->is_first_cmd = 1;
 	mini->is_last_cmd = 0;
 }
 
@@ -35,4 +35,3 @@ void	restore_fds(t_mini *mini)
 		mini->outfile = STDOUT_FILENO;
 	}
 }
-

@@ -122,8 +122,11 @@ int		export_exists(t_mini *mini, t_token *token, int n);
 void	unset(t_token *token, t_mini *mini);
 char	*find_path(t_mini *mini, char *path);
 //----------------------------------------------------------VARIABLE CALLS
-char	*get_var(t_mini *mini);
-char	*find_var(char *str, char c);
+char	*expand_variable(t_mini *mini, char *str);
+char	*extract_var_name(char *str, int *i);
+char	*add_var_value(t_mini *mini, char *res, char *var_name);
+char	*process_regular_char(char *res, char current_char, int *k);
+char	*get_var_value(t_mini *mini, char *var_name);
 //-------------------------------------------------------------------UTILS
 void	free_main(t_mini *mini);
 void	restore_fds(t_mini *mini);
@@ -147,7 +150,6 @@ int		check_quotation(t_mini *minim, int i);
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
 void	ft_ptrdelchar(char *str, const char *chars);
-void	variable_expansion(t_mini *mini);
-char	*get_var_value(t_mini *mini, char *mini_cmds);
+
 
 #endif

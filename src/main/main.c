@@ -38,7 +38,6 @@ int	main(int argc, char **argv, char **env)
 		process_commands(&mini);
 		// if (check_quotation(&mini, i) == 0)
 		// 	continue ;
-		variable_expansion(&mini);
 		tokenize_commands(&mini, mini.mini_cmds);
 		execute_commands(&mini);
 		free_main(&mini);

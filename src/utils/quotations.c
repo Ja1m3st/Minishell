@@ -121,6 +121,8 @@ int	check_input_multi(char *str)
 
 int check_quotation(t_mini *mini, int i)
 {
+	char	*temp;
+
 	while (mini->mini_cmds[i] && !ft_strchr(mini->mini_cmds[i], '~'))
 	{
 		if (mini->mini_cmds[i] && mini->mini_cmds[i][0] != '\'')

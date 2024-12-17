@@ -25,9 +25,6 @@ void	ft_ptrdelchar(char *str, const char *chars)
 	len = ft_strlen(str);
 	while (str[i])
 	{
-/* 		if (!ft_strchr(chars, str[i]) && i != 0 && i != (len - 1))
-			str[j++] = str[i];
-		i++; */
 		if (i != 0 && i != (len - 1))
 			str[j++] = str[i];
 		i++;

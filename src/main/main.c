@@ -16,15 +16,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
 	char	*env_name;
-	int		i;
-	int	i;
 
 	if (argc != 1)
 		return (1);
 	init_struct(&mini, argv, env);
 	while (1)
 	{
-		i = 0;
 		env_name = join_env_name(&mini);
 		mini.input = readline(env_name);
 		if (!mini.input)
@@ -37,12 +34,12 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
-		if (check_quotation(&mini) == 0)
+		if (!check_quotation(&mini))
 			continue ;
 		tokenize_commands(&mini, mini.mini_cmds);
+		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}
-	error(&mini, '!');
-	return (0);
+	return (error(&mini, '!'), 0);
 }

@@ -39,6 +39,7 @@ int	main(int argc, char **argv, char **env)
 		// if (check_quotation(&mini, i) == 0)
 		// 	continue ;
 		tokenize_commands(&mini, mini.mini_cmds);
+		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}

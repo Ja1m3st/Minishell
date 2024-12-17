@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 12:09:35 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:55:18 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
 	char	*env_name;
-	int i;
+	int	i;
 
 	if (argc != 1)
 		return (1);
@@ -36,20 +36,12 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
-		while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
-		{
-			if (mini.mini_cmds[i][0] == '"')
-				process_input_multi(mini.mini_cmds[i++], '"');
-			else
-				process_input_single(mini.mini_cmds[i++], '\'');
-		}
+		// if (check_quotation(&mini, i) == 0)
+		// 	continue ;
 		tokenize_commands(&mini, mini.mini_cmds);
-		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}
 	error(&mini, '!');
 	return (0);
 }
-// while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
-// 	ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");

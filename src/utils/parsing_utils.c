@@ -28,8 +28,6 @@ void	builtin_commands(t_mini *mini, t_token *token)
 		export(mini, token);
 	else if (!ft_strcmp(token->cmd[0], "unset"))
 		unset(token, mini);
-	else if (!ft_strncmp(token->cmd[0], "$", 1))
-		printf("%s\n", get_var(mini));
 	else if (!ft_strcmp(token->cmd[0], "exit"))
 	{
 		write(mini->outfile, "exit\n", 5);
@@ -46,8 +44,7 @@ int	is_builtin(char *cmd)
 		|| !ft_strcmp(cmd, "pwd")
 		|| !ft_strcmp(cmd, "export")
 		|| !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "exit")
-		|| !ft_strncmp(cmd, "$", 1));
+		|| !ft_strcmp(cmd, "exit"));
 }
 
 int	is_output_redirect(char *cmd)

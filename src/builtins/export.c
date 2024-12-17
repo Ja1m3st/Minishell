@@ -43,21 +43,29 @@ void	export(t_mini *mini, t_token *token)
 int	check_valid_export(t_token *token, int n)
 {
 	int	i;
+	int	check;
 
 	i = 0;
+	check = 0;
 	if (!token->cmd[n])
 		return (1);
 	while (token->cmd[n][i] != '=')
 	{
 		if (i == 0 && ft_isdigit(token->cmd[n][i]))
-			return (1);
+		{
+			check = 1;
+			break ;
+		}
 		else if (!(ft_isalnum(token->cmd[n][i]) || token->cmd[n][i] == '_'))
-			return (1);
+		{
+			check = 1;
+			break ;
+		}
 		i++;
 	}
-	if (token->cmd[n][i] == '=')
+	if (token->cmd[n][i] == '=' && !check)
 		return (0);
-	write(1, "Bad Assignment!\n", 16);
+	perror("export: Bad Assignment!\n");
 	return (1);
 }
 

@@ -40,7 +40,7 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	mini->env = new_env;
 }
 
-static char	*check_per(t_mini *mini, t_token *token, char *path)
+char	*check_per(t_mini *mini, t_token *token, char *path)
 {
 	if (!token->cmd[1] || ft_strcmp(token->cmd[1], "~") == 0)
 		path = ft_strdup(find_path(mini, "HOME="));
@@ -49,13 +49,11 @@ static char	*check_per(t_mini *mini, t_token *token, char *path)
 	return (path);
 }
 
-static char	*resolve_cd_path(t_mini *mini, t_token *token)
+char	*resolve_cd_path(t_mini *mini, t_token *token)
 {
 	char	*path;
 	char	*cleaned_cmd;
 
-	path = NULL;
-	cleaned_cmd = NULL;
 	if (token->cmd[1])
 		cleaned_cmd = ft_strdelchar(token->cmd[1], "'\"");
 	if (token->cmd[1] && (!ft_strncmp(token->cmd[1], "\"~", 2)

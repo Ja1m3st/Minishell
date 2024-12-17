@@ -125,6 +125,7 @@ int check_quotation(t_mini *mini, int i)
 
 	while (mini->mini_cmds[i] && !ft_strchr(mini->mini_cmds[i], '~'))
 	{
+		
 		if (mini->mini_cmds[i] && mini->mini_cmds[i][0] != '\'')
 		{
 			// if (check_input_multi(mini->mini_cmds[i]) == 0)
@@ -136,7 +137,7 @@ int check_quotation(t_mini *mini, int i)
 		}
 		else
 			process_input_single(mini->mini_cmds[i++], '\'');
+		
 	}
 	return (1);
 }
-// echo $LOL

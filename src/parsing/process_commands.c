@@ -12,96 +12,163 @@
 
 #include "minishell.h"
 
-t_quote_type	get_quote(t_quote_type quote, char c)
-{
-	if (c == '\'')
-	{
-		if (quote == NO_QUOTE)
-			return (SINGLE_QUOTE);
-		else if (quote == SINGLE_QUOTE)
-			return (NO_QUOTE);
-	}
-	else if (c == '\"')
-	{
-		if (quote == NO_QUOTE)
-			return (DOUBLE_QUOTE);
-		else if (quote == DOUBLE_QUOTE)
-			return (NO_QUOTE);
-	}
-	return (quote);
-}
-
-int	count_commands(t_mini *mini)
-{
-	int				i;
-	int				count;
-	int				is_in_word;
-	t_quote_type	quote;
-
-	i = 0;
-	count = 0;
-	is_in_word = 0;
-	quote = NO_QUOTE;
-	while (mini->input[i])
-	{
-		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE || mini->input[i] != ' ')
-		{
-			if (!is_in_word)
-			{
-				count++;
-				is_in_word = 1;
-			}
-		}
-		else if (mini->input[i] == ' ' && quote == NO_QUOTE)
-			is_in_word = 0;
-		i++;
-	}
-	return (count);
-}
-
 void	process_commands(t_mini *mini)
 {
 	int				i;
 	int				j;
 	int				k;
-	char			*cmd;
 	t_quote_type	quote;
+	char			*cmd;
 
 	i = 0;
 	j = 0;
 	k = 0;
 	cmd = NULL;
 	quote = NO_QUOTE;
-	mini->mini_cmds = malloc(sizeof(char *) * (count_commands(mini) + 1));
-	if (!mini->mini_cmds)
-		return ;
+	allocate_command_memory(mini);
 	while (mini->input[i])
 	{
 		quote = get_quote(quote, mini->input[i]);
 		if (quote != NO_QUOTE || mini->input[i] != ' ')
-		{
-			cmd = ft_realloc(cmd, k, k + 2);
-			cmd[k++] = mini->input[i];
-			cmd[k] = '\0';
-		}
-		if (quote == NO_QUOTE && mini->input[i] == ' ' && k > 0)
-		{
-			if (cmd)
-			{
-				mini->mini_cmds[j++] = ft_strdup(cmd);
-				free(cmd);
-				cmd = NULL;
-			}
-			k = 0;
-		}
+			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
+		if (quote == NO_QUOTE && mini->input[i] == ' ')
+			handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
 		i++;
 	}
-	if (k > 0 && cmd)
-	{
-		mini->mini_cmds[j++] = ft_strdup(cmd);
-		free(cmd);
-		cmd = NULL;
-	}
+	handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
 	mini->mini_cmds[j] = NULL;
 }
+
+void	allocate_command_memory(t_mini *mini)
+{
+	int	count;
+
+	count = count_commands(mini);
+	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
+	if (!mini->mini_cmds)
+		return ;
+}
+
+char	*append_character_to_cmd(char *cmd, char c, int *k)
+{
+	cmd = ft_realloc(cmd, *k, *k + 2);
+	cmd[*k] = c;
+	(*k)++;
+	cmd[*k] = '\0';
+	return (cmd);
+}
+
+void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j)
+{
+	if (*k > 0)
+	{
+		finalize_current_command(cmd_list, *cmd, j);
+		*k = 0;
+		*cmd = NULL;
+	}
+}
+
+void	finalize_current_command(char **cmd_list, char *cmd, int *j)
+{
+	if (cmd)
+	{
+		cmd_list[*j] = ft_strdup(cmd);
+		free(cmd);
+		cmd = NULL;
+		(*j)++;
+	}
+}
+
+// t_quote_type	get_quote(t_quote_type quote, char c)
+// {
+// 	if (c == '\'')
+// 	{
+// 		if (quote == NO_QUOTE)
+// 			return (SINGLE_QUOTE);
+// 		else if (quote == SINGLE_QUOTE)
+// 			return (NO_QUOTE);
+// 	}
+// 	else if (c == '\"')
+// 	{
+// 		if (quote == NO_QUOTE)
+// 			return (DOUBLE_QUOTE);
+// 		else if (quote == DOUBLE_QUOTE)
+// 			return (NO_QUOTE);
+// 	}
+// 	return (quote);
+// }
+
+// int	count_commands(t_mini *mini)
+// {
+// 	int				i;
+// 	int				count;
+// 	int				is_in_word;
+// 	t_quote_type	quote;
+
+// 	i = 0;
+// 	count = 0;
+// 	is_in_word = 0;
+// 	quote = NO_QUOTE;
+// 	while (mini->input[i])
+// 	{
+// 		quote = get_quote(quote, mini->input[i]);
+// 		if (quote != NO_QUOTE || mini->input[i] != ' ')
+// 		{
+// 			if (!is_in_word)
+// 			{
+// 				count++;
+// 				is_in_word = 1;
+// 			}
+// 		}
+// 		else if (mini->input[i] == ' ' && quote == NO_QUOTE)
+// 			is_in_word = 0;
+// 		i++;
+// 	}
+// 	return (count);
+// }
+
+// void	process_commands(t_mini *mini)
+// {
+// 	int				i;
+// 	int				j;
+// 	int				k;
+// 	char			*cmd;
+// 	t_quote_type	quote;
+
+// 	i = 0;
+// 	j = 0;
+// 	k = 0;
+// 	cmd = NULL;
+// 	quote = NO_QUOTE;
+// 	mini->mini_cmds = malloc(sizeof(char *) * (count_commands(mini) + 1));
+// 	if (!mini->mini_cmds)
+// 		return ;
+// 	while (mini->input[i])
+// 	{
+// 		quote = get_quote(quote, mini->input[i]);
+// 		if (quote != NO_QUOTE || mini->input[i] != ' ')
+// 		{
+// 			cmd = ft_realloc(cmd, k, k + 2);
+// 			cmd[k++] = mini->input[i];
+// 			cmd[k] = '\0';
+// 		}
+// 		if (quote == NO_QUOTE && mini->input[i] == ' ' && k > 0)
+// 		{
+// 			if (cmd)
+// 			{
+// 				mini->mini_cmds[j++] = ft_strdup(cmd);
+// 				free(cmd);
+// 				cmd = NULL;
+// 			}
+// 			k = 0;
+// 		}
+// 		i++;
+// 	}
+// 	if (k > 0 && cmd)
+// 	{
+// 		mini->mini_cmds[j++] = ft_strdup(cmd);
+// 		free(cmd);
+// 		cmd = NULL;
+// 	}
+// 	mini->mini_cmds[j] = NULL;
+// }

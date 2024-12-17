@@ -91,7 +91,10 @@ void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-void	get_terminal_commands(t_mini *mini, t_token *token);
+void	finalize_current_command(char **cmd_list, char *cmd, int *j);
+void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
+char	*append_character_to_cmd(char *cmd, char c, int *k);
+void	allocate_command_memory(t_mini *mini);
 void	process_commands(t_mini *mini);
 void	builtin_commands(t_mini *mini, t_token *token);
 void	execute_commands(t_mini *mini);
@@ -113,6 +116,9 @@ char	*parse_string(t_token *token);
 void	print_pwd(t_mini *mini);
 //----------------------------------------------------------------------CD
 void	cd(t_mini *mini, t_token *token);
+char	*check_per(t_mini *mini, t_token *token, char *path);
+char	*resolve_cd_path(t_mini *mini, t_token *token);
+void	save_oldpath(t_mini *mini, char *oldpath);
 //------------------------------------------------------------------EXPORT
 void	export(t_mini *mini, t_token *token);
 void	new_export(t_mini *mini, t_token *token, int n);
@@ -146,10 +152,11 @@ int		process_input_multi(char *str, char chr);
 int		process_input_single(char *str, char chr);
 int		check_input_multi(char *str);
 int		check_quotation(t_mini *minim, int i);
+int		count_commands(t_mini *mini);
+t_quote_type	get_quote(t_quote_type quote, char c);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
 void	ft_ptrdelchar(char *str, const char *chars);
-
 
 #endif

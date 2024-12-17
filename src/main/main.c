@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
 	char	*env_name;
-	int i;
+	int	i;
 
 	if (argc != 1)
 		return (1);

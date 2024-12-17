@@ -17,7 +17,7 @@ char	*ft_strmerge(char *start_str, char *end_str)
 	size_t	i;
 	size_t	start_str_len;
 	size_t	end_str_len;
-    char	*res;
+	char	*res;
 
 	start_str_len = ft_strlen(start_str);
 	end_str_len = ft_strlen(end_str);

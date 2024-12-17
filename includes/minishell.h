@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 12:41:23 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:12:07 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ int		is_output_redirect(char *cmd);
 void	free_arr_cmds(char **array);
 int		process_input_multi(char *str, char chr);
 int		process_input_single(char *str, char chr);
-int		check_input_multi(char *str);
-int		check_quotation(t_mini *minim, int i);
+int		process_input_none(char *str);
+int		check_quotation(t_mini *minim);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);

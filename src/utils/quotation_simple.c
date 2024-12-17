@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ptrdelchar.c                                    :+:      :+:    :+:   */
+/*   quotation_simple.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 12:23:32 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 15:41:32 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/12/17 13:10:06 by jaimesan          #+#    #+#             */
+/*   Updated: 2024/12/17 13:14:06 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "minishell.h"
 
-void	ft_ptrdelchar(char *str, const char *chars)
+int	process_input_single(char *str, char chr)
 {
-	int		i;
-	int		j;
-	int		len;
+	int	i;
+	int	j;
 
-	if (!str || !chars)
-		return ;
 	i = 0;
 	j = 0;
-	len = ft_strlen(str);
-	while (str[i])
+	if (str[i] == chr)
 	{
-		if (i != 0 && i != (len - 1))
-			str[j++] = str[i];
 		i++;
+		while (str[i] != '\0')
+		{
+			str[j++] = str[i];
+			i++;
+		}
+		if (str[i - 1] == chr)
+			j--;
+		str[j] = '\0';
 	}
-	str[j] = '\0';
+	return (1);
 }

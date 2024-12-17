@@ -6,138 +6,61 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 12:54:09 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:24:43 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_special_sequence(char current, char next)
-{
-	return (current == '\\' && (next == '\"' || next == '\''
-			|| next == '\\' || next == 'n' || next == 't'));
-}
-
-void	handle_special_sequence(char *str, int *i, int *j)
-{
-	if (str[*i + 1] == 'n' || str[*i + 1] == 't')
-	{
-		str[(*j)++] = '\\';
-		str[(*j)++] = str[++(*i)];
-	}
-	else
-		str[(*j)++] = str[++(*i)];
-}
-
-int	process_input_multi(char *str, char chr)
+int	check_quo(char *str)
 {
 	int	i;
-	int	j;
-	int	has_delimiters;
+	int	in_single_quote;
+	int	in_double_quote;
 
-	has_delimiters = 0;
 	i = 0;
-	j = 0;
-	if (str[i] == chr)
-	{
-		i++;
-		has_delimiters = 1;
-	}
+	in_single_quote = 0;
+	in_double_quote = 0;
 	while (str[i] != '\0')
 	{
-		if (is_special_sequence(str[i], str[i + 1]))
-			handle_special_sequence(str, &i, &j);
-		else
-			str[j++] = str[i];
-		i++;
-	}
-	if (str[i - 1] == chr && has_delimiters == 1)
-		j--;
-	str[j] = '\0';
-	return (1);
-}
-
-int	process_input_single(char *str, char chr)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	if (str[i] == chr)
-	{
-		i++;
-		while (str[i] != '\0')
-		{
-			if (str[i] == '\\' && (str[i + 1] == '\"'
-					|| str[i + 1] == '\'' || str[i + 1] == '\\'))
-			{
-				str[j++] = '\\';
-				str[j++] = str[++i];
-			}
-			else if (str[i] == '\\' && str[i + 1] == 'n')
-			{
-				str[j++] = '\\';
-				str[j++] = 'n';
-				i++;
-			}
-			else
-			{
-				str[j++] = str[i];
-			}
+		if (str[i] == '\"' && in_single_quote == 0)
+			in_double_quote = !in_double_quote;
+		else if (str[i] == '\'' && in_double_quote == 0)
+			in_single_quote = !in_single_quote;
+		else if (str[i] == '\\' && in_single_quote == 0 && str[i + 1] != '\0')
 			i++;
-		}
-		if (i > 0 && str[i - 1] == chr)
-			j--;
-		str[j] = '\0';
-		return (1);
-	}
-	return (0);
-}
-
-int	check_input_multi(char *str)
-{
-	int	i;
-	int	count;
-	int	has_delimiters;
-
-	i = 0;
-	count = 0;
-	has_delimiters = 0;
-	if (str[i] == '\"')
-	{
-		has_delimiters = 1;
-	}
-	while (str[i] != 0)
-	{
-		if (str[i] == '\\')
-			count++;
 		i++;
 	}
-	if (count % 2 == 0)
+	if (in_single_quote || in_double_quote)
 		return (0);
 	return (1);
 }
 
-int check_quotation(t_mini *mini, int i)
+int	check_quotation(t_mini *mini)
 {
-	char	*temp;
+	int	i;
 
-	while (mini->mini_cmds[i] && !ft_strchr(mini->mini_cmds[i], '~'))
+	i = 0;
+	while (mini->mini_cmds[i] != 0 && !ft_strchr(mini->mini_cmds[i], '~'))
 	{
-		
-		if (mini->mini_cmds[i] && mini->mini_cmds[i][0] != '\'')
+		if (check_quo(mini->mini_cmds[i]) == 0)
+			return (free_main(mini), perror("Unclosed quotes\n"), 0);
+		if (mini->mini_cmds[i][0] == '\"')
 		{
-			// if (check_input_multi(mini->mini_cmds[i]) == 0)
-			// {
-			// 	ft_printf("Error dquote\n");
-			// 	return (0);
-			// }
-			process_input_multi(mini->mini_cmds[i++], '"');
+			if (process_input_multi(mini->mini_cmds[i], '"') == 0)
+				return (free_main(mini), perror("Error dquote\n"), 0);
+		}
+		else if (mini->mini_cmds[i][0] == '\'')
+		{
+			if (process_input_single(mini->mini_cmds[i], '\'') == 0)
+				return (free_main(mini), perror("Error dquote\n"), 0);
 		}
 		else
-			process_input_single(mini->mini_cmds[i++], '\'');
-		
+		{
+			if (process_input_none(mini->mini_cmds[i]) == 0)
+				return (free_main(mini), perror("Invalid backslash\n"), 0);
+		}
+		i++;
 	}
 	return (1);
 }

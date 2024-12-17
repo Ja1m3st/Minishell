@@ -29,12 +29,13 @@ char	*expand_variable(t_mini *mini, char *str)
 			i++;
 			var_name = extract_var_name(str, &i);
 			res = add_var_value(mini, res, var_name);
+			continue ;
 		}
 		else
 		{
 			res = process_regular_char(res, str[i], &k);
-			i++;
 		}
+		i++;
 	}
 	return (res);
 }
@@ -46,7 +47,8 @@ char	*extract_var_name(char *str, int *i)
 
 	var_name = ft_strdup("");
 	j = 0;
-	while (str[*i] && str[*i] != ' ' && str[*i] != '$' && str[*i] != '\t')
+	while (str[*i] && str[*i] != ' ' && str[*i] != '$'
+		&& str[*i] != '\t' && str[*i] != '\n')
 	{
 		var_name = ft_realloc(var_name,
 				ft_strlen(var_name), ft_strlen(var_name) + 2);
@@ -75,10 +77,13 @@ char	*add_var_value(t_mini *mini, char *res, char *var_name)
 
 char	*process_regular_char(char *res, char current_char, int *k)
 {
-	res = ft_realloc(res, ft_strlen(res), ft_strlen(res) + 2);
-	res[*k] = current_char;
-	res[*k + 1] = '\0';
-	(*k)++;
+	int	len;
+
+	len = ft_strlen(res);
+	res = ft_realloc(res, len, len + 2);
+	res[len] = current_char;
+	res[len + 1] = '\0';
+	(*k) += 2;
 	return (res);
 }
 
@@ -92,7 +97,8 @@ char	*get_var_value(t_mini *mini, char *var_name)
 	i = 0;
 	while (i < arr_len)
 	{
-		if (ft_strncmp(mini->env[i], var_name, ft_strlen(var_name)) == 0)
+		if (ft_strncmp(mini->env[i], var_name, ft_strlen(var_name)) == 0
+			&& mini->env[i][ft_strlen(var_name)] == '=')
 		{
 			value = ft_strchr(mini->env[i], '=');
 			value++;

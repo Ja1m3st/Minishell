@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 12:41:23 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/17 13:55:40 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ void	print_env(t_mini *mini);
 void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
+char	*append_character_to_cmd(char *cmd, char c, int *k);
 void	finalize_current_command(char **cmd_list, char *cmd, int *j);
 void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
-char	*append_character_to_cmd(char *cmd, char c, int *k);
 void	allocate_command_memory(t_mini *mini);
 void	process_commands(t_mini *mini);
 void	builtin_commands(t_mini *mini, t_token *token);
@@ -137,26 +137,29 @@ char	*get_var_value(t_mini *mini, char *var_name);
 void	free_main(t_mini *mini);
 void	restore_fds(t_mini *mini);
 void	here_doc(t_mini *mini, t_token *token);
+char	*expand_var_to_value(t_mini *mini, char *line);
 void	free_mini(t_mini *mini);
 void	free_commands(t_mini *mini);
 void	free_commands2(t_token *token);
 void	free_arr(char **array);
 void	error(t_mini *mini, char c);
+void	free_arr_cmds(char **array);
 int		array_len(char **array);
 int		is_builtin(char *cmd);
 int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
 int		is_output_redirect(char *cmd);
-void	free_arr_cmds(char **array);
 int		process_input_multi(char *str, char chr);
 int		process_input_single(char *str, char chr);
-int		check_input_multi(char *str);
-int		check_quotation(t_mini *minim, int i);
+int		process_input_none(char *str);
+int		check_quotation(t_mini *mini);
+int		check_quo(char *str);
 int		count_commands(t_mini *mini);
-t_quote_type	get_quote(t_quote_type quote, char c);
+int		handle_special_sequence_none(char *str, int *i, int *j);
+int		is_special_sequence_none(char current, char next);
+t_quote_type		get_quote(t_quote_type quote, char c);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);
 void	print_tree_structure2(t_token *token);
-void	ft_ptrdelchar(char *str, const char *chars);
 
 #endif

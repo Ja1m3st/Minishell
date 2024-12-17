@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2024/12/16 18:17:22 by ctommasi         ###   ########.fr        #
+#    Updated: 2024/12/16 11:45:26 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,8 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/environment/print_env.c ./src/environment/dup_env.c \
 	./src/environment/get_full_name.c ./src/parsing/pipe_commands.c ./src/main/handle_signals.c \
 	./src/parsing/tokenize_commands.c ./src/utils/parsing_utils.c ./src/parsing/create_commands.c \
-	./src/utils/delete_after.c ./src/utils/command_utils.c ./src/parsing/process_commands.c \
-	./src/utils/quotations.c ./src/utils/fd_utils.c ./src/utils/here_doc.c
+	./src/utils/delete_after.c ./src/utils/commands_utils.c ./src/parsing/process_commands.c \
+	./src/utils/quotations.c ./src/utils/fd_utils.c 
 	
 
 #OBJS--------------------------------------------------------------------------------------

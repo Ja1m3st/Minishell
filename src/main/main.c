@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/17 13:26:02 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:30:56 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ int	main(int argc, char **argv, char **env)
 		if (check_quotation(&mini) == 0)
 			continue ;
 		tokenize_commands(&mini, mini.mini_cmds);
-		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}
 	error(&mini, '!');
 	return (0);
 }
-// while (mini.mini_cmds[i] && !ft_strchr(mini.mini_cmds[i], '~'))
-// 	ft_ptrdelchar(mini.mini_cmds[i++], "\'\"");

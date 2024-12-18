@@ -48,6 +48,8 @@ int	array_len(char **array)
 {
 	int	i;
 
+	if (!array || !*array)
+		return (-1);
 	i = 0;
 	while (array && array[i])
 		i++;

@@ -6,30 +6,30 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:10:06 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/17 13:14:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:18:27 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_input_single(char *str, char chr)
+int	process_input_single(char *str)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	if (str[i] == chr)
+	while (str[i] != '\0')
 	{
-		i++;
-		while (str[i] != '\0')
+		if (str[i] == '\'')
 		{
-			str[j++] = str[i];
 			i++;
+			continue ;
 		}
-		if (str[i - 1] == chr)
-			j--;
-		str[j] = '\0';
+		str[j++] = str[i];
+		i++;
 	}
+	str[j] = '\0';
+	return (1);
 	return (1);
 }

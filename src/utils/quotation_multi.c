@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:10:37 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/17 13:32:39 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:33:33 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,20 @@ int	handle_special_sequence(char *str, int *i, int *j)
 	return (1);
 }
 
-int	process_input_multi(char *str, char chr)
+int	process_input_multi(char *str)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	i++;
 	while (str[i] != '\0')
 	{
+		if (str[i] == '\"' || str[i] == '`')
+		{
+			i++;
+			continue ;
+		}
 		if (is_special_sequence(str[i], str[i + 1]))
 		{
 			if (handle_special_sequence(str, &i, &j) == 0)
@@ -53,8 +57,6 @@ int	process_input_multi(char *str, char chr)
 			str[j++] = str[i];
 		i++;
 	}
-	if (str[i - 1] == chr)
-		j--;
 	str[j] = '\0';
 	return (1);
 }

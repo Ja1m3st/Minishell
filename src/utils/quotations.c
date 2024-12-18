@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/17 13:24:43 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:12:53 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	check_quotation(t_mini *mini)
 			return (free_main(mini), perror("Unclosed quotes\n"), 0);
 		if (mini->mini_cmds[i][0] == '\"')
 		{
-			if (process_input_multi(mini->mini_cmds[i], '"') == 0)
+			if (process_input_multi(mini->mini_cmds[i]) == 0)
 				return (free_main(mini), perror("Error dquote\n"), 0);
 		}
 		else if (mini->mini_cmds[i][0] == '\'')
 		{
-			if (process_input_single(mini->mini_cmds[i], '\'') == 0)
+			if (process_input_single(mini->mini_cmds[i]) == 0)
 				return (free_main(mini), perror("Error dquote\n"), 0);
 		}
 		else

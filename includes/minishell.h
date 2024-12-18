@@ -92,7 +92,6 @@ void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
 char	*append_character_to_cmd(char *cmd, char c, int *k);
-void	finalize_current_command(char **cmd_list, char *cmd, int *j);
 void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
 void	allocate_command_memory(t_mini *mini);
 void	process_commands(t_mini *mini);

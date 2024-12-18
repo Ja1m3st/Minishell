@@ -62,8 +62,6 @@ void	handle_sigint(int signal)
 
 void	handle_sigquit(int signal)
 {
-	t_mini	*mini;
-
 	(void)signal;
 }
 

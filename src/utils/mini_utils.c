@@ -58,7 +58,6 @@ char	*find_path(t_mini *mini, char *path)
 {
 	int		len;
 	int		i;
-	int		oldpath_len;
 	char	*find;
 
 	len = array_len(mini->env);

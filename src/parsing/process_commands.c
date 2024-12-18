@@ -62,19 +62,28 @@ void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j)
 {
 	if (*k > 0)
 	{
-		finalize_current_command(cmd_list, *cmd, j);
+		if (*cmd)
+		{
+			cmd_list[*j] = ft_strdup(*cmd);
+			free(*cmd);
+			(*j)++;
+		}
 		*k = 0;
 		*cmd = NULL;
 	}
 }
 
-void	finalize_current_command(char **cmd_list, char *cmd, int *j)
+
+
+/*
+quote = get_quote(quote, mini->input[i]);
+if (quote != NO_QUOTE || mini->input[i] != ' ' || mini->input[i] != '|' || mini->input[i] != '<' || mini->input[i] != '>')
+	cmd = append_character_to_cmd(cmd, mini->input[i], &k);
+if (quote == NO_QUOTE && (mini->input[i] == ' ' || mini->input[i] == '|' || mini->input[i] == '<' || mini->input[i] == '>'))
+	handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
+if (quote == NO_QUOTE && (mini->input[i] == '|' || mini->input[i] == '<' || mini->input[i] == '>'))
 {
-	if (cmd)
-	{
-		cmd_list[*j] = ft_strdup(cmd);
-		free(cmd);
-		cmd = NULL;
-		(*j)++;
-	}
+	cmd = append_character_to_cmd(cmd, mini->input[i], &k);
+	handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
 }
+*/

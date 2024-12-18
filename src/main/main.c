@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/18 12:15:16 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:08:11 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ int	main(int argc, char **argv, char **env)
 		process_commands(&mini);
 		if (!check_quotation(&mini))
 			continue ;
+		for (int i= 0; mini.mini_cmds[i]; i++)
+		{
+			char *temp = expand_variable(&mini, mini.mini_cmds[i]);
+			free(mini.mini_cmds[i]);
+			mini.mini_cmds[i] = ft_strdup(temp);
+			free(temp);
+		}
 		tokenize_commands(&mini, mini.mini_cmds);
 		print_tree_structure(&mini);
 		print_tree_structure(&mini);

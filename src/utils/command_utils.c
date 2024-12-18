@@ -12,29 +12,6 @@
 
 #include "minishell.h"
 
-void	builtin_commands(t_mini *mini, t_token *token)
-{
-	if (!ft_strcmp(token->cmd[0], "history"))
-		print_history();
-	else if (!ft_strcmp(token->cmd[0], "env"))
-		print_env(mini);
-	else if (!ft_strcmp(token->cmd[0], "echo"))
-		echo(token);
-	else if (!ft_strcmp(token->cmd[0], "pwd"))
-		print_pwd(mini);
-	else if (!ft_strcmp(token->cmd[0], "cd"))
-		cd(mini, token);
-	else if (!ft_strcmp(token->cmd[0], "export"))
-		export(mini, token);
-	else if (!ft_strcmp(token->cmd[0], "unset"))
-		unset(token, mini);
-	else if (!ft_strcmp(token->cmd[0], "exit"))
-	{
-		write(mini->outfile, "exit\n", 5);
-		error(mini, '!');
-	}
-}
-
 t_quote_type	get_quote(t_quote_type quote, char c)
 {
 	if (c == '\'')
@@ -54,30 +31,75 @@ t_quote_type	get_quote(t_quote_type quote, char c)
 	return (quote);
 }
 
+int	count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
+{
+	int	count;
+	int	is_word;
+
+	count = 0;
+	is_word = 0;
+	while (mini->input[*i + 1] && mini->input[*i] != ' ' && *quote == NO_QUOTE
+		&& !is_delimeter(mini->input[*i]) && ((mini->input[*i] != '>'
+				&& mini->input[(*i) + 1] != '>') || (mini->input[*i] != '<'
+				&& mini->input[(*i) + 1] != '<')))
+	{
+		*quote = get_quote(*quote, mini->input[*i]);
+		is_word = 1;
+		(*i)++;
+	}
+	if (is_word)
+		count++;
+	return (count);
+}
+
+int	count_no_quote_single_redir(t_mini *mini, t_quote_type quote, int *i)
+{
+	if (quote == NO_QUOTE
+		&& ((mini->input[*i] == '>' && mini->input[(*i) + 1] == '>')
+			|| (mini->input[*i] == '<' && mini->input[(*i) + 1] == '<')))
+	{
+		(*i)++;
+		return (1);
+	}
+	else if (quote == NO_QUOTE && is_delimeter(mini->input[*i]))
+		return (1);
+	return (0);
+}
+
+int	count_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
+{
+	int	count;
+
+	count = 0;
+	if (*quote != NO_QUOTE)
+	{
+		count = 1;
+		(*i)++;
+		while (mini->input[*i]
+			&& get_quote(*quote, mini->input[*i]) != NO_QUOTE)
+		{
+			(*i)++;
+		}
+		*quote = NO_QUOTE;
+	}
+	return (count);
+}
+
 int	count_commands(t_mini *mini)
 {
-	int				i;
-	int				count;
-	int				is_in_word;
-	t_quote_type	quote;
+	int			i;
+	int			count;
+	t_quote_type		quote;
 
 	i = 0;
 	count = 0;
-	is_in_word = 0;
 	quote = NO_QUOTE;
 	while (mini->input[i])
 	{
 		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE || mini->input[i] != ' ')
-		{
-			if (!is_in_word)
-			{
-				count++;
-				is_in_word = 1;
-			}
-		}
-		else if (mini->input[i] == ' ' && quote == NO_QUOTE)
-			is_in_word = 0;
+		count += count_no_quote_chars(mini, &quote, &i);
+		count += count_no_quote_single_redir(mini, quote, &i);
+		count += count_quote_chars(mini, &quote, &i);
 		i++;
 	}
 	return (count);

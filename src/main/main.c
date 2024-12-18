@@ -33,11 +33,12 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (*mini.input)
 			add_history(mini.input);
+		// count_commands(&mini);
+		// free(mini.input);
 		process_commands(&mini);
 		if (!check_quotation(&mini))
 			continue ;
 		tokenize_commands(&mini, mini.mini_cmds);
-		print_tree_structure(&mini);
 		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);

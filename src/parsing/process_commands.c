@@ -29,10 +29,12 @@ void	process_commands(t_mini *mini)
 	while (mini->input[i])
 	{
 		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE || mini->input[i] != ' ')
+		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_delimeter(mini->input[i])))
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
-		if (quote == NO_QUOTE && mini->input[i] == ' ')
+		if (quote == NO_QUOTE && (mini->input[i] == ' ' || is_delimeter(mini->input[i])))
 			handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
+		if (quote == NO_QUOTE && is_delimeter(mini->input[i]))
+			handle_redirections(mini, &cmd, &i, &j);
 		i++;
 	}
 	handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
@@ -49,6 +51,24 @@ void	allocate_command_memory(t_mini *mini)
 		return ;
 }
 
+void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)
+{
+	*cmd = ft_realloc(*cmd, 0, 2);
+	(*cmd)[0] = mini->input[*i];
+	(*cmd)[1] = '\0';
+	if (mini->input[*i + 1] && is_delimeter(mini->input[*i + 1]))
+	{
+		(*i)++;
+		*cmd = ft_realloc(*cmd, 1, 3);
+		(*cmd)[1] = mini->input[*i];
+		(*cmd)[2] = '\0';
+	}
+	mini->mini_cmds[*j] = ft_strdup(*cmd);
+	free(*cmd);
+	*cmd = NULL;
+	(*j)++;
+}
+
 char	*append_character_to_cmd(char *cmd, char c, int *k)
 {
 	cmd = ft_realloc(cmd, *k, *k + 2);
@@ -60,14 +80,11 @@ char	*append_character_to_cmd(char *cmd, char c, int *k)
 
 void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j)
 {
-	if (*k > 0)
+	if (*k > 0 && *cmd)
 	{
-		if (*cmd)
-		{
-			cmd_list[*j] = ft_strdup(*cmd);
-			free(*cmd);
-			(*j)++;
-		}
+		cmd_list[*j] = ft_strdup(*cmd);
+		free(*cmd);
+		(*j)++;
 		*k = 0;
 		*cmd = NULL;
 	}

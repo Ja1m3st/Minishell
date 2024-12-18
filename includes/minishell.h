@@ -91,7 +91,12 @@ void		print_env(t_mini *mini);
 void		dup_env(t_mini *mini, char **env);
 char		*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
+int		count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i);
+int		count_no_quote_single_redir(t_mini *mini, t_quote_type quote, int *i);
+int		count_quote_chars(t_mini *mini, t_quote_type *quote, int *i);
+int		count_commands(t_mini *mini);
 void		handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
+void		handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
 char		*append_character_to_cmd(char *cmd, char c, int *k);
 void		allocate_command_memory(t_mini *mini);
 void		process_commands(t_mini *mini);

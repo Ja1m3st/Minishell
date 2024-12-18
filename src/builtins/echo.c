@@ -6,26 +6,24 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:41:12 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/02 16:14:26 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:50:29 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo(t_mini *mini, t_token *token)
+void	echo(t_token *token)
 {
 	char	*str;
-	int		i;
 
 	if (token->cmd[1] && !ft_strncmp(token->cmd[1], "-n", 2))
 		token->newline = 1;
 	if (!token->cmd[1 + token->newline])
 		return ;
 	str = parse_string(token);
-	i = 0;
 	if (str)
 	{
-		write(mini->outfile, str, ft_strlen(str));
+		write(STDOUT_FILENO, str, ft_strlen(str));
 		free(str);
 	}
 }

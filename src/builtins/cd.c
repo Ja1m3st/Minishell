@@ -54,6 +54,8 @@ char	*resolve_cd_path(t_mini *mini, t_token *token)
 	char	*path;
 	char	*cleaned_cmd;
 
+	path = NULL;
+	cleaned_cmd = NULL;
 	if (token->cmd[1])
 		cleaned_cmd = ft_strdelchar(token->cmd[1], "'\"");
 	if (token->cmd[1] && (!ft_strncmp(token->cmd[1], "\"~", 2)
@@ -83,6 +85,7 @@ void	cd(t_mini *mini, t_token *token)
 	char	*oldpath;
 	char	cwd[1024];
 
+	oldpath = NULL;
 	if (getcwd(cwd, sizeof(cwd)))
 		oldpath = ft_strdup(cwd);
 	save_oldpath(mini, oldpath);

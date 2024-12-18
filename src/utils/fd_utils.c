@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 19:22:56 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/18 15:32:45 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:38:29 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init_fds(t_mini *mini)
 {
 	mini->infile = STDIN_FILENO;
 	mini->outfile = STDOUT_FILENO;
+	mini->temp_fd = 0;
 	mini->fd[0] = -1;
 	mini->fd[1] = -1;
 	mini->is_first_cmd = 1;

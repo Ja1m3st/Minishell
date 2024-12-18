@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:33:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:00:38 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	pipex(t_mini *mini, t_token *token)
 		if (token->input_redir || token->output_redir)
 			set_in_out_file(mini, token);
 		swap_fds(mini, token);
-		close(mini->fd[0]);
 		close(mini->fd[1]);
+		close(mini->fd[0]);
 	}
 	close(mini->fd[1]);
 	mini->outfile = mini->fd[0];
@@ -36,19 +36,16 @@ int	swap_fds(t_mini *mini, t_token *token)
 	{
 		if (dup2(mini->infile, STDIN_FILENO) == -1)
 		{
-			perror("dup2 error (input)\n");
+			perror("dup2 error (input)");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
-		close(mini->infile);
 	}
 	else if (!mini->is_first_cmd)
 	{
 		if (dup2(mini->fd[0], STDIN_FILENO) == -1)
 		{
-			perror("dup2 error (pipe input)\n");
+			perror("dup2 error (pipe input)");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
 		close(mini->fd[0]);
 	}
@@ -61,19 +58,16 @@ int	swap_fds2(t_mini *mini, t_token *token)
 	{
 		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
 		{
-			perror("dup2 error (output)\n");
+			perror("dup2 error (output)");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
-		close(mini->outfile);
 	}
 	else if (!mini->is_last_cmd)
 	{
 		if (dup2(mini->fd[1], STDOUT_FILENO) == -1)
 		{
-			perror("dup2 error (pipe output)\n");
+			perror("dup2 error (pipe output)");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
 		close(mini->fd[1]);
 	}
@@ -86,13 +80,11 @@ int	execve_commands(t_mini *mini, t_token *token)
 	{
 		builtin_commands(mini, token);
 		exit(EXIT_SUCCESS);
-		return (0);
 	}
 	else if (execve(token->path, token->cmd, mini->env) == -1)
 	{
-		perror("Failed to execute command\n");
+		perror("Failed to execute command");
 		exit(EXIT_FAILURE);
-		return (1);
 	}
 	return (0);
 }

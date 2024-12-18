@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 11:44:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:51:12 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	execute_commands(t_mini *mini)
 	if (token && !token->next && is_builtin(token->cmd[0]))
 		return (set_in_out_file(mini, token), builtin_commands(mini, token));
 	if (pipe(mini->fd) == -1)
-		return (perror("Pipe error\n"));
+		return (perror("Pipe error"));
 	while (token)
 	{
 		if (!token->next)

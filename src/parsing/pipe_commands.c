@@ -14,6 +14,7 @@
 
 void	pipex(t_mini *mini, t_token *token)
 {
+	
 	mini->pid = fork();
 	if (mini->pid == -1)
 		return (perror("Fork error\n"));

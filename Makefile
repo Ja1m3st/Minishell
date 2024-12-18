@@ -12,11 +12,10 @@
 
 NAME = minishell
 
-#C FLAGS----------------------------------------------------------------------------------
+#CFLAGS----------------------------------------------------------------------------------
 
-CC = cc
-CFLAGS = -W -W -W -I ./includes
-AR = ar rcs
+CC 	= cc
+CFLAGS 	= -Wall -Wextra -Werror -I ./includes
 RM	= rm -rf
 NOPRINT = --no-print-directory
 
@@ -54,7 +53,7 @@ $(LIBFT):
 	@$(MAKE) $(NOPRINT) -C $(LIBFT_DIR)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS) $(LIBFT) 
 	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline

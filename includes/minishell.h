@@ -92,8 +92,8 @@ void	dup_env(t_mini *mini, char **env);
 char	*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
 char	*append_character_to_cmd(char *cmd, char c, int *k);
-void	finalize_current_command(char **cmd_list, char *cmd, int *j);
 void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
+void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
 void	allocate_command_memory(t_mini *mini);
 void	process_commands(t_mini *mini);
 void	builtin_commands(t_mini *mini, t_token *token);
@@ -112,7 +112,7 @@ int		swap_fds(t_mini *mini, t_token *token);
 int		swap_fds2(t_mini *mini, t_token *token);
 int		execve_commands(t_mini *mini, t_token *token);
 //--------------------------------------------------------------------ECHO
-void	echo(t_mini *mini, t_token *token);
+void	echo(t_token *token);
 char	*parse_string(t_token *token);
 //---------------------------------------------------------------------PWD
 void	print_pwd(t_mini *mini);
@@ -159,6 +159,7 @@ int		check_quo(char *str);
 int		count_commands(t_mini *mini);
 int		handle_special_sequence_none(char *str, int *i, int *j);
 int		is_special_sequence_none(char current, char next);
+int		is_delimeter(char cmd);
 t_quote_type		get_quote(t_quote_type quote, char c);
 //--------------------------------------------------------------DELETE-AFTER
 void	print_tree_structure(t_mini *mini);

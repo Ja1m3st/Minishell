@@ -48,6 +48,8 @@ int	array_len(char **array)
 {
 	int	i;
 
+	if (!array || !*array)
+		return (-1);
 	i = 0;
 	while (array && array[i])
 		i++;
@@ -58,7 +60,6 @@ char	*find_path(t_mini *mini, char *path)
 {
 	int		len;
 	int		i;
-	int		oldpath_len;
 	char	*find;
 
 	len = array_len(mini->env);

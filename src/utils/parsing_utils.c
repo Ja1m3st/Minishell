@@ -12,29 +12,6 @@
 
 #include "minishell.h"
 
-void	builtin_commands(t_mini *mini, t_token *token)
-{
-	if (!ft_strcmp(token->cmd[0], "history"))
-		print_history();
-	else if (!ft_strcmp(token->cmd[0], "env"))
-		print_env(mini);
-	else if (!ft_strcmp(token->cmd[0], "echo"))
-		echo(mini, token);
-	else if (!ft_strcmp(token->cmd[0], "pwd"))
-		print_pwd(mini);
-	else if (!ft_strcmp(token->cmd[0], "cd"))
-		cd(mini, token);
-	else if (!ft_strcmp(token->cmd[0], "export"))
-		export(mini, token);
-	else if (!ft_strcmp(token->cmd[0], "unset"))
-		unset(token, mini);
-	else if (!ft_strcmp(token->cmd[0], "exit"))
-	{
-		write(mini->outfile, "exit\n", 5);
-		error(mini, '!');
-	}
-}
-
 int	is_builtin(char *cmd)
 {
 	return (!ft_strcmp(cmd, "history")
@@ -60,4 +37,9 @@ int	is_input_redirect(char *cmd)
 int	is_redirect(char *cmd)
 {
 	return (is_input_redirect(cmd) || is_output_redirect(cmd));
+}
+
+int	is_delimeter(char cmd)
+{
+	return (cmd == '|' || cmd == '>' || cmd == '<');
 }

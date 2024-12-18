@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:12:17 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/17 13:33:16 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:18:23 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ int	process_input_none(char *str)
 	j = 0;
 	while (str[i] != '\0')
 	{
+		if (str[i] == '\'' || str[i] == '\"' || str[i] == '`')
+		{
+			i++;
+			continue ;
+		}
 		if (is_special_sequence_none(str[i], str[i + 1]))
 		{
 			if (handle_special_sequence_none(str, &i, &j) == 0)

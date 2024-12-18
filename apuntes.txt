@@ -1,0 +1,4 @@
+""ls"" -> Hay que quitar las comillas
+""l""s"" -> Asi tambien
+`ls` -> Así tmabien
+``ls`` -> Así tmabien

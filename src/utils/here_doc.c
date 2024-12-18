@@ -38,6 +38,7 @@ void	here_doc(t_mini *mini, t_token *token)
 	close(fd[1]);
 	if (dup2(fd[0], mini->infile) == -1)
 		return (perror("Here Doc Error.\n"), exit(EXIT_FAILURE));
+	close(fd[0]);
 }
 
 char	*expand_var_to_value(t_mini *mini, char *line)

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/18 13:54:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:55:58 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,13 @@ void			print_env(t_mini *mini);
 void			dup_env(t_mini *mini, char **env);
 char			*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-void			finalize_current_command(char **cmd_list, char *cmd, int *j);
-void			handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
+void			handle_end_of_command(char **cmd_list,
+					char **cmd, int *k, int *j);
+char			*append_character_to_cmd(char *cmd, char c, int *k);
 void			allocate_command_memory(t_mini *mini);
 void			process_commands(t_mini *mini);
 void			builtin_commands(t_mini *mini, t_token *token);
-int				execve_commands(t_mini *mini, t_token *token);
+void			execute_commands(t_mini *mini);
 void			tokenize_commands(t_mini *mini, char **cmds);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);
 void			set_in_out_file(t_mini *mini, t_token *token);
@@ -105,13 +106,11 @@ int				tokenize_rightdirections(t_token *token, char **cmds);
 int				tokenize_leftdirections(t_token *token, char **cmds);
 int				tokenize_pipedirections(t_token *token, char **cmds);
 int				tokenize_cmds(t_token *token, char **cmds);
-int				swap_fds(t_mini *mini, t_token *token);
-int				swap_fds2(t_mini *mini, t_token *token);
-char			*append_character_to_cmd(char *cmd, char c, int *k);
-char			*expand_var_to_value(t_mini *mini, char *line);
 //-------------------------------------------------------------------PIPES
 void			pipex(t_mini *mini, t_token *token);
 int				swap_fds(t_mini *mini, t_token *token);
+int				swap_fds2(t_mini *mini, t_token *token);
+int				execve_commands(t_mini *mini, t_token *token);
 //--------------------------------------------------------------------ECHO
 void			echo(t_token *token);
 char			*parse_string(t_token *token);
@@ -160,6 +159,8 @@ int				count_commands(t_mini *mini);
 int				handle_special_sequence_none(char *str, int *i, int *j);
 int				is_special_sequence_none(char current, char next);
 t_quote_type	get_quote(t_quote_type quote, char c);
+int				is_delimeter(char cmd);
+char			*expand_var_to_value(t_mini *mini, char *line);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);

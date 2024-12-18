@@ -111,7 +111,7 @@ int		swap_fds(t_mini *mini, t_token *token);
 int		swap_fds2(t_mini *mini, t_token *token);
 int		execve_commands(t_mini *mini, t_token *token);
 //--------------------------------------------------------------------ECHO
-void	echo(t_mini *mini, t_token *token);
+void	echo(t_token *token);
 char	*parse_string(t_token *token);
 //---------------------------------------------------------------------PWD
 void	print_pwd(t_mini *mini);

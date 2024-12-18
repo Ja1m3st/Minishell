@@ -73,97 +73,93 @@ typedef struct s_mini
 }	t_mini;
 
 //------------------------------------------------------------------MAIN
-int				main(int argc, char **argv, char **envp);
-void			init_struct(t_mini *mini, char **argv, char **env);
-void			init_fds(t_mini *mini);
+int	main(int argc, char **argv, char **envp);
+void	init_struct(t_mini *mini, char **argv, char **env);
+void		init_fds(t_mini *mini);
 //----------------------------------------------------------------SIGNALS
-void			handle_sigint(int signal);
-void			handle_sigquit(int signal);
-void			handle_sigbackslash(int signal);
-void			disable_echoctl(void);
-void			setup_signals(void);
+void		handle_sigint(int signal);
+void		handle_sigquit(int signal);
+void		handle_sigbackslash(int signal);
+void		disable_echoctl(void);
+void		setup_signals(void);
 //----------------------------------------------------------------HISTORY
-void			print_history(void);
+void		print_history(void);
 //--------------------------------------------------------------------ENV
-void			get_env_name(t_mini *mini);
-void			get_session_name(t_mini *mini);
-void			print_env(t_mini *mini);
-void			dup_env(t_mini *mini, char **env);
-char			*join_env_name(t_mini *mini);
+void		get_env_name(t_mini *mini);
+void		get_session_name(t_mini *mini);
+void		print_env(t_mini *mini);
+void		dup_env(t_mini *mini, char **env);
+char		*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-void			finalize_current_command(char **cmd_list, char *cmd, int *j);
-void			handle_end_of_command(char **cmd_list,
-					char **cmd, int *k, int *j);
-void			allocate_command_memory(t_mini *mini);
-void			process_commands(t_mini *mini);
-void			builtin_commands(t_mini *mini, t_token *token);
-void			execute_commands(t_mini *mini);
-void			tokenize_commands(t_mini *mini, char **cmds);
-void			ft_tokenadd_back(t_mini *mini, t_token *token);
-void			set_in_out_file(t_mini *mini, t_token *token);
-t_token			*ft_newtoken(t_token *token);
-int				tokenize_rightdirections(t_token *token, char **cmds);
-int				tokenize_leftdirections(t_token *token, char **cmds);
-int				tokenize_pipedirections(t_token *token, char **cmds);
-int				tokenize_cmds(t_token *token, char **cmds);
+void		handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
+char		*append_character_to_cmd(char *cmd, char c, int *k);
+void		allocate_command_memory(t_mini *mini);
+void		process_commands(t_mini *mini);
+void		builtin_commands(t_mini *mini, t_token *token);
+void		execute_commands(t_mini *mini);
+void		tokenize_commands(t_mini *mini, char **cmds);
+void		ft_tokenadd_back(t_mini *mini, t_token *token);
+void		set_in_out_file(t_mini *mini, t_token *token);
+t_token		*ft_newtoken(t_token *token);
+int		tokenize_rightdirections(t_token *token, char **cmds);
+int		tokenize_leftdirections(t_token *token, char **cmds);
+int		tokenize_pipedirections(t_token *token, char **cmds);
+int		tokenize_cmds(t_token *token, char **cmds);
 //-------------------------------------------------------------------PIPES
-void			pipex(t_mini *mini, t_token *token);
-int				swap_fds(t_mini *mini, t_token *token);
+void		pipex(t_mini *mini, t_token *token);
+int		swap_fds(t_mini *mini, t_token *token);
 int		swap_fds2(t_mini *mini, t_token *token);
 int		execve_commands(t_mini *mini, t_token *token);
 //--------------------------------------------------------------------ECHO
-void			echo(t_token *token);
-char			*parse_string(t_token *token);
+void		echo(t_token *token);
+char		*parse_string(t_token *token);
 //---------------------------------------------------------------------PWD
-void			print_pwd(t_mini *mini);
+void		print_pwd(t_mini *mini);
 //----------------------------------------------------------------------CD
-void			cd(t_mini *mini, t_token *token);
-char			*check_per(t_mini *mini, t_token *token, char *path);
-char			*resolve_cd_path(t_mini *mini, t_token *token);
-void			save_oldpath(t_mini *mini, char *oldpath);
+void		cd(t_mini *mini, t_token *token);
+char		*check_per(t_mini *mini, t_token *token, char *path);
+char		*resolve_cd_path(t_mini *mini, t_token *token);
+void		save_oldpath(t_mini *mini, char *oldpath);
 //------------------------------------------------------------------EXPORT
-void			export(t_mini *mini, t_token *token);
-void			new_export(t_mini *mini, t_token *token, int n);
-int				check_valid_export(t_token *token, int n);
-int				export_exists(t_mini *mini, t_token *token, int n);
+void		export(t_mini *mini, t_token *token);
+void		new_export(t_mini *mini, t_token *token, int n);
+int		check_valid_export(t_token *token, int n);
+int		export_exists(t_mini *mini, t_token *token, int n);
 //-------------------------------------------------------------------UNSET
-void			unset(t_token *token, t_mini *mini);
-char			*find_path(t_mini *mini, char *path);
+void		unset(t_token *token, t_mini *mini);
+char		*find_path(t_mini *mini, char *path);
 //----------------------------------------------------------VARIABLE CALLS
-char			*expand_variable(t_mini *mini, char *str);
-char			*extract_var_name(char *str, int *i);
-char			*add_var_value(t_mini *mini, char *res, char *var_name);
-char			*process_regular_char(char *res, char current_char, int *k);
-char			*get_var_value(t_mini *mini, char *var_name);
+char		*expand_variable(t_mini *mini, char *str);
+char		*extract_var_name(char *str, int *i);
+char		*add_var_value(t_mini *mini, char *res, char *var_name);
+char		*process_regular_char(char *res, char current_char, int *k);
+char		*get_var_value(t_mini *mini, char *var_name);
 //-------------------------------------------------------------------UTILS
-void			free_main(t_mini *mini);
-void			restore_fds(t_mini *mini);
-void			here_doc(t_mini *mini, t_token *token);
-char	*expand_var_to_value(t_mini *mini, char *line);
-void			free_mini(t_mini *mini);
-void			free_commands(t_mini *mini);
-void			free_commands2(t_token *token);
-void			free_arr(char **array);
-void			error(t_mini *mini, char c);
-void			free_arr_cmds(char **array);
-int				array_len(char **array);
-int				is_builtin(char *cmd);
-int				is_redirect(char *cmd);
-int				is_input_redirect(char *cmd);
-int				is_output_redirect(char *cmd);
-int				process_input_multi(char *str);
-int				process_input_single(char *str);
-int				process_input_none(char *str);
-int				check_quotation(t_mini *mini);
-int				check_quo(char *str);
-int				count_commands(t_mini *mini);
-int				is_special_sequence_none(char current, char next);
-int				handle_special_sequence_none(char *str, int *i, int *j);
-char			*append_character_to_cmd(char *cmd, char c, int *k);
-int		is_delimeter(char cmd);
+void		free_main(t_mini *mini);
+void		restore_fds(t_mini *mini);
+void		here_doc(t_mini *mini, t_token *token);
+void		free_mini(t_mini *mini);
+void		free_commands(t_mini *mini);
+void		free_commands2(t_token *token);
+void		free_arr(char **array);
+void		error(t_mini *mini, char c);
+void		free_arr_cmds(char **array);
+int		array_len(char **array);
+int		is_builtin(char *cmd);
+int		is_redirect(char *cmd);
+int		is_input_redirect(char *cmd);
+int		is_output_redirect(char *cmd);
+int		process_input_multi(char *str);
+int		process_input_single(char *str);
+int		process_input_none(char *str);
+int		check_quotation(t_mini *mini);
+int		check_quo(char *str);
+int		count_commands(t_mini *mini);
+int		handle_special_sequence_none(char *str, int *i, int *j);
+int		is_special_sequence_none(char current, char next);
 t_quote_type	get_quote(t_quote_type quote, char c);
 //--------------------------------------------------------------DELETE-AFTER
-void			print_tree_structure(t_mini *mini);
-void			print_tree_structure2(t_token *token);
+void		print_tree_structure(t_mini *mini);
+void		print_tree_structure2(t_token *token);
 
 #endif

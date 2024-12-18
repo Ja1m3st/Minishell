@@ -158,6 +158,8 @@ int		count_commands(t_mini *mini);
 int		handle_special_sequence_none(char *str, int *i, int *j);
 int		is_special_sequence_none(char current, char next);
 t_quote_type	get_quote(t_quote_type quote, char c);
+int		is_delimeter(char cmd);
+char		*expand_var_to_value(t_mini *mini, char *line);
 //--------------------------------------------------------------DELETE-AFTER
 void		print_tree_structure(t_mini *mini);
 void		print_tree_structure2(t_token *token);

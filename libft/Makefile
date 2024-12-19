@@ -15,53 +15,33 @@ SRCS_STANDARD = standard/ft_atoi.c standard/ft_isalnum.c standard/ft_isalpha.c s
 	standard/ft_strmapi.c standard/ft_striteri.c standard/ft_putchar_fd.c standard/ft_putstr_fd.c \
 	standard/ft_putendl_fd.c standard/ft_putnbr_fd.c standard/ft_strcmp.c standard/ft_sqrt.c \
 	standard/ft_strstr.c standard/ft_strdelchar.c standard/ft_realloc.c standard/ft_ptrdelchar.c \
-	standard/ft_strmerge.c
-
-SRCS_LNKD_LST = linked_lists/ft_lstnew.c linked_lists/ft_lstadd_front.c linked_lists/ft_lstsize.c \
-	linked_lists/ft_lstlast.c linked_lists/ft_lstadd_back.c linked_lists/ft_lstdelone.c \
-	linked_lists/ft_lstclear.c linked_lists/ft_lstiter.c linked_lists/ft_lstmap.c \
-	linked_lists/ft_lstfree.c linked_lists/ft_lstinit_index.c linked_lists/ft_lstlast.c \
-	linked_lists/ft_lstlen.c linked_lists/ft_lstmax_index.c standard/ft_strcmp.c standard/ft_split.c \
-	linked_lists/ft_lst_isordered.c linked_lists/ft_check_valid_digits.c \
-	linked_lists/ft_lstcheck_dupe.c standard/ft_isdigit.c standard/ft_atoi.c
-
-SRCS_FTPRINTF = ft_printf/ft_printf.c ft_printf/ft_printf_utils.c \
-	standard/ft_strchr.c standard/ft_strlen.c
-
-SRC_GNL = get_next_line/get_next_line.c get_next_line/ft_read_line.c get_next_line/ft_save_line.c \
-	get_next_line/ft_save_static.c get_next_line/get_next_line_utils.c
+	standard/ft_strmerge.c standard/ft_printf.c standard/ft_printf_utils.c standard/get_next_line.c \
+	standard/ft_lstnew.c standard/ft_lstadd_front.c standard/ft_lstsize.c standard/ft_lstlast.c \
+	standard/ft_lstadd_back.c standard/ft_lstdelone.c standard/ft_lstclear.c standard/ft_lstiter.c \
+	standard/ft_lstmap.c standard/ft_lstfree.c standard/ft_lstinit_index.c standard/ft_lstlast.c \
+	standard/ft_lstlen.c standard/ft_lstmax_index.c standard/ft_lst_isordered.c standard/ft_lstcheck_dupe.c \
+	standard/ft_strjoin_free.c
 
 OBJS_STANDARD = $(SRCS_STANDARD:.c=.o)
-OBJS_LNKD_LST = $(SRCS_LNKD_LST:.c=.o)
-OBJS_FTPRINTF = $(SRCS_FTPRINTF:.c=.o)
-OBJS_GNL = $(SRC_GNL:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS_STANDARD) $(OBJS_LNKD_LST) $(OBJS_FTPRINTF) $(OBJS_GNL)
-	@$(AR) $(NAME) $(OBJS_STANDARD) $(OBJS_LNKD_LST) $(OBJS_FTPRINTF) $(OBJS_GNL)
+$(NAME): $(OBJS_STANDARD)
+	@$(AR) $(NAME) $(OBJS_STANDARD)
 
 standard: $(OBJS_STANDARD)
 	@$(AR) $(NAME) $(OBJS_STANDARD)
 
-linked_lists: $(OBJS_LNKD_LST)
-	@$(AR) $(NAME) $(OBJS_LNKD_LST)
-
-ft_printf: $(OBJS_FTPRINTF)
-	@$(AR) $(NAME) $(OBJS_FTPRINTF)
-
-gnl: $(OBJS_GNL)
-	@$(AR) $(NAME) $(OBJS_GNL)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@$(RM) $(OBJS_STANDARD) $(OBJS_LNKD_LST) $(OBJS_FTPRINTF) $(OBJS_GNL)
+	@$(RM) $(OBJS_STANDARD)
 
 fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re standard linked_lists ft_printf gnl
+.PHONY: all clean fclean re standard

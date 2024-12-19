@@ -1,32 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   ft_strjoin_free.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 10:39:20 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/09/30 10:39:22 by ctommasi         ###   ########.fr       */
+/*   Created: 2024/09/19 18:03:30 by ctommasi          #+#    #+#             */
+/*   Updated: 2024/09/19 18:03:32 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-char	*get_next_line(int fd)
+char	*ft_strjoin_free(char *total_chars, char *temp)
 {
-	static char	*total_chars[FOPEN_MAX];
-	char		*line;
+	char	*res;
+	size_t	i;
+	size_t	total_len;
+	size_t	temp_len;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
+	if (!total_chars || !temp)
+		return (NULL);
+	total_len = ft_strlen(total_chars);
+	temp_len = ft_strlen(temp);
+	res = malloc(total_len + temp_len + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (i < total_len)
 	{
-		if (total_chars[fd])
-			free(total_chars[fd]);
-		return (NULL);
+		res[i] = total_chars[i];
+		i++;
 	}
-	total_chars[fd] = ft_read_line(fd, total_chars[fd]);
-	if (total_chars[fd] == NULL)
-		return (NULL);
-	line = ft_save_line(total_chars[fd]);
-	total_chars[fd] = ft_save_static(total_chars[fd]);
-	return (line);
+	while (i < total_len + temp_len)
+	{
+		res[i] = temp[i - total_len];
+		i++;
+	}
+	res[i] = '\0';
+	return (free(total_chars), res);
 }

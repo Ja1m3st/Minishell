@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	echo(t_token *token)
+void	echo(t_mini *mini, t_token *token)
 {
 	char	*str;
 
@@ -23,7 +23,7 @@ void	echo(t_token *token)
 	str = parse_string(token);
 	if (str)
 	{
-		write(STDOUT_FILENO, str, ft_strlen(str));
+		write(mini->outfile, str, ft_strlen(str));
 		free(str);
 	}
 }

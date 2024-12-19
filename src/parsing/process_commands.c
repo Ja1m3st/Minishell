@@ -48,7 +48,11 @@ void	allocate_command_memory(t_mini *mini)
 	count = count_commands(mini);
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
 	if (!mini->mini_cmds)
+	{
+		perror("Memory Allocation Failure\n");
+		exit(EXIT_FAILURE);
 		return ;
+	}
 }
 
 void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)

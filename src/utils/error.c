@@ -64,6 +64,7 @@ void	free_commands(t_mini *mini)
 		next_node = token->next;
 		free_commands2(token);
 		free(token);
+		token = NULL;
 		token = next_node;
 	}
 	*mini->commands = NULL;

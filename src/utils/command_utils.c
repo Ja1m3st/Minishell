@@ -87,9 +87,9 @@ int	count_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 
 int	count_commands(t_mini *mini)
 {
-	int			i;
-	int			count;
-	t_quote_type		quote;
+	int				i;
+	int				count;
+	t_quote_type	quote;
 
 	i = 0;
 	count = 0;

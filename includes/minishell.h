@@ -70,6 +70,7 @@ typedef struct s_mini
 	pid_t			pid;
 	t_token			**commands;
 	t_quote_type	*quote_types;
+	int				prev_fd;
 }	t_mini;
 
 //------------------------------------------------------------------MAIN

@@ -75,12 +75,8 @@ int	tokenize_rightdirections(t_token *token, char **cmds)
 
 int	tokenize_cmds(t_token *token, char **cmds)
 {
-	char	*temp;
-	char	*joined;
 	int		i;
 
-	temp = NULL;
-	joined = NULL;
 	i = 0;
 	token->is_builtin = is_builtin(*cmds);
 	while (cmds[i] && ft_strcmp(cmds[i], "|") && !is_redirect(cmds[i]))

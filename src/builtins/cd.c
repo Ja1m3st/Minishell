@@ -18,10 +18,8 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	int		len;
 	int		i;
 	int		j;
-	int		oldpath_len;
 
 	len = array_len(mini->env);
-	oldpath_len = ft_strlen(oldpath);
 	new_env = malloc((len + 1) * sizeof(char *));
 	if (!new_env)
 		error(mini, 'M');

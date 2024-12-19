@@ -27,7 +27,7 @@ void	execute_commands(t_mini *mini)
 	while (token)
 	{
 		if (!token->next)
-			mini->is_last_cmd = !mini->is_last_cmd;
+			mini->is_last_cmd = 1;
 		pipex(mini, token);
 		mini->is_first_cmd = 0;
 		token = token->next;
@@ -41,7 +41,10 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 	{
 		mini->infile = open(token->input_file, O_RDONLY);
 		if (mini->infile == -1)
-			return (perror("Error opening file.\n"));
+		{
+			perror("Error opening file.\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
@@ -52,13 +55,19 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 		mini->outfile = open(token->output_file,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (mini->outfile == -1)
-			return (perror("Error redirecting to file.\n"));
+		{
+			perror("Error redirecting to file.\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
 	{
 		mini->outfile = open(token->output_file,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (mini->outfile == -1)
-			return (perror("Error appending to file.\n"));
+		{
+			perror("Error appending to file.\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 }

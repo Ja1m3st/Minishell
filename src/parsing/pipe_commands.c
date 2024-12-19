@@ -14,6 +14,8 @@
 
 void	pipex(t_mini *mini, t_token *token)
 {
+	if (token->next && pipe(mini->fd) == -1)
+		return (perror("Pipe Error\n"));
 	mini->pid = fork();
 	if (mini->pid == -1)
 		return (perror("Fork error\n"));
@@ -22,12 +24,20 @@ void	pipex(t_mini *mini, t_token *token)
 		if (token->input_redir || token->output_redir)
 			set_in_out_file(mini, token);
 		swap_fds(mini, token);
-		close(mini->fd[0]);
-		close(mini->fd[1]);
+		if (token->next)
+			close(mini->fd[0]);
+		if (!mini->is_last_cmd)
+			close(mini->fd[1]);
+		execve_commands(mini, token);
 	}
-	close(mini->fd[1]);
-	mini->outfile = mini->fd[0];
-	waitpid(mini->pid, NULL, 0);
+	else
+	{
+		if (token->next)
+			close(mini->fd[1]);
+		if (mini->is_last_cmd)
+			close(mini->fd[0]);
+		waitpid(mini->pid, NULL, 0);
+	}
 }
 
 int	swap_fds(t_mini *mini, t_token *token)
@@ -38,7 +48,6 @@ int	swap_fds(t_mini *mini, t_token *token)
 		{
 			perror("dup2 error (input)\n");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
 		close(mini->infile);
 	}
@@ -48,7 +57,6 @@ int	swap_fds(t_mini *mini, t_token *token)
 		{
 			perror("dup2 error (pipe input)\n");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
 		close(mini->fd[0]);
 	}
@@ -63,7 +71,6 @@ int	swap_fds2(t_mini *mini, t_token *token)
 		{
 			perror("dup2 error (output)\n");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
 		close(mini->outfile);
 	}
@@ -73,7 +80,6 @@ int	swap_fds2(t_mini *mini, t_token *token)
 		{
 			perror("dup2 error (pipe output)\n");
 			exit(EXIT_FAILURE);
-			return (1);
 		}
 		close(mini->fd[1]);
 	}
@@ -86,13 +92,11 @@ int	execve_commands(t_mini *mini, t_token *token)
 	{
 		builtin_commands(mini, token);
 		exit(EXIT_SUCCESS);
-		return (0);
 	}
 	else if (execve(token->path, token->cmd, mini->env) == -1)
 	{
 		perror("Failed to execute command\n");
 		exit(EXIT_FAILURE);
-		return (1);
 	}
 	return (0);
 }

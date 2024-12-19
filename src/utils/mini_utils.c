@@ -45,9 +45,11 @@ void	free_arr_cmds(char **array)
 	while (array[i])
 	{
 		free(array[i]);
+		array[i] = NULL;
 		i++;
 	}
 	free(array);
+	array = NULL;
 }
 
 void	free_arr(char **array)

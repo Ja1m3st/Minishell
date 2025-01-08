@@ -106,6 +106,7 @@ void		execute_commands(t_mini *mini);
 void		tokenize_commands(t_mini *mini, char **cmds);
 void		ft_tokenadd_back(t_mini *mini, t_token *token);
 void		set_in_out_file(t_mini *mini, t_token *token);
+void		set_in_out_file2(t_mini *mini, t_token *token);
 t_token		*ft_newtoken(t_token *token);
 int		tokenize_rightdirections(t_token *token, char **cmds);
 int		tokenize_leftdirections(t_token *token, char **cmds);

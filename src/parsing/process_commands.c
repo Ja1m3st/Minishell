@@ -47,6 +47,7 @@ void	allocate_command_memory(t_mini *mini)
 	int	i;
 
 	count = count_commands(mini);
+	printf("\ncount = %d\n\n", count);
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
 	if (!mini->mini_cmds)
 		error(mini, '!');
@@ -57,7 +58,7 @@ void	allocate_command_memory(t_mini *mini)
 		return ;
 	}
 	i = 0;
-	while (i < count + 1)
+	while (i < count)
 	{
 		mini->mini_cmds[i] = NULL;
 		i++;

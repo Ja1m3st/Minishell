@@ -50,6 +50,11 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 	{
 		here_doc(mini, token);
 	}
+	set_in_out_file2(mini, token);
+}
+
+void	set_in_out_file2(t_mini *mini, t_token *token)
+{
 	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{
 		mini->outfile = open(token->output_file,

@@ -40,8 +40,8 @@ int	count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 	is_word = 0;
 	while (mini->input[*i] && mini->input[*i] != ' ' && *quote == NO_QUOTE
 		&& !is_delimeter(mini->input[*i])
-		&& ((mini->input[*i] != '>'&& mini->input[(*i) + 1] != '>')
-		&& (mini->input[*i] != '<' && mini->input[(*i) + 1] != '<')))
+		&& ((mini->input[*i] != '>' && mini->input[(*i) + 1] != '>')
+			&& (mini->input[*i] != '<' && mini->input[(*i) + 1] != '<')))
 	{
 		*quote = get_quote(*quote, mini->input[*i]);
 		is_word = 1;

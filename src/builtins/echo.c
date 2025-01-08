@@ -18,8 +18,13 @@ void	echo(t_mini *mini, t_token *token)
 
 	if (token->cmd[1] && !ft_strncmp(token->cmd[1], "-n", 2))
 		token->newline = 1;
-	if (!token->cmd[1 + token->newline])
+	if (token->newline && !token->cmd[1 + token->newline])
+			return ;
+	else if (!token->newline && !token->cmd[1])
+	{
+		write(mini->outfile, "\n", 1);
 		return ;
+	}	
 	str = parse_string(token);
 	if (str)
 	{

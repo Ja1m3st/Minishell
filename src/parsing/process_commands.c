@@ -44,6 +44,7 @@ void	process_commands(t_mini *mini)
 void	allocate_command_memory(t_mini *mini)
 {
 	int	count;
+	int	i;
 
 	count = count_commands(mini);
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
@@ -54,6 +55,12 @@ void	allocate_command_memory(t_mini *mini)
 		perror("Memory Allocation Failure\n");
 		exit(EXIT_FAILURE);
 		return ;
+	}
+	i = 0;
+	while (i < count + 1)
+	{
+		mini->mini_cmds[i] = NULL;
+		i++;
 	}
 }
 

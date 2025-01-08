@@ -12,12 +12,11 @@
 
 #include "minishell.h"
 
-
-void	tokenize_commands(t_mini *mini, char **cmds)
+void	tokenize_commands(t_mini *mini, char **cmds, t_token *curren_token)
 {
 	t_token	*token;
 
-	token = NULL;
+	token = curren_token;
 	if (!cmds || !*cmds)
 		return ;
 	if (!token || (token && token->complete))
@@ -32,16 +31,14 @@ void	tokenize_commands(t_mini *mini, char **cmds)
 	if (*cmds && is_output_redirect(*cmds))
 		cmds += tokenize_rightdirections(token, cmds);
 	if (*cmds && !ft_strcmp(*cmds, "|"))
-		cmds += tokenize_pipedirections(token, cmds);
-	if (*cmds)
-		tokenize_commands(mini, cmds);
-}
-
-int	tokenize_pipedirections(t_token *token, char **cmds)
-{
-	token->pipe = ft_strdup(*cmds);
-	token->complete = 1;
-	return (1);
+	{
+		token->pipe = ft_strdup(*cmds);
+		token->complete = 1;
+		cmds++;
+		tokenize_commands(mini, cmds, NULL);
+		return ;
+	}
+	tokenize_commands(mini, cmds, token);
 }
 
 int	tokenize_leftdirections(t_token *token, char **cmds)
@@ -74,26 +71,47 @@ int	tokenize_rightdirections(t_token *token, char **cmds)
 	return (2);
 }
 
+void	tokenize_cmds_util(t_token *token, char **cmds, int *old_len, int *new_len)
+{
+	while (token->cmd && token->cmd[*old_len])
+        (*old_len)++;
+
+    while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|") && !is_redirect(cmds[*new_len]))
+        (*new_len)++;
+}
 int	tokenize_cmds(t_token *token, char **cmds)
 {
-	int		i;
+	int	new_len;
+	int	old_len;
+	int	i;
+	int	j;
+	char **new_cmds;
 
-	i = 0;
-	token->is_builtin = is_builtin(*cmds);
-	while (cmds[i] && ft_strcmp(cmds[i], "|") && !is_redirect(cmds[i]))
-		i++;
-	token->cmd = malloc(sizeof(char *) * (i + 1));
-	if (!token->cmd)
+	old_len = 0;
+	new_len = 0;
+	tokenize_cmds_util(token, cmds, &old_len, &new_len);
+	new_cmds = malloc(sizeof(char *) * (old_len + new_len + 1));
+	if (!new_cmds)
 		return (-1);
 	i = 0;
-	while (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
+	while (i < old_len)
 	{
-		token->cmd[i] = ft_strdup(*cmds);
-		cmds++;
+		new_cmds[i] = ft_strdup(token->cmd[i]);
 		i++;
 	}
-	token->cmd[i] = NULL;
+	j = 0;
+	while (j < new_len)
+	{
+		new_cmds[j + old_len] = ft_strdup(cmds[j]);
+		j++;
+	}
+	new_cmds[old_len + new_len] = NULL;
+	if (token->cmd)
+		free_arr(token->cmd);
+	token->cmd = new_cmds;
+	if (token->path)
+		free(token->path);
 	if (token->is_builtin == 0)
 		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
-	return (i);
+	return (j);
 }

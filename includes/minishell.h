@@ -103,7 +103,7 @@ void		allocate_command_memory(t_mini *mini);
 void		process_commands(t_mini *mini);
 void		builtin_commands(t_mini *mini, t_token *token);
 void		execute_commands(t_mini *mini);
-void		tokenize_commands(t_mini *mini, char **cmds);
+void		tokenize_commands(t_mini *mini, char **cmds, t_token *current_token);
 void		ft_tokenadd_back(t_mini *mini, t_token *token);
 void		set_in_out_file(t_mini *mini, t_token *token);
 void		set_in_out_file2(t_mini *mini, t_token *token);

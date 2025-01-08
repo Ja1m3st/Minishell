@@ -6,11 +6,23 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/18 13:12:53 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:57:32 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int remove_quotes(char *str)
+{
+    int len = strlen(str);
+    if ((str[0] == '"' && str[len - 1] == '"') || (str[0] == '\'' && str[len - 1] == '\''))
+    {
+        memmove(str, str + 1, len - 2);
+        str[len - 2] = '\0';
+        return 1;
+    }
+    return 0;
+}
 
 int	check_quo(char *str)
 {
@@ -36,31 +48,41 @@ int	check_quo(char *str)
 	return (1);
 }
 
-int	check_quotation(t_mini *mini)
+int check_quotation(t_mini *mini)
 {
-	int	i;
+    t_token *current_token;
+    int     i;
 
-	i = 0;
-	while (mini->mini_cmds[i] != 0 && !ft_strchr(mini->mini_cmds[i], '~'))
-	{
-		if (check_quo(mini->mini_cmds[i]) == 0)
-			return (free_main(mini), perror("Unclosed quotes\n"), 0);
-		if (mini->mini_cmds[i][0] == '\"')
-		{
-			if (process_input_multi(mini->mini_cmds[i]) == 0)
-				return (free_main(mini), perror("Error dquote\n"), 0);
-		}
-		else if (mini->mini_cmds[i][0] == '\'')
-		{
-			if (process_input_single(mini->mini_cmds[i]) == 0)
-				return (free_main(mini), perror("Error dquote\n"), 0);
-		}
-		else
-		{
-			if (process_input_none(mini->mini_cmds[i]) == 0)
-				return (free_main(mini), perror("Invalid backslash\n"), 0);
-		}
-		i++;
-	}
-	return (1);
+    current_token = *(mini->commands);
+    while (current_token)
+    {
+        i = 0;
+        while (current_token->cmd[i] != NULL)
+        {
+            if (!check_quo(current_token->cmd[i]))
+                return (free_main(mini), perror("Unclosed quotes\n"), 0);
+
+            if (remove_quotes(current_token->cmd[i]))
+                printf("Removed quotes: %s\n", current_token->cmd[i]);
+
+            if (current_token->cmd[i][0] == '"')
+            {
+                if (!process_input_multi(current_token->cmd[i]))
+                    return (free_main(mini), perror("Error dquote\n"), 0);
+            }
+            else if (current_token->cmd[i][0] == '\'')
+            {
+                if (!process_input_single(current_token->cmd[i]))
+                    return (free_main(mini), perror("Error squote\n"), 0);
+            }
+            else
+            {
+                if (!process_input_none(current_token->cmd[i]))
+                    return (free_main(mini), perror("Invalid backslash\n"), 0);
+            }
+            i++;
+        }
+        current_token = current_token->next;
+    }
+    return 1;
 }

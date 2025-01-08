@@ -14,14 +14,14 @@
 
 int remove_quotes(char *str)
 {
-    int len = strlen(str);
-    if ((str[0] == '"' && str[len - 1] == '"') || (str[0] == '\'' && str[len - 1] == '\''))
-    {
-        memmove(str, str + 1, len - 2);
-        str[len - 2] = '\0';
-        return 1;
-    }
-    return 0;
+	int len = strlen(str);
+	if ((str[0] == '"' && str[len - 1] == '"') || (str[0] == '\'' && str[len - 1] == '\''))
+	{
+		memmove(str, str + 1, len - 2);
+		str[len - 2] = '\0';
+		return 1;
+	}
+	return 0;
 }
 
 int	check_quo(char *str)
@@ -48,41 +48,52 @@ int	check_quo(char *str)
 	return (1);
 }
 
-int check_quotation(t_mini *mini)
+int	call_remove_quotes(t_mini *mini, char *str)
 {
-    t_token *current_token;
-    int     i;
+	if (!check_quo(str))
+				return (free_main(mini), perror("Unclosed quotes\n"), 0);
+	if (remove_quotes(str))
+		printf("Removed quotes: %s\n", str);
 
-    current_token = *(mini->commands);
-    while (current_token)
-    {
-        i = 0;
-        while (current_token->cmd[i] != NULL)
-        {
-            if (!check_quo(current_token->cmd[i]))
-                return (free_main(mini), perror("Unclosed quotes\n"), 0);
+	if (str[0] == '"')
+	{
+		if (!process_input_multi(str))
+			return (free_main(mini), perror("Error dquote\n"), 0);
+	}
+	else if (str[0] == '\'')
+	{
+		if (!process_input_single(str))
+			return (free_main(mini), perror("Error squote\n"), 0);
+	}
+	else
+	{
+		if (!process_input_none(str))
+			return (free_main(mini), perror("Invalid backslash\n"), 0);
+	}
+	return (1);
+}
 
-            if (remove_quotes(current_token->cmd[i]))
-                printf("Removed quotes: %s\n", current_token->cmd[i]);
+int	check_quotation(t_mini *mini)
+{
+	t_token	*current_token;
+	int	i;
 
-            if (current_token->cmd[i][0] == '"')
-            {
-                if (!process_input_multi(current_token->cmd[i]))
-                    return (free_main(mini), perror("Error dquote\n"), 0);
-            }
-            else if (current_token->cmd[i][0] == '\'')
-            {
-                if (!process_input_single(current_token->cmd[i]))
-                    return (free_main(mini), perror("Error squote\n"), 0);
-            }
-            else
-            {
-                if (!process_input_none(current_token->cmd[i]))
-                    return (free_main(mini), perror("Invalid backslash\n"), 0);
-            }
-            i++;
-        }
-        current_token = current_token->next;
-    }
-    return 1;
+	current_token = *(mini->commands);
+	while (current_token)
+	{
+		i = 0;
+		while (current_token->cmd[i] != NULL)
+		{
+			call_remove_quotes(mini, current_token->cmd[i]);
+			i++;
+		}
+		if (!is_builtin(current_token->cmd[0]))
+			call_remove_quotes(mini, current_token->path);
+		if (current_token->input_file)
+			call_remove_quotes(mini, current_token->input_file);
+		if (current_token->output_file)
+			call_remove_quotes(mini, current_token->output_file);
+		current_token = current_token->next;
+	}
+	return (1);
 }

@@ -111,7 +111,7 @@ t_token		*ft_newtoken(t_token *token);
 int		tokenize_rightdirections(t_token *token, char **cmds);
 int		tokenize_leftdirections(t_token *token, char **cmds);
 int		tokenize_pipedirections(t_token *token, char **cmds);
-int		tokenize_cmds(t_token *token, char **cmds);
+int		tokenize_cmds(t_token *token, char **cmds, int len);
 //-------------------------------------------------------------------PIPES
 void		pipex(t_mini *mini, t_token *token);
 int		swap_fds(t_mini *mini, t_token *token);

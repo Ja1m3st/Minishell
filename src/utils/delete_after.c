@@ -22,13 +22,13 @@ void	print_tree_structure(t_mini *mini)
 	i = 0;
 	while (token)
 	{
-		printf("TOKEN [%d]\n", i);
+		printf("TOKEN (%d)\n", i);
 		if (token->cmd)
 		{
 			j = 0;
 			while (token->cmd[j])
 			{
-				printf("   cmd[%d]: %s\n", i, token->cmd[j]);
+				printf("   cmd[%d]: %s\n", j, token->cmd[j]);
 				j++;
 			}
 		}

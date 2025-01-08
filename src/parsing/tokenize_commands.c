@@ -12,12 +12,11 @@
 
 #include "minishell.h"
 
+
 void	tokenize_commands(t_mini *mini, char **cmds)
 {
 	t_token	*token;
-	int	len;
 
-	len = 0;
 	token = NULL;
 	if (!cmds || !*cmds)
 		return ;
@@ -27,16 +26,15 @@ void	tokenize_commands(t_mini *mini, char **cmds)
 		ft_tokenadd_back(mini, token);
 	}
 	if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
-	{
-		while (cmds[len] && ft_strcmp(cmds[len], "|"))
-			len++;
-		cmds += tokenize_cmds(token, cmds, len);
-	}
+		cmds += tokenize_cmds(token, cmds);
+	if (*cmds && is_input_redirect(*cmds))
+		cmds += tokenize_leftdirections(token, cmds);
+	if (*cmds && is_output_redirect(*cmds))
+		cmds += tokenize_rightdirections(token, cmds);
 	if (*cmds && !ft_strcmp(*cmds, "|"))
-	{
 		cmds += tokenize_pipedirections(token, cmds);
+	if (*cmds)
 		tokenize_commands(mini, cmds);
-	}
 }
 
 int	tokenize_pipedirections(t_token *token, char **cmds)
@@ -76,26 +74,23 @@ int	tokenize_rightdirections(t_token *token, char **cmds)
 	return (2);
 }
 
-int	tokenize_cmds(t_token *token, char **cmds, int len)
+int	tokenize_cmds(t_token *token, char **cmds)
 {
-	int	i;
+	int		i;
 
-	token->cmd = malloc(sizeof(char *) * (len + 1));
+	i = 0;
+	token->is_builtin = is_builtin(*cmds);
+	while (cmds[i] && ft_strcmp(cmds[i], "|") && !is_redirect(cmds[i]))
+		i++;
+	token->cmd = malloc(sizeof(char *) * (i + 1));
 	if (!token->cmd)
 		return (-1);
 	i = 0;
-	while (*cmds && ft_strcmp(*cmds, "|"))
+	while (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 	{
-		if (*cmds && is_input_redirect(*cmds))
-		    cmds += tokenize_leftdirections(token, cmds);
-		if (*cmds && is_output_redirect(*cmds))
-		    cmds += tokenize_rightdirections(token, cmds);
-		if (**cmds)
-		{
-		    token->cmd[i] = ft_strdup(*cmds);
-		    i++;
-		}
+		token->cmd[i] = ft_strdup(*cmds);
 		cmds++;
+		i++;
 	}
 	token->cmd[i] = NULL;
 	if (token->is_builtin == 0)

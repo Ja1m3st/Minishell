@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	free_main(t_mini *mini)
+{
+	if (!mini)
+		return ;
+	if (mini->commands)
+	{
+		free_arr_cmds(mini->mini_cmds);
+		mini->mini_cmds = NULL;
+	}
+	free_commands(mini);
+	free(mini->input);
+}
+
 void	error(t_mini *mini, char c)
 {
 	rl_clear_history();
@@ -92,12 +105,3 @@ void	free_commands2(t_token *token)
 		free(token->pipe);
 }
 
-void	free_main(t_mini *mini)
-{
-	if (!mini)
-		return ;
-	free_arr_cmds(mini->mini_cmds);
-	mini->mini_cmds = NULL;
-	free_commands(mini);
-	free(mini->input);
-}

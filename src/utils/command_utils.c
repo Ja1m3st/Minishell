@@ -38,10 +38,10 @@ int	count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 
 	count = 0;
 	is_word = 0;
-	while (mini->input[*i + 1] && mini->input[*i] != ' ' && *quote == NO_QUOTE
-		&& !is_delimeter(mini->input[*i]) && ((mini->input[*i] != '>'
-				&& mini->input[(*i) + 1] != '>') || (mini->input[*i] != '<'
-				&& mini->input[(*i) + 1] != '<')))
+	while (mini->input[*i] && mini->input[*i] != ' ' && *quote == NO_QUOTE
+		&& !is_delimeter(mini->input[*i])
+		&& ((mini->input[*i] != '>'&& mini->input[(*i) + 1] != '>')
+		&& (mini->input[*i] != '<' && mini->input[(*i) + 1] != '<')))
 	{
 		*quote = get_quote(*quote, mini->input[*i]);
 		is_word = 1;
@@ -54,15 +54,21 @@ int	count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 
 int	count_no_quote_single_redir(t_mini *mini, t_quote_type quote, int *i)
 {
-	if (quote == NO_QUOTE
-		&& ((mini->input[*i] == '>' && mini->input[(*i) + 1] == '>')
-			|| (mini->input[*i] == '<' && mini->input[(*i) + 1] == '<')))
+	if (mini->input[*i] && quote == NO_QUOTE)
 	{
-		(*i)++;
-		return (1);
+		if ((mini->input[*i] == '>' || mini->input[(*i)] == '<')
+			&& (mini->input[*i + 1] != mini->input[*i]))
+		{
+			(*i)++;
+			return (1);
+		}
+		if ((mini->input[*i] == '>' && mini->input[*i + 1] == '>')
+			|| (mini->input[*i] == '<' && mini->input[*i + 1] == '<'))
+		{
+			(*i)++;
+			return (1);
+		}
 	}
-	else if (quote == NO_QUOTE && is_delimeter(mini->input[*i]))
-		return (1);
 	return (0);
 }
 
@@ -75,9 +81,9 @@ int	count_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 	{
 		count = 1;
 		(*i)++;
-		while (mini->input[*i]
-			&& get_quote(*quote, mini->input[*i]) != NO_QUOTE)
+		while (mini->input[*i] && *quote == NO_QUOTE)
 		{
+			*quote = get_quote(*quote, mini->input[*i]);
 			(*i)++;
 		}
 		*quote = NO_QUOTE;

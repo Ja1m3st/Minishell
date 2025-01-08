@@ -48,6 +48,8 @@ void	allocate_command_memory(t_mini *mini)
 	count = count_commands(mini);
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
 	if (!mini->mini_cmds)
+		error(mini, '!');
+	if (!mini->mini_cmds)
 	{
 		perror("Memory Allocation Failure\n");
 		exit(EXIT_FAILURE);

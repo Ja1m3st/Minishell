@@ -55,19 +55,22 @@ int	call_remove_quotes(t_mini *mini, char *str)
 {
 	if (!check_quo(str))
 		return (free_main(mini), perror("Unclosed quotes\n"), 0);
-	remove_quotes(str);
+	
 	if (str[0] == '"')
 	{
+		remove_quotes(str);
 		if (!process_input_multi(str))
 			return (free_main(mini), perror("Error dquote\n"), 0);
 	}
 	else if (str[0] == '\'')
 	{
+		remove_quotes(str);
 		if (!process_input_single(str))
 			return (free_main(mini), perror("Error squote\n"), 0);
 	}
 	else
 	{
+		remove_quotes(str);
 		if (!process_input_none(str))
 			return (free_main(mini), perror("Invalid backslash\n"), 0);
 	}
@@ -90,7 +93,7 @@ int	check_quotation(t_mini *mini)
 				cur->cmd[i] = expand_variable(mini, cur->cmd[i]);
 			i++;
 		}
-		if (!is_builtin(cur->cmd[0]))
+		if (is_builtin(cur->cmd[0]))
 			call_remove_quotes(mini, cur->path);
 		if (cur->input_file)
 			call_remove_quotes(mini, cur->input_file);

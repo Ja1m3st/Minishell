@@ -97,7 +97,8 @@ int	execve_commands(t_mini *mini, t_token *token)
 	{
 		if (execve(token->path, token->cmd, mini->env) == -1)
 		{
-			printf("%s: command not found\n", token->cmd[0]);
+			if (token->cmd[0][0] != '\0')
+				printf("%s: command not found\n", token->cmd[0]);
 			exit(EXIT_FAILURE);
 		}
 	}

@@ -28,6 +28,7 @@ t_token	*ft_newtoken(t_token *token)
 	token->is_builtin = 0;
 	token->complete = 0;
 	token->newline = 0;
+	token->expansion = 0;
 	token->next = NULL;
 	return (token);
 }

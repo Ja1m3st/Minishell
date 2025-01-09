@@ -57,15 +57,15 @@ int	call_remove_quotes(t_mini *mini, char *str)
 		return (free_main(mini), perror("Unclosed quotes\n"), 0);
 	if (str[0] == '"')
 	{
-       		if (remove_quotes(str))
-		    printf("Removed quotes: %s\n", str);
+		if (remove_quotes(str))
+			printf("Removed quotes: %s\n", str);
 		if (!process_input_multi(str))
 			return (free_main(mini), perror("Error dquote\n"), 0);
 	}
 	else if (str[0] == '\'')
 	{
-        	if (remove_quotes(str))
-		    printf("Removed quotes: %s\n", str);
+		if (remove_quotes(str))
+			printf("Removed quotes: %s\n", str);
 		if (!process_input_single(str))
 			return (free_main(mini), perror("Error squote\n"), 0);
 	}
@@ -91,14 +91,13 @@ int	check_quotation(t_mini *mini)
 		{
 			if (call_remove_quotes(mini, token->cmd[i]) == 0)
 				return (0);
-			if (is_builtin(token->cmd[i]))
-				token->is_builtin = 1;
 			if (ft_strchr(token->cmd[i], '$'))
 				token->cmd[i] = expand_variable(mini, token->cmd[i]);
+			if (is_builtin(token->cmd[i]))
+				token->is_builtin = 1;
 			i++;
 		}
-		if (!token->is_builtin)
-			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
+		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 		if (token->input_file)
 			call_remove_quotes(mini, token->input_file);
 		if (token->output_file)

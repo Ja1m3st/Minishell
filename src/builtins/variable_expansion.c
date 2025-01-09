@@ -21,6 +21,8 @@ char	*expand_variable(t_mini *mini, char *str)
 
 	i = 0;
 	k = 0;
+	if (!str)
+		return (str);
 	res = ft_strdup("");
 	while (str[i])
 	{
@@ -32,11 +34,10 @@ char	*expand_variable(t_mini *mini, char *str)
 			continue ;
 		}
 		else
-		{
 			res = process_regular_char(res, str[i], &k);
-		}
 		i++;
 	}
+	free(str);
 	return (res);
 }
 

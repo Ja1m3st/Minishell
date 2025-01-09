@@ -51,10 +51,8 @@ int	check_quo(char *str)
 int	call_remove_quotes(t_mini *mini, char *str)
 {
 	if (!check_quo(str))
-				return (free_main(mini), perror("Unclosed quotes\n"), 0);
-	if (remove_quotes(str))
-		printf("Removed quotes: %s\n", str);
-
+		return (free_main(mini), perror("Unclosed quotes\n"), 0);
+	remove_quotes(str);
 	if (str[0] == '"')
 	{
 		if (!process_input_multi(str))
@@ -77,7 +75,6 @@ int	check_quotation(t_mini *mini)
 {
 	t_token	*current_token;
 	int		i;
-	char	*temp;
 
 	current_token = *(mini->commands);
 	while (current_token)
@@ -87,11 +84,7 @@ int	check_quotation(t_mini *mini)
 		{
 			call_remove_quotes(mini, current_token->cmd[i]);
 			if (ft_strchr(current_token->cmd[i], '$'))
-			{
-				temp = expand_variable(mini, current_token->cmd[i]);
-				free(current_token->cmd[i]);
-				current_token->cmd[i] = temp;
-			}
+				current_token->cmd[i] = expand_variable(mini, current_token->cmd[i]);
 			i++;
 		}
 		if (!is_builtin(current_token->cmd[0]))

@@ -31,24 +31,11 @@ void	here_doc(t_mini *mini, t_token *token)
 			free(line);
 			break ;
 		}
-		line = expand_var_to_value(mini, line);
+		if (line && ft_strchr(line, '$'))
+			line = expand_variable(mini, line);
 		write(fd[1], line, ft_strlen(line));
 		free(line);
 	}
 	close(fd[1]);
 	mini->infile = fd[0];
-}
-
-char	*expand_var_to_value(t_mini *mini, char *line)
-{
-	char	*temp;
-
-	if (ft_strchr(line, '$'))
-	{
-		temp = expand_variable(mini, line);
-		free(line);
-		line = ft_strdup(temp);
-		free(temp);
-	}
-	return (line);
 }

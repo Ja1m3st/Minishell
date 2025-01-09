@@ -32,7 +32,7 @@ void	builtin_commands(t_mini *mini, t_token *token)
 	{
 		write(mini->outfile, "exit\n", 5);
 		error(mini, '!');
-	}
+	}	
 }
 
 void	free_arr_cmds(char **array)

@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-int	process_input_single(char *str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'')
-		{
-			i++;
-			continue ;
-		}
-		str[j++] = str[i];
-		i++;
-	}
-	str[j] = '\0';
-	return (1);
-	return (1);
-}
-
 int	is_special_sequence(char current, char next)
 {
 	return (current == '\\' && (next == '\"' || next == '\''

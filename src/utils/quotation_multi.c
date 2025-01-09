@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:10:37 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/18 13:33:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:37:32 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	handle_special_sequence(char *str, int *i, int *j)
 {
 	if (str[*i + 1] == 'n' || str[*i + 1] == 't' || str[*i + 1] == 'a'
 		|| str[*i + 1] == 'b' || str[*i + 1] == 'v' || str[*i + 1] == 'f'
-		|| str[*i + 1] == 'r')
+		|| str[*i + 1] == 'r' || str[*i + 1] == 'r' || str[*i + 1] == '\'')
 	{
 		str[(*j)++] = '\\';
 		str[(*j)++] = str[++(*i)];
@@ -45,8 +45,8 @@ int	process_input_multi(char *str)
 	{
 		if (str[i] == '\"' || str[i] == '`' || str[i] == '\'')
 		{
-			i++;
-			continue ;
+				i++;
+				continue ;
 		}
 		if (is_special_sequence(str[i], str[i + 1]))
 		{

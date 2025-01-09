@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:10:06 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/18 13:18:27 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:43:10 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	process_input_single(char *str)
 	j = 0;
 	while (str[i] != '\0')
 	{
+		if (!ft_strncmp(str, "\'", ft_strlen(str)))
+			return (0);
 		if (str[i] == '\'')
 		{
 			i++;

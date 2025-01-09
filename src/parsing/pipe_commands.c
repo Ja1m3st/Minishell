@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:33:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:14:42 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	execve_commands(t_mini *mini, t_token *token)
 	}
 	else if (execve(token->path, token->cmd, mini->env) == -1)
 	{
-		perror("Failed to execute command\n");
+		ft_printf("%s: command not found\n", token->cmd[0]);
 		exit(EXIT_FAILURE);
 	}
 	return (0);

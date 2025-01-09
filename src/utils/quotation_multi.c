@@ -43,10 +43,10 @@ int	process_input_multi(char *str)
 	j = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '\"' || str[i] == '`' || str[i] == '\'')
+		if (str[i] == '\"' || str[i] == '`')
 		{
-				i++;
-				continue ;
+			i++;
+			continue ;
 		}
 		if (is_special_sequence(str[i], str[i + 1]))
 		{

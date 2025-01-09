@@ -28,14 +28,13 @@ void	process_commands(t_mini *mini)
 	allocate_command_memory(mini);
 	while (mini->input[i])
 	{
-        if (mini->input[i] == '\\' && mini->input[i + 1] != '\0')
-        {
-            // Agregar el carácter siguiente literal
+		if (mini->input[i] == '\\' && mini->input[i + 1] != '\0')
+		{
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
-            cmd = append_character_to_cmd(cmd, mini->input[i + 1], &k);
-            i += 2; // Saltar el carácter escapado
-            continue;
-        }
+			cmd = append_character_to_cmd(cmd, mini->input[i + 1], &k);
+			i += 2;
+			continue;
+		}
 		quote = get_quote(quote, mini->input[i]);
 		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_del(mini->input[i])))
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);

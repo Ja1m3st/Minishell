@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/08 15:57:32 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:42:18 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,17 @@ int	call_remove_quotes(t_mini *mini, char *str)
 {
 	if (!check_quo(str))
 		return (free_main(mini), perror("Unclosed quotes\n"), 0);
-	
 	if (str[0] == '"')
 	{
-		remove_quotes(str);
+       		if (remove_quotes(str))
+		    printf("Removed quotes: %s\n", str);
 		if (!process_input_multi(str))
 			return (free_main(mini), perror("Error dquote\n"), 0);
 	}
 	else if (str[0] == '\'')
 	{
-		remove_quotes(str);
+        	if (remove_quotes(str))
+		    printf("Removed quotes: %s\n", str);
 		if (!process_input_single(str))
 			return (free_main(mini), perror("Error squote\n"), 0);
 	}
@@ -88,7 +89,8 @@ int	check_quotation(t_mini *mini)
 		i = 0;
 		while (cur->cmd[i] != NULL)
 		{
-			call_remove_quotes(mini, cur->cmd[i]);
+			if (call_remove_quotes(mini, cur->cmd[i]) == 0)
+				return (0);
 			if (ft_strchr(cur->cmd[i], '$'))
 				cur->cmd[i] = expand_variable(mini, cur->cmd[i]);
 			i++;

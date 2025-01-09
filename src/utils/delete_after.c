@@ -55,5 +55,5 @@ void	print_tree_structure2(t_token *token)
 		printf("   dlmtr: %s\n", token->delimeter);
 	if (token->pipe)
 		printf("   pipe: %s\n", token->pipe);
-	printf("\n");
+	printf("------------------------------------\n");
 }

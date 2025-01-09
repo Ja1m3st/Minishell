@@ -35,8 +35,8 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/environment/get_full_name.c ./src/parsing/pipe_commands.c ./src/main/handle_signals.c \
 	./src/parsing/tokenize_commands.c ./src/utils/parsing_utils.c ./src/parsing/create_commands.c \
 	./src/utils/delete_after.c ./src/utils/command_utils.c ./src/parsing/process_commands.c \
-	./src/utils/quotations.c ./src/utils/fd_utils.c ./src/utils/here_doc.c \
-	./src/utils/quotation_none.c ./src/utils/quotation_simple.c ./src/utils/quotation_multi.c
+	./src/utils/quotations.c ./src/utils/here_doc.c \
+	./src/utils/quotation_none.c ./src/utils/quotation_multi.c
 	
 
 #OBJS--------------------------------------------------------------------------------------

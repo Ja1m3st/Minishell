@@ -12,16 +12,19 @@
 
 #include "minishell.h"
 
-int remove_quotes(char *str)
+int	remove_quotes(char *str)
 {
-	int len = strlen(str);
-	if ((str[0] == '"' && str[len - 1] == '"') || (str[0] == '\'' && str[len - 1] == '\''))
+	int	len;
+
+	len = strlen(str);
+	if ((str[0] == '"' && str[len - 1] == '"')
+		|| (str[0] == '\'' && str[len - 1] == '\''))
 	{
 		ft_memmove(str, str + 1, len - 2);
 		str[len - 2] = '\0';
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
 int	check_quo(char *str)
@@ -73,27 +76,27 @@ int	call_remove_quotes(t_mini *mini, char *str)
 
 int	check_quotation(t_mini *mini)
 {
-	t_token	*current_token;
+	t_token	*cur;
 	int		i;
 
-	current_token = *(mini->commands);
-	while (current_token)
+	cur = *(mini->commands);
+	while (cur)
 	{
 		i = 0;
-		while (current_token->cmd[i] != NULL)
+		while (cur->cmd[i] != NULL)
 		{
-			call_remove_quotes(mini, current_token->cmd[i]);
-			if (ft_strchr(current_token->cmd[i], '$'))
-				current_token->cmd[i] = expand_variable(mini, current_token->cmd[i]);
+			call_remove_quotes(mini, cur->cmd[i]);
+			if (ft_strchr(cur->cmd[i], '$'))
+				cur->cmd[i] = expand_variable(mini, cur->cmd[i]);
 			i++;
 		}
-		if (!is_builtin(current_token->cmd[0]))
-			call_remove_quotes(mini, current_token->path);
-		if (current_token->input_file)
-			call_remove_quotes(mini, current_token->input_file);
-		if (current_token->output_file)
-			call_remove_quotes(mini, current_token->output_file);
-		current_token = current_token->next;
+		if (!is_builtin(cur->cmd[0]))
+			call_remove_quotes(mini, cur->path);
+		if (cur->input_file)
+			call_remove_quotes(mini, cur->input_file);
+		if (cur->output_file)
+			call_remove_quotes(mini, cur->output_file);
+		cur = cur->next;
 	}
 	return (1);
 }

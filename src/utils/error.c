@@ -104,4 +104,3 @@ void	free_commands2(t_token *token)
 	if (token->pipe)
 		free(token->pipe);
 }
-

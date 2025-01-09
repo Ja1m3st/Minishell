@@ -103,15 +103,15 @@ void		allocate_command_memory(t_mini *mini);
 void		process_commands(t_mini *mini);
 void		builtin_commands(t_mini *mini, t_token *token);
 void		execute_commands(t_mini *mini);
-void		tokenize_commands(t_mini *mini, char **cmds, t_token *current_token);
+void		tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void		ft_tokenadd_back(t_mini *mini, t_token *token);
 void		set_in_out_file(t_mini *mini, t_token *token);
 void		set_in_out_file2(t_mini *mini, t_token *token);
 t_token		*ft_newtoken(t_token *token);
 int		tokenize_rightdirections(t_token *token, char **cmds);
 int		tokenize_leftdirections(t_token *token, char **cmds);
-int		tokenize_pipedirections(t_token *token, char **cmds);
 int		tokenize_cmds(t_token *token, char **cmds);
+void	tokenize_utils(t_token *token, char **cmds, int *old_len, int *new_len);
 //-------------------------------------------------------------------PIPES
 void		pipex(t_mini *mini, t_token *token);
 int		swap_fds(t_mini *mini, t_token *token);
@@ -165,8 +165,7 @@ int		count_commands(t_mini *mini);
 int		handle_special_sequence_none(char *str, int *i, int *j);
 int		is_special_sequence_none(char current, char next);
 t_quote_type	get_quote(t_quote_type quote, char c);
-int		is_delimeter(char cmd);
-char		*expand_var_to_value(t_mini *mini, char *line);
+int		is_del(char cmd);
 //--------------------------------------------------------------DELETE-AFTER
 void		print_tree_structure(t_mini *mini);
 void		print_tree_structure2(t_token *token);

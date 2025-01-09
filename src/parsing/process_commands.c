@@ -29,11 +29,11 @@ void	process_commands(t_mini *mini)
 	while (mini->input[i])
 	{
 		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_delimeter(mini->input[i])))
+		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_del(mini->input[i])))
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
-		if (quote == NO_QUOTE && (mini->input[i] == ' ' || is_delimeter(mini->input[i])))
+		if (quote == NO_QUOTE && (mini->input[i] == ' ' || is_del(mini->input[i])))
 			handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
-		if (quote == NO_QUOTE && is_delimeter(mini->input[i]))
+		if (quote == NO_QUOTE && is_del(mini->input[i]))
 			handle_redirections(mini, &cmd, &i, &j);
 		i++;
 	}
@@ -67,7 +67,7 @@ void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)
 	*cmd = ft_realloc(*cmd, 0, 2);
 	(*cmd)[0] = mini->input[*i];
 	(*cmd)[1] = '\0';
-	if (mini->input[*i + 1] && is_delimeter(mini->input[*i + 1]))
+	if (mini->input[*i + 1] && is_del(mini->input[*i + 1]))
 	{
 		(*i)++;
 		*cmd = ft_realloc(*cmd, 1, 3);

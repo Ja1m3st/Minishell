@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-void	tokenize_commands(t_mini *mini, char **cmds, t_token *curren_token)
+void	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 {
 	t_token	*token;
 
-	token = curren_token;
+	token = cur;
 	if (!cmds || !*cmds)
 		return ;
 	if (!token || (token && token->complete))
@@ -71,25 +71,26 @@ int	tokenize_rightdirections(t_token *token, char **cmds)
 	return (2);
 }
 
-void	tokenize_cmds_util(t_token *token, char **cmds, int *old_len, int *new_len)
+void	tokenize_utils(t_token *token, char **cmds, int *old_len, int *new_len)
 {
 	while (token->cmd && token->cmd[*old_len])
-        (*old_len)++;
-
-    while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|") && !is_redirect(cmds[*new_len]))
-        (*new_len)++;
+		(*old_len)++;
+	while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|")
+		&& !is_redirect(cmds[*new_len]))
+		(*new_len)++;
 }
+
 int	tokenize_cmds(t_token *token, char **cmds)
 {
-	int	new_len;
-	int	old_len;
-	int	i;
-	int	j;
-	char **new_cmds;
+	int		new_len;
+	int		old_len;
+	int		i;
+	int		j;
+	char	**new_cmds;
 
 	old_len = 0;
 	new_len = 0;
-	tokenize_cmds_util(token, cmds, &old_len, &new_len);
+	tokenize_utils(token, cmds, &old_len, &new_len);
 	new_cmds = malloc(sizeof(char *) * (old_len + new_len + 1));
 	if (!new_cmds)
 		return (-1);

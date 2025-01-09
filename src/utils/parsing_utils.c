@@ -39,7 +39,7 @@ int	is_redirect(char *cmd)
 	return (is_input_redirect(cmd) || is_output_redirect(cmd));
 }
 
-int	is_delimeter(char cmd)
+int	is_del(char cmd)
 {
 	return (cmd == '|' || cmd == '>' || cmd == '<');
 }

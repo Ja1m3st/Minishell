@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/17 15:12:42 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:56:33 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ void	process_commands(t_mini *mini)
 	allocate_command_memory(mini);
 	while (mini->input[i])
 	{
+        if (mini->input[i] == '\\' && mini->input[i + 1] != '\0')
+        {
+            // Agregar el carácter siguiente literal
+			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
+            cmd = append_character_to_cmd(cmd, mini->input[i + 1], &k);
+            i += 2; // Saltar el carácter escapado
+            continue;
+        }
 		quote = get_quote(quote, mini->input[i]);
 		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_delimeter(mini->input[i])))
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);

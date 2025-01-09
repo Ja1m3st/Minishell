@@ -34,10 +34,6 @@ int	main(int argc, char **argv, char **env)
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
-		for (int j = 0; mini.mini_cmds[j] != 0; j++)
-		{
-			ft_printf("%s\n", mini.mini_cmds[j]);
-		}
 		tokenize_commands(&mini, mini.mini_cmds, NULL);
 		if (!check_quotation(&mini))
 			continue ;

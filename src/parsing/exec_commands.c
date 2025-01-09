@@ -20,7 +20,7 @@ void	execute_commands(t_mini *mini)
 		return ;
 	init_fds(mini);
 	token = *mini->commands;
-	if (token && !token->next && is_builtin(token->cmd[0]))
+	if (token && !token->next && token->is_builtin)
 		return (set_in_out_file(mini, token), builtin_commands(mini, token));
 	if (pipe(mini->fd) == -1)
 		return (perror("Pipe error\n"));

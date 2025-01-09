@@ -110,9 +110,5 @@ int	tokenize_cmds(t_token *token, char **cmds)
 	if (token->cmd)
 		free_arr(token->cmd);
 	token->cmd = new_cmds;
-	if (token->path)
-		free(token->path);
-	if (token->is_builtin == 0)
-		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 	return (j);
 }

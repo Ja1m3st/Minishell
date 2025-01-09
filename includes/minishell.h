@@ -141,6 +141,7 @@ char		*extract_var_name(char *str, int *i);
 char		*add_var_value(t_mini *mini, char *res, char *var_name);
 char		*process_regular_char(char *res, char current_char, int *k);
 char		*get_var_value(t_mini *mini, char *var_name);
+int		modify_variables(t_mini *mini, t_token *token);
 //-------------------------------------------------------------------UTILS
 void		free_main(t_mini *mini);
 void		restore_fds(t_mini *mini);

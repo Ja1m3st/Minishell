@@ -41,7 +41,7 @@ void	print_tree_structure(t_mini *mini)
 
 void	print_tree_structure2(t_token *token)
 {
-	if (!token->is_builtin)
+	if (token->path)
 		printf("   path: %s\n", token->path);
 	if (token->input_redir)
 		printf("   input_redir: (%s)\n", token->input_redir);

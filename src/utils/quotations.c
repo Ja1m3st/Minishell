@@ -80,28 +80,30 @@ int	call_remove_quotes(t_mini *mini, char *str)
 
 int	check_quotation(t_mini *mini)
 {
-	t_token	*cur;
+	t_token	*token;
 	int		i;
 
-	cur = *(mini->commands);
-	while (cur)
+	token = *(mini->commands);
+	while (token)
 	{
 		i = 0;
-		while (cur->cmd[i] != NULL)
+		while (token->cmd[i] != NULL)
 		{
-			if (call_remove_quotes(mini, cur->cmd[i]) == 0)
+			if (call_remove_quotes(mini, token->cmd[i]) == 0)
 				return (0);
-			if (ft_strchr(cur->cmd[i], '$'))
-				cur->cmd[i] = expand_variable(mini, cur->cmd[i]);
+			if (is_builtin(token->cmd[i]))
+				token->is_builtin = 1;
+			if (ft_strchr(token->cmd[i], '$'))
+				token->cmd[i] = expand_variable(mini, token->cmd[i]);
 			i++;
 		}
-		if (is_builtin(cur->cmd[0]))
-			call_remove_quotes(mini, cur->path);
-		if (cur->input_file)
-			call_remove_quotes(mini, cur->input_file);
-		if (cur->output_file)
-			call_remove_quotes(mini, cur->output_file);
-		cur = cur->next;
+		if (!token->is_builtin)
+			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
+		if (token->input_file)
+			call_remove_quotes(mini, token->input_file);
+		if (token->output_file)
+			call_remove_quotes(mini, token->output_file);
+		token = token->next;
 	}
 	return (1);
 }

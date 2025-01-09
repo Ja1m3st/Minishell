@@ -93,10 +93,13 @@ int	execve_commands(t_mini *mini, t_token *token)
 		builtin_commands(mini, token);
 		exit(EXIT_SUCCESS);
 	}
-	else if (execve(token->path, token->cmd, mini->env) == -1)
+	else if (!token->is_builtin && !access(token->path, F_OK))
 	{
-		ft_printf("%s: command not found\n", token->cmd[0]);
-		exit(EXIT_FAILURE);
+		if (execve(token->path, token->cmd, mini->env) == -1)
+		{
+			printf("%s: command not found\n", token->cmd[0]);
+			exit(EXIT_FAILURE);
+		}
 	}
 	return (0);
 }

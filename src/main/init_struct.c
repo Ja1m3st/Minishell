@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/12 15:54:57 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:20:11 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->quote_types = NULL;
 	mini->is_last_cmd = 0;
 	mini->commands = malloc(sizeof(t_token *));
+	mini->state.double_quote = 0;
+	mini->state.single_quote = 0;
+	mini->state.result = 0;
 	if (!mini->commands)
 		return ;
 	*mini->commands = NULL;

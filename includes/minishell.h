@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/18 13:22:03 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:35:40 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <termios.h>
+
+typedef struct s_quote_state {
+    int single_quote; // 1 si estás dentro de comillas simples, 0 si no
+    int double_quote; // 1 si estás dentro de comillas dobles, 0 si no
+    char *result;
+} t_state;
 
 typedef enum s_quote_type
 {
@@ -72,6 +78,7 @@ typedef struct s_mini
 	t_token			**commands;
 	t_quote_type	*quote_types;
 	int				prev_fd;
+	t_state	state;
 }	t_mini;
 
 //------------------------------------------------------------------MAIN

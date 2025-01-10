@@ -6,102 +6,137 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 11:38:02 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/09 14:42:18 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:14:46 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	remove_quotes(char *str)
+static int validate_quotes(t_state *state)
 {
-	int	len;
-
-	len = strlen(str);
-	if ((str[0] == '"' && str[len - 1] == '"')
-		|| (str[0] == '\'' && str[len - 1] == '\''))
+	if (state->single_quote || state->double_quote)
 	{
-		ft_memmove(str, str + 1, len - 2);
-		str[len - 2] = '\0';
+		free(state->result);
+		return (ft_printf("Cierra comillas porfavor :/\n"), 1);
+	}
+	return (0);
+}
+
+static int	handle_single_quote(t_state *state, const char *cmd, size_t *i)
+{
+	if (cmd[*i] == '\'' && state->double_quote == 0)
+	{
+		if (state->single_quote == 0 && cmd[*i - 1] == '\\')
+			return (0);
+		state->single_quote = !state->single_quote;
 		return (1);
 	}
 	return (0);
 }
 
-int	check_quo(char *str)
+static int	handle_double_quote(t_state *state, char c)
 {
-	int	i;
-	int	in_single_quote;
-	int	in_double_quote;
-
-	i = 0;
-	in_single_quote = 0;
-	in_double_quote = 0;
-	while (str[i] != '\0')
+	if (c == '\"' && state->single_quote == 0)
 	{
-		if (str[i] == '\"' && in_single_quote == 0)
-			in_double_quote = !in_double_quote;
-		else if (str[i] == '\'' && in_double_quote == 0)
-			in_single_quote = !in_single_quote;
-		else if (str[i] == '\\' && in_single_quote == 0 && str[i + 1] != '\0')
-			i++;
-		i++;
+		state->double_quote = !state->double_quote;
+		return (1);
 	}
-	if (in_single_quote || in_double_quote)
-		return (0);
-	return (1);
+	return (0);
 }
 
-int	call_remove_quotes(t_mini *mini, char *str)
+static int handle_escape(t_state *state, const char *cmd, size_t *i, char *result, size_t *j)
 {
-	if (!check_quo(str))
-		return (free_main(mini), perror("Unclosed quotes\n"), 0);
-	if (str[0] == '"')
+	if (state->single_quote == 0 && cmd[*i - 1] == '\\' && state->double_quote == 0)
 	{
-		if (remove_quotes(str))
-			printf("Removed quotes: %s\n", str);
-		if (!process_input_multi(str))
-			return (free_main(mini), perror("Error dquote\n"), 0);
+		(*j)--;
+		result[*j] = cmd[*i];
+		(*i)++;
+		(*j)++;
+		return (0);
 	}
-	else if (str[0] == '\'')
+	if (state->double_quote == 1 && cmd[*i] == '\\')
 	{
-		if (remove_quotes(str))
-			printf("Removed quotes: %s\n", str);
-		if (!process_input_single(str))
-			return (free_main(mini), perror("Error squote\n"), 0);
+		if (cmd[*i + 1] == '\\' || cmd[*i + 1] == '\"'
+			|| cmd[*i + 1] == '`' || cmd[*i + 1] == '\''
+			|| cmd[*i + 1] == '$')
+		{
+			(*i)++;
+			result[*j] = cmd[*i];
+			(*j)++;
+			return (1);
+		}
 	}
-	else
+	return (0);
+}
+
+
+static char	*process_cmd(t_state *state, const char *cmd)
+{
+	char *result;
+	size_t i;
+	size_t j;
+
+	i = 0;
+	j = 0;
+	result = malloc(strlen(cmd) + 1);
+	if (!result)
+		return (NULL);
+	while (cmd[i])
 	{
-		remove_quotes(str);
-		if (!process_input_none(str))
-			return (free_main(mini), perror("Invalid backslash\n"), 0);
+		if (handle_single_quote(state, cmd, &i)
+			|| handle_double_quote(state, cmd[i])
+			|| handle_escape(state, cmd, &i, result, &j))
+		{
+			i++;
+			continue ;
+		}
+	   	result[j++] = cmd[i++];
 	}
-	return (1);
+	if (validate_quotes(state))
+	{
+		state->single_quote = 0;
+		state->double_quote = 0;
+		free(result);
+		return (NULL);
+	}
+	result[j] = '\0';
+	return (result);
 }
 
 int	check_quotation(t_mini *mini)
 {
 	t_token	*token;
+	char	*processed_cmd;
 	int		i;
+	int		j;
 
 	token = *(mini->commands);
+	j = 0;
 	while (token)
 	{
 		i = 0;
 		while (token->cmd[i] != NULL)
 		{
-			if (call_remove_quotes(mini, token->cmd[i]) == 0)
-				return (0);
+			processed_cmd = process_cmd(&mini->state, token->cmd[i]);
+			if (!processed_cmd)
+				return (free_commands(mini), 0);
+			free(token->cmd[i]);
+			token->cmd[i] = processed_cmd;
 			if (ft_strchr(token->cmd[i], '$'))
 				token->cmd[i] = expand_variable(mini, token->cmd[i]);
-			if (is_builtin(token->cmd[i]))
+			if (is_builtin(token->cmd[0]))
 				token->is_builtin = 1;
 			i++;
 		}
+		mini->state.double_quote = 0;
+		mini->state.single_quote = 0;
 		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 		if (token->input_file)
-			call_remove_quotes(mini, token->input_file);
+		{
+			token->input_file = process_cmd(&mini->state, token->input_file);
+		}
 		if (token->output_file)
-			call_remove_quotes(mini, token->output_file);
+			token->output_file = process_cmd(&mini->state, token->output_file);
 		token = token->next;
 	}
 	return (1);

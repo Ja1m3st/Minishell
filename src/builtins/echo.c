@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:41:12 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/02 16:14:26 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:47:15 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,11 @@ char	*parse_string(t_token *token)
 		free(temp);
 		i++;
 	}
-	temp = ft_strdelchar(echo, "\"");
-	free(echo);
 	if (token->newline == 0)
 	{
-		echo = ft_strjoin(temp, "\n");
-		free(temp);
-		return (echo);
+		temp = ft_strjoin(echo, "\n");
+		free(echo);
+		return (temp);
 	}
-	return (temp);
+	return (echo);
 }

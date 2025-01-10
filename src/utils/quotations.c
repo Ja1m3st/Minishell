@@ -78,7 +78,7 @@ static char	*process_cmd(t_state *state, const char *cmd)
 
 	i = 0;
 	j = 0;
-	result = malloc(strlen(cmd) + 1);
+	result = malloc(ft_strlen(cmd) + 1);
 	if (!result)
 		return (NULL);
 	while (cmd[i])
@@ -125,14 +125,15 @@ int	check_quotation(t_mini *mini)
 			if (ft_strchr(token->cmd[i], '$'))
 				token->cmd[i] = expand_variable(mini, token->cmd[i]);
 			if (i == 0 && ft_strchr(token->cmd[i], ' ') && !ft_strchr(token->cmd[i], '$'))
-                               token->cmd = remap_cmds(token);
+				token->cmd = remap_cmds(token);
 			if (is_builtin(token->cmd[0]))
 				token->is_builtin = 1;
 			i++;
 		}
 		mini->state.double_quote = 0;
 		mini->state.single_quote = 0;
-		token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
+		if (!token->is_builtin)
+			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 		if (token->input_file)
 		{
 			token->input_file = process_cmd(&mini->state, token->input_file);

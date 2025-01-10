@@ -43,6 +43,8 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 /// @brief Returns length of string, not including '\0'.
 size_t	ft_strlen(const char *s);
+/// @brief Returns length of string until c is found, not including '\0'.
+size_t	ft_strchrlen(char *str, int c);
 /// @brief Fills n bytes of the memory area pointed to by s
 /// @brief with the constant byte c.
 void	*ft_memset(void *s, int c, size_t n);

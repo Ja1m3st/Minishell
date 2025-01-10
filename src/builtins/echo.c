@@ -50,13 +50,11 @@ char	*parse_string(t_token *token)
 		free(temp);
 		i++;
 	}
-	temp = ft_strdelchar(echo, "\"");
-	free(echo);
 	if (token->newline == 0)
 	{
-		echo = ft_strjoin(temp, "\n");
-		free(temp);
-		return (echo);
+		temp = ft_strjoin(echo, "\n");
+		free(echo);
+		return (temp);
 	}
-	return (temp);
+	return (echo);
 }

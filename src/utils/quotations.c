@@ -91,9 +91,15 @@ int	check_quotation(t_mini *mini)
 		{
 			if (call_remove_quotes(mini, token->cmd[i]) == 0)
 				return (0);
+
 			if (ft_strchr(token->cmd[i], '$'))
+			{
 				token->cmd[i] = expand_variable(mini, token->cmd[i]);
-			if (is_builtin(token->cmd[i]))
+				
+			}
+			if (i == 0 && ft_strchr(token->cmd[i], ' ') && !ft_strchr(token->cmd[i], '$'))
+				token->cmd = remap_cmds(token);
+			if (is_builtin(token->cmd[0]))
 				token->is_builtin = 1;
 			i++;
 		}

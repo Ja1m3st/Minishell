@@ -46,6 +46,8 @@ int	count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 		*quote = get_quote(*quote, mini->input[*i]);
 		is_word = 1;
 		(*i)++;
+		if (!mini->input[*i])
+			break ;
 	}
 	if (is_word)
 		count++;
@@ -85,6 +87,8 @@ int	count_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
 		{
 			*quote = get_quote(*quote, mini->input[*i]);
 			(*i)++;
+			if (!mini->input[*i])
+				break ;
 		}
 		*quote = NO_QUOTE;
 	}
@@ -104,7 +108,11 @@ int	count_commands(t_mini *mini)
 	{
 		quote = get_quote(quote, mini->input[i]);
 		count += count_no_quote_chars(mini, &quote, &i);
+		if (!mini->input[i])
+			break ;
 		count += count_no_quote_single_redir(mini, quote, &i);
+		if (!mini->input[i])
+			break ;
 		count += count_quote_chars(mini, &quote, &i);
 		i++;
 	}

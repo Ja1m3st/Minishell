@@ -167,6 +167,7 @@ int		handle_special_sequence_none(char *str, int *i, int *j);
 int		is_special_sequence_none(char current, char next);
 t_quote_type	get_quote(t_quote_type quote, char c);
 int		is_del(char cmd);
+char		**remap_cmds(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void		print_tree_structure(t_mini *mini);
 void		print_tree_structure2(t_token *token);

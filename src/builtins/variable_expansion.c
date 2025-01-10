@@ -47,6 +47,8 @@ char	*extract_var_name(char *str, int *i)
 	int		j;
 
 	var_name = ft_strdup("");
+	if (!var_name)
+		return (str);
 	j = 0;
 	while (str[*i] && str[*i] != ' ' && str[*i] != '$'
 		&& str[*i] != '\t' && str[*i] != '\n')

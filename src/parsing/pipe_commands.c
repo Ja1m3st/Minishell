@@ -100,3 +100,4 @@ int	execve_commands(t_mini *mini, t_token *token)
 	}
 	return (0);
 }
+

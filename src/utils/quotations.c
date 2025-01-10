@@ -123,8 +123,9 @@ int	check_quotation(t_mini *mini)
 			free(token->cmd[i]);
 			token->cmd[i] = processed_cmd;
 			if (ft_strchr(token->cmd[i], '$'))
-			{
 				token->cmd[i] = expand_variable(mini, token->cmd[i]);
+			if (i == 0 && ft_strchr(token->cmd[i], ' ') && !ft_strchr(token->cmd[i], '$'))
+                               token->cmd = remap_cmds(token);
 			if (is_builtin(token->cmd[0]))
 				token->is_builtin = 1;
 			i++;

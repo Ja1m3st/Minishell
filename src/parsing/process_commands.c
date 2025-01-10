@@ -33,7 +33,7 @@ void	process_commands(t_mini *mini)
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
 			cmd = append_character_to_cmd(cmd, mini->input[i + 1], &k);
 			i += 2;
-			continue;
+			continue ;
 		}
 		quote = get_quote(quote, mini->input[i]);
 		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_del(mini->input[i])))

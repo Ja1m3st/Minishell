@@ -108,10 +108,8 @@ int	check_quotation(t_mini *mini)
 	t_token	*token;
 	char	*processed_cmd;
 	int		i;
-	int		j;
 
 	token = *(mini->commands);
-	j = 0;
 	while (token)
 	{
 		i = 0;
@@ -144,3 +142,4 @@ int	check_quotation(t_mini *mini)
 	}
 	return (1);
 }
+

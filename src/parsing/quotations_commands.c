@@ -142,9 +142,11 @@ int	check_quotation(t_mini *mini)
 				return (write(2, "Error: Unclosed quotes\n", 23), free(q), 0);
 			if (is_builtin(token->cmd[0]))
 				token->is_builtin = 1;
+			if (!ft_strncmp(token->cmd[i], "./", 2))
+				token->path = ft_strjoin(getenv("$HOME"), token->cmd[0]);
 			i++;
 		}
-		if (!token->is_builtin)
+		if (!token->is_builtin && !token->path)
 			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 		if (token->input_file)
 			token->input_file = remove_quotes(mini, q, token->output_file);

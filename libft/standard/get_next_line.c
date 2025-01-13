@@ -77,7 +77,7 @@ static char	*ft_read_line(int fd, char *total_chars)
 		if (bytes_read == -1)
 			return (free(temp), free(total_chars), NULL);
 		temp[bytes_read] = '\0';
-		total_chars = ft_strjoin_free(total_chars, temp);
+		total_chars = ft_strjoinf(total_chars, temp);
 		if (total_chars == NULL)
 			return (free(temp), free(total_chars), NULL);
 		if (ft_strchr(total_chars, '\n'))

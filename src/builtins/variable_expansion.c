@@ -36,9 +36,8 @@ char	*expand_variable(t_mini *mini, char *str)
 		else
 			res = process_regular_char(res, str[i], &k);
 		i++;
-	}
-	free(str);
-	return (res);
+	}	
+	return (free(str), res);
 }
 
 char	*extract_var_name(char *str, int *i)
@@ -66,6 +65,7 @@ char	*extract_var_name(char *str, int *i)
 char	*add_var_value(t_mini *mini, char *res, char *var_name)
 {
 	char	*var_value;
+	char	*temp;
 
 	var_value = get_var_value(mini, var_name);
 	if (!var_value)
@@ -73,7 +73,9 @@ char	*add_var_value(t_mini *mini, char *res, char *var_name)
 		free(var_name);
 		return (res);
 	}
-	res = ft_strjoin_free(res, var_value);
+	temp = ft_strjoin(res, var_value);
+	free(res);
+	res = temp;
 	free(var_name);
 	return (res);
 }

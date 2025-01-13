@@ -28,9 +28,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	mini->quote_types = NULL;
 	mini->is_last_cmd = 0;
 	mini->commands = malloc(sizeof(t_token *));
-	mini->state.double_quote = 0;
-	mini->state.single_quote = 0;
-	mini->state.result = 0;
 	if (!mini->commands)
 		return ;
 	*mini->commands = NULL;
@@ -39,4 +36,13 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	setup_signals();
 	disable_echoctl();
 	get_env_name(mini);
+}
+
+void	init_quotes(t_quote *q)
+{
+	q->DOUBLE_QUOTES = 0;
+	q->SINGLE_QUOTES = 0;
+	q->ESCAPE = 0;
+	q->EXPANSION = 0;
+	q->PRINT = 0;
 }

@@ -27,18 +27,21 @@
 # include <sys/types.h>
 # include <termios.h>
 
-typedef struct s_quote_state {
-    int single_quote; // 1 si estás dentro de comillas simples, 0 si no
-    int double_quote; // 1 si estás dentro de comillas dobles, 0 si no
-    char *result;
-} t_state;
-
 typedef enum s_quote_type
 {
 	NO_QUOTE,
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE
 }	t_quote_type;
+
+typedef struct s_quote
+{
+	int SINGLE_QUOTES;
+	int DOUBLE_QUOTES;
+	int ESCAPE;
+	int PRINT;
+	int EXPANSION;
+}	t_quote;
 
 typedef struct s_token
 {
@@ -78,7 +81,6 @@ typedef struct s_mini
 	t_token			**commands;
 	t_quote_type	*quote_types;
 	int				prev_fd;
-	t_state	state;
 }	t_mini;
 
 //------------------------------------------------------------------MAIN
@@ -149,6 +151,13 @@ char		*extract_var_name(char *str, int *i);
 char		*add_var_value(t_mini *mini, char *res, char *var_name);
 char		*process_regular_char(char *res, char current_char, int *k);
 char		*get_var_value(t_mini *mini, char *var_name);
+//----------------------------------------------------------QUOTATIONS
+int		check_quotation(t_mini *mini);
+char		*remove_quotes(t_mini *mini, t_quote *q, char *cmd);
+void		get_quotes(t_quote *q, int c, int c2);
+int		get_escape_quotes(t_quote *q, int c, int c2);
+int		get_qouble_single_quotes(t_quote *q, int c);
+void		init_quotes(t_quote *q);
 //-------------------------------------------------------------------UTILS
 void		free_main(t_mini *mini);
 void		restore_fds(t_mini *mini);
@@ -164,19 +173,14 @@ int		is_builtin(char *cmd);
 int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
 int		is_output_redirect(char *cmd);
-int		process_input_multi(char *str);
-int		process_input_single(char *str);
-int		process_input_none(char *str);
 int		check_quotation(t_mini *mini);
-int		check_quo(char *str);
 int		count_commands(t_mini *mini);
-int		handle_special_sequence_none(char *str, int *i, int *j);
-int		is_special_sequence_none(char current, char next);
 t_quote_type	get_quote(t_quote_type quote, char c);
 int		is_del(char cmd);
 char		**remap_cmds(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void		print_tree_structure(t_mini *mini);
 void		print_tree_structure2(t_token *token);
+
 
 #endif

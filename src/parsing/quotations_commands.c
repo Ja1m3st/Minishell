@@ -1,24 +1,6 @@
 #include "minishell.h"
 
-typedef struct s_quote
-{
-	int SINGLE_QUOTES;
-	int DOUBLE_QUOTES;
-	int ESCAPE;
-	int PRINT;
-	int EXPANSION;
-}	t_quote;
-
-void	init_quotes(t_quote *q)
-{
-	q->DOUBLE_QUOTES = 0;
-	q->SINGLE_QUOTES = 0;
-	q->ESCAPE = 0;
-	q->EXPANSION = 0;
-	q->PRINT = 0;
-}
-
-int		get_qouble_single_quotes(t_quote *q, int c)
+int	get_qouble_single_quotes(t_quote *q, int c)
 {
 	if (c == '\"' && !q->SINGLE_QUOTES)
 	{
@@ -47,7 +29,7 @@ int		get_qouble_single_quotes(t_quote *q, int c)
 	return (1);
 }
 
-int		get_escape_quotes(t_quote *q, int c, int c2)
+int	get_escape_quotes(t_quote *q, int c, int c2)
 {
 	if (c == '\\')
 	{
@@ -85,7 +67,7 @@ void	get_quotes(t_quote *q, int c, int c2)
 	if (c == '$' && !q->SINGLE_QUOTES && !q->ESCAPE)
 	{
 		q->EXPANSION = 1;
-		q->PRINT = 1;
+		q->PRINT = 0;
 		return ;
 	}
 	if (q->ESCAPE)
@@ -100,8 +82,10 @@ void	get_quotes(t_quote *q, int c, int c2)
 char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
 {
 	char	*res;
+	char	*temp;
 	int		i;
 	int		j;
+	int		k;
 
 	i = 0;
 	j = 0;
@@ -119,16 +103,20 @@ char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
 		}
 		if (q->EXPANSION)
 		{
+			temp = ft_strdup("$");
 			i++;
+			k = 1;
 			while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_'))
 			{
-				res = ft_realloc(res, j, j + 2);
-				res[j++] = cmd[i];
-				res[j] = '\0';
+				temp = ft_realloc(temp, k, k + 2);
+				temp[k++] = cmd[i];
+				temp[k] = '\0';
 				i++;
 			}
-			res = expand_variable(mini, res);
 			q->EXPANSION = 0;
+			temp = expand_variable(mini, temp);
+			res = ft_strjoinf(res, temp);
+			free(temp);
 			continue ;
 		}
 		i++;
@@ -151,7 +139,7 @@ int	check_quotation(t_mini *mini)
 		{
 			token->cmd[i] = remove_quotes(mini, q, token->cmd[i]);
 			if (q->SINGLE_QUOTES || q->DOUBLE_QUOTES)
-				return (free(q), write(2, "Error: Unclosed quotes\n", 23), 0);
+				return (write(2, "Error: Unclosed quotes\n", 23), free(q), 0);
 			if (is_builtin(token->cmd[0]))
 				token->is_builtin = 1;
 			i++;

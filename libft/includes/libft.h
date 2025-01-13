@@ -182,7 +182,7 @@ void	ft_lstfree(t_list **stack_x);
 /// @brief on each call. Statically saved.
 char	*get_next_line(int fd);
 /// @brief Returns a new string of s1 and s2 concatenated and frees s1.
-char	*ft_strjoin_free(char *total_chars, char *temp);
+char	*ft_strjoinf(char *total_chars, char *temp);
 /// @brief Function to formar a string and write to stdout.
 int		ft_printf(const char *format, ...);
 int		ft_putchar(char c);

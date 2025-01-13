@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2025/01/10 15:16:10 by jaimesan         ###   ########.fr        #
+#    Updated: 2025/01/13 18:21:01 by ctommasi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ NAME = minishell
 
 CC 	= cc
 CFLAGS 	= -Wall -Wextra -Werror -I ./includes
+LDFLAGS = -fsanitize=address #DELETE AFTER
 RM	= rm -rf
 NOPRINT = --no-print-directory
 
@@ -53,9 +54,9 @@ $(LIBFT):
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
-
+#$(LDFLAGS)
 $(NAME): $(OBJS) $(LIBFT) 
-	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline 
 	@echo "[100%] $(GREEN)(Minishell) Compilation  | Minishell | successful!$(RESET)"
 
 clean:

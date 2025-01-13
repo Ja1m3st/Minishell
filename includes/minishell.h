@@ -81,7 +81,9 @@ typedef struct s_mini
 	t_token			**commands;
 	t_quote_type	*quote_types;
 	int				prev_fd;
+	int				exit_code;
 }	t_mini;
+
 
 //------------------------------------------------------------------MAIN
 int	main(int argc, char **argv, char **envp);
@@ -181,6 +183,7 @@ char		**remap_cmds(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void		print_tree_structure(t_mini *mini);
 void		print_tree_structure2(t_token *token);
+void		exit_codes(t_mini *mini, pid_t *pid, int *status);
 
 
 #endif

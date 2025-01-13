@@ -106,11 +106,13 @@ char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
 			temp = ft_strdup("$");
 			i++;
 			k = 1;
-			while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_'))
+			while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_' || cmd[i] == '?'))
 			{
 				temp = ft_realloc(temp, k, k + 2);
 				temp[k++] = cmd[i];
 				temp[k] = '\0';
+				if (cmd[i - 1] && cmd[i - 1] == '?' && ft_isascii(cmd[i]))
+					break ;
 				i++;
 			}
 			q->EXPANSION = 0;

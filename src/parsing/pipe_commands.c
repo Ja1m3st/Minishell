@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+int	status;
 
 void	pipex(t_mini *mini, t_token *token)
 {
@@ -36,8 +37,19 @@ void	pipex(t_mini *mini, t_token *token)
 			close(mini->fd[1]);
 		if (mini->is_last_cmd)
 			close(mini->fd[0]);
-		waitpid(mini->pid, NULL, 0);
+		exit_codes(mini, &mini->pid, &status);
 	}
+}
+
+void	exit_codes(t_mini *mini, pid_t *pid, int *status)
+{
+	waitpid(*pid, status, 0);
+	if (WIFEXITED(*status))
+        	mini->exit_code = WEXITSTATUS(*status);
+	else if (WIFSIGNALED(*status))
+		mini->exit_code = 128 + WTERMSIG(*status);
+	else
+		mini->exit_code = -1;
 }
 
 int	swap_fds(t_mini *mini, t_token *token)

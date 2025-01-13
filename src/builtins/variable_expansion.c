@@ -36,7 +36,7 @@ char	*expand_variable(t_mini *mini, char *str)
 		else
 			res = process_regular_char(res, str[i], &k);
 		i++;
-	}	
+	}
 	return (free(str), res);
 }
 
@@ -70,6 +70,10 @@ char	*add_var_value(t_mini *mini, char *res, char *var_name)
 	var_value = get_var_value(mini, var_name);
 	if (!var_value)
 	{
+		if (!ft_strncmp(var_name, "?", 1))
+		{
+			res = ft_itoa(mini->exit_code);
+		}
 		free(var_name);
 		return (res);
 	}

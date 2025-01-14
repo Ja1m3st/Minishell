@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotations_commands.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:49:53 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 12:49:55 by ctommasi         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:56:49 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 int	get_qouble_single_quotes(t_quote *q, int c)
 {
-	if (c == '\"' && !q->SINGLE_QUOTES)
+	if (c == '\"' && !q->single_quote)
 	{
-		if (!q->ESCAPE)
+		if (!q->escape)
 		{
-			q->DOUBLE_QUOTES = !q->DOUBLE_QUOTES;
-			q->PRINT = 0;
+			q->double_quote = !q->double_quote;
+			q->print = 0;
 		}
 		else
-			q->PRINT = 1;
-		q->ESCAPE = 0;
+			q->print = 1;
+		q->escape = 0;
 		return (0);
 	}
-	if (c == '\'' && !q->DOUBLE_QUOTES)
+	if (c == '\'' && !q->double_quote)
 	{
-		if (!q->ESCAPE)
+		if (!q->escape)
 		{
-			q->SINGLE_QUOTES = !q->SINGLE_QUOTES;
-			q->PRINT = 0;
+			q->single_quote = !q->single_quote;
+			q->print = 0;
 		}
 		else
-			q->PRINT = 1;
-		q->ESCAPE = 0;
+			q->print = 1;
+		q->escape = 0;
 		return (0);
 	}
 	return (1);
@@ -45,25 +45,25 @@ int	get_escape_quotes(t_quote *q, int c, int c2)
 {
 	if (c == '\\')
 	{
-		if (q->ESCAPE)
+		if (q->escape)
 		{
-			q->PRINT = 1;
-			q->ESCAPE = 0;
+			q->print = 1;
+			q->escape = 0;
 		}
-		else if (q->DOUBLE_QUOTES && (c2 == '\"' || c2 == '$' || c2 == '\\'))
+		else if (q->double_quote && (c2 == '\"' || c2 == '$' || c2 == '\\'))
 		{
-			q->PRINT = 0;
-			q->ESCAPE = 1;
+			q->print = 0;
+			q->escape = 1;
 		}
-		else if (!q->DOUBLE_QUOTES && !q->SINGLE_QUOTES)
+		else if (!q->double_quote && !q->single_quote)
 		{
-			q->PRINT = 0;
-			q->ESCAPE = 1;
+			q->print = 0;
+			q->escape = 1;
 		}
 		else
 		{
-			q->PRINT = 1;
-			q->ESCAPE = 0;
+			q->print = 1;
+			q->escape = 0;
 		}
 		return (0);
 	}
@@ -76,19 +76,19 @@ void	get_quotes(t_quote *q, int c, int c2)
 		return ;
 	if (!get_escape_quotes(q, c, c2))
 		return ;
-	if (c == '$' && !q->SINGLE_QUOTES && !q->ESCAPE)
+	if (c == '$' && !q->single_quote && !q->escape)
 	{
-		q->EXPANSION = 1;
-		q->PRINT = 0;
+		q->expansion = 1;
+		q->print = 0;
 		return ;
 	}
-	if (q->ESCAPE)
+	if (q->escape)
 	{
-		q->ESCAPE = 0;
-		q->PRINT = 1;
+		q->escape = 0;
+		q->print = 1;
 		return ;
 	}
-	q->PRINT = 1;
+	q->print = 1;
 }
 
 char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
@@ -109,13 +109,13 @@ char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
 	{
 		get_quotes(q, cmd[i], cmd[i + 1]);
 		j = ft_strlen(res);
-		if (q->PRINT)
+		if (q->print)
 		{
 			res = ft_realloc(res, j, j + 2);
 			res[j++] = cmd[i];
 			res[j] = '\0';
 		}
-		if (q->EXPANSION)
+		if (q->expansion)
 		{
 			temp = ft_strdup("$");
 			i++;
@@ -129,7 +129,7 @@ char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
 					break ;
 				i++;
 			}
-			q->EXPANSION = 0;
+			q->expansion = 0;
 			temp = expand_variable(mini, temp);
 			res = ft_strjoinf(res, temp);
 			free(temp);
@@ -156,7 +156,7 @@ int	check_quotation(t_mini *mini)
 			while (token->cmd[i] != NULL)
 			{
 				token->cmd[i] = remove_quotes(mini, q, token->cmd[i]);
-				if (q->SINGLE_QUOTES || q->DOUBLE_QUOTES)
+				if (q->single_quote || q->double_quote)
 					return (write(2, "Error: Unclosed quotes\n", 23), free(q), 0);
 				if (is_builtin(token->cmd[0]))
 					token->is_builtin = 1;
@@ -173,5 +173,5 @@ int	check_quotation(t_mini *mini)
 			token->output_file = remove_quotes(mini, q, token->output_file);
 		token = token->next;
 	}
-	return (1);
+	return (free(q), 1);
 }

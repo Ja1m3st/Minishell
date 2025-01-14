@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:27:59 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 13:04:13 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:47:33 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	tokenize_cmds(t_token *token, char **cmds)
 	while (i < old_len)
 	{
 		new_cmds[i] = ft_strdup(token->cmd[i]);
-		i++;
 	}
 	j = 0;
 	while (j < new_len)

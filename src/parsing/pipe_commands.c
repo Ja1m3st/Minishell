@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/10 13:03:27 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:15:20 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,33 @@ void	pipex(t_mini *mini, t_token *token)
 		if (token->input_redir || token->output_redir)
 			set_in_out_file(mini, token);
 		swap_fds(mini, token);
-		if (token->next)
-			close(mini->fd[0]);
-		if (!mini->is_last_cmd)
-			close(mini->fd[1]);
+		close_fds(mini, token, 1);
 		execve_commands(mini, token);
 	}
 	else
 	{
 		signal(SIGINT, SIG_IGN);
+		close_fds(mini, token, 1);
+		waitpid(mini->pid, &g_status, 0);
+		exit_codes();
+	}
+}
+
+void	close_fds(t_mini *mini, t_token *token, int mod)
+{
+	if (!mod)
+	{
+		if (token->next)
+			close(mini->fd[0]);
+		if (!mini->is_last_cmd)
+			close(mini->fd[1]);
+	}
+	if (mod)
+	{
 		if (token->next)
 			close(mini->fd[1]);
 		if (mini->is_last_cmd)
 			close(mini->fd[0]);
-		waitpid(mini->pid, &g_status, 0);
-		exit_codes();
 	}
 }
 

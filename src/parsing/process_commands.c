@@ -6,11 +6,18 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/09 12:56:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:25:08 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	init(int *i, int *j, int *k)
+{
+	*i = 0;
+	*j = 0;
+	*k = 0;
+}
 
 void	process_commands(t_mini *mini)
 {
@@ -20,9 +27,7 @@ void	process_commands(t_mini *mini)
 	t_quote_type	quote;
 	char			*cmd;
 
-	i = 0;
-	j = 0;
-	k = 0;
+	init(&i, &j, &k);
 	cmd = NULL;
 	quote = NO_QUOTE;
 	allocate_command_memory(mini);
@@ -39,12 +44,12 @@ void	process_commands(t_mini *mini)
 		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_del(mini->input[i])))
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
 		if (quote == NO_QUOTE && (mini->input[i] == ' ' || is_del(mini->input[i])))
-			handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
+			handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
 		if (quote == NO_QUOTE && is_del(mini->input[i]))
 			handle_redirections(mini, &cmd, &i, &j);
 		i++;
 	}
-	handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
+	handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
 	mini->mini_cmds[j] = NULL;
 }
 
@@ -96,7 +101,7 @@ char	*append_character_to_cmd(char *cmd, char c, int *k)
 	return (cmd);
 }
 
-void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j)
+void	handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j)
 {
 	if (*k > 0 && *cmd)
 	{

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 14:34:47 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/28 16:18:22 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:59:39 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,6 @@ void	disable_echoctl(void)
 	}
 }
 
-void	handle_sigbackslash(int signal)
-{
-	(void)signal;
-}
-
 void	handle_sigint(int signal)
 {
 	(void)signal;
@@ -81,4 +76,3 @@ void	exit_codes(void)
 	else
 		g_status = -1;
 }
-

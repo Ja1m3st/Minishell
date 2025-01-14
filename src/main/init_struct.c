@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 11:38:26 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:00:10 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 
 void	init_quotes(t_quote *q)
 {
-	q->DOUBLE_QUOTES = 0;
-	q->SINGLE_QUOTES = 0;
-	q->ESCAPE = 0;
-	q->EXPANSION = 0;
-	q->PRINT = 0;
+	q->double_quote = 0;
+	q->single_quote = 0;
+	q->escape = 0;
+	q->expansion = 0;
+	q->print = 0;
 }

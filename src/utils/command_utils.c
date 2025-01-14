@@ -31,67 +31,43 @@ t_quote_type	get_quote(t_quote_type quote, char c)
 	return (quote);
 }
 
-int	count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
+int	handle_quotes(const char *input, int *i, t_quote_type *quote)
 {
 	int	count;
-	int	is_word;
 
-	count = 0;
-	is_word = 0;
-	while (mini->input[*i] && mini->input[*i] != ' ' && *quote == NO_QUOTE
-		&& !is_del(mini->input[*i])
-		&& ((mini->input[*i] != '>' && mini->input[(*i) + 1] != '>')
-			&& (mini->input[*i] != '<' && mini->input[(*i) + 1] != '<')))
+	count = 1;
+	*i += 1;
+	while (input[*i] && *quote != NO_QUOTE)
 	{
-		*quote = get_quote(*quote, mini->input[*i]);
-		is_word = 1;
-		(*i)++;
-		if (!mini->input[*i])
-			break ;
+		*quote = get_quote(*quote, input[*i]);
+		*i += 1;
 	}
-	if (is_word)
-		count++;
 	return (count);
 }
 
-int	count_no_quote_single_redir(t_mini *mini, t_quote_type quote, int *i)
-{
-	if (mini->input[*i] && quote == NO_QUOTE)
-	{
-		if ((mini->input[*i] == '>' || mini->input[(*i)] == '<')
-			&& (mini->input[*i + 1] != mini->input[*i]))
-		{
-			(*i)++;
-			return (1);
-		}
-		if ((mini->input[*i] == '>' && mini->input[*i + 1] == '>')
-			|| (mini->input[*i] == '<' && mini->input[*i + 1] == '<'))
-		{
-			(*i)++;
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int	count_quote_chars(t_mini *mini, t_quote_type *quote, int *i)
+int	handle_word(const char *input, int *i)
 {
 	int	count;
 
-	count = 0;
-	if (*quote != NO_QUOTE)
+	count = 1;
+	while (input[*i] && input[*i] != ' ' && !is_del(input[*i]))
 	{
-		count = 1;
-		(*i)++;
-		while (mini->input[*i] && *quote == NO_QUOTE)
-		{
-			*quote = get_quote(*quote, mini->input[*i]);
-			(*i)++;
-			if (!mini->input[*i])
-				break ;
-		}
-		*quote = NO_QUOTE;
+		*i += 1;
 	}
+	return (count);
+}
+
+int	handle_delimiters(const char *input, int *i)
+{
+	int	count;
+
+	count = 1;
+	if ((input[*i] == '>' && input[*i + 1] == '>') || 
+		(input[*i] == '<' && input[*i + 1] == '<'))
+	{
+		*i += 1;
+	}
+	*i += 1;
 	return (count);
 }
 
@@ -107,14 +83,14 @@ int	count_commands(t_mini *mini)
 	while (mini->input[i])
 	{
 		quote = get_quote(quote, mini->input[i]);
-		count += count_no_quote_chars(mini, &quote, &i);
-		if (!mini->input[i])
-			break ;
-		count += count_no_quote_single_redir(mini, quote, &i);
-		if (!mini->input[i])
-			break ;
-		count += count_quote_chars(mini, &quote, &i);
-		i++;
+		if (quote != NO_QUOTE)
+			count += handle_quotes(mini->input, &i, &quote);
+		else if (mini->input[i] != ' ' && !is_del(mini->input[i]))
+			count += handle_word(mini->input, &i);
+		else if (is_del(mini->input[i]))
+			count += handle_delimiters(mini->input, &i);
+		else if (mini->input[i] == ' ')
+			i++;
 	}
 	return (count);
 }

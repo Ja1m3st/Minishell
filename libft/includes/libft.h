@@ -43,7 +43,11 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 /// @brief Returns length of string, not including '\0'.
 size_t	ft_strlen(const char *s);
-/// @brief Returns length of string until c is found, not including '\0'.
+/// @brief Frees an array and sets it all to NULL.
+void	ft_freearr(char **array);
+/// @brief Returns length of an array, not including NULL.
+int		ft_arrlen(char **array);
+/// @brief Returns length of string until c is found.
 size_t	ft_strchrlen(char *str, int c);
 /// @brief Fills n bytes of the memory area pointed to by s
 /// @brief with the constant byte c.
@@ -129,8 +133,10 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 /// @brief Trims str by chars. No allocation.
 char	*ft_strdelchar(const char *str, const char *chars);
-/// @brief Changes the size of the memory block pointed to by ptr to size bytes.
+/// @brief Changes the size of the *memory pointed to by ptr to size bytes.
 void	*ft_realloc(void *ptr, size_t cur_size, size_t new_size);
+/// @brief Changes the size of the **memory pointed to by ptr to size bytes.
+char	**ft_rearroc(char **arr, size_t size_of, size_t cur_s, size_t new_s);
 /// @brief Trims str by chars. No allocation.
 void	ft_ptrdelchar(char *str, const char *chars);
 /// @brief Returns a new allocated string which is s1 trimmed by set.

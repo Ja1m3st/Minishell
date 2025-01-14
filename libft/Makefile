@@ -20,7 +20,8 @@ SRCS_STANDARD = standard/ft_atoi.c standard/ft_isalnum.c standard/ft_isalpha.c s
 	standard/ft_lstadd_back.c standard/ft_lstdelone.c standard/ft_lstclear.c standard/ft_lstiter.c \
 	standard/ft_lstmap.c standard/ft_lstfree.c standard/ft_lstinit_index.c standard/ft_lstlast.c \
 	standard/ft_lstlen.c standard/ft_lstmax_index.c standard/ft_lst_isordered.c standard/ft_lstcheck_dupe.c \
-	standard/ft_strjoinf.c standard/ft_strchrlen.c
+	standard/ft_strjoinf.c standard/ft_strchrlen.c standard/ft_rearroc.c standard/ft_freearr.c \
+	standard/ft_arrlen.c
 
 OBJS_STANDARD = $(SRCS_STANDARD:.c=.o)
 

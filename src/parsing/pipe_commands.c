@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-int	status;
+
+int	g_status;
 
 void	pipex(t_mini *mini, t_token *token)
 {
@@ -37,7 +38,7 @@ void	pipex(t_mini *mini, t_token *token)
 			close(mini->fd[1]);
 		if (mini->is_last_cmd)
 			close(mini->fd[0]);
-		exit_codes(mini, &mini->pid, &status);
+		exit_codes(mini, &mini->pid, &g_status);
 	}
 }
 
@@ -45,7 +46,7 @@ void	exit_codes(t_mini *mini, pid_t *pid, int *status)
 {
 	waitpid(*pid, status, 0);
 	if (WIFEXITED(*status))
-        	mini->exit_code = WEXITSTATUS(*status);
+		mini->exit_code = WEXITSTATUS(*status);
 	else if (WIFSIGNALED(*status))
 		mini->exit_code = 128 + WTERMSIG(*status);
 	else
@@ -105,11 +106,13 @@ int	execve_commands(t_mini *mini, t_token *token)
 		builtin_commands(mini, token);
 		exit(EXIT_SUCCESS);
 	}
-	else if (!token->is_builtin && execve(token->path, token->cmd, mini->env) == -1)
+	else if (!token->is_builtin)
 	{
-		printf("%s: command not found\n", token->cmd[0]);
-		exit(EXIT_FAILURE);
+		if (execve(token->path, token->cmd, mini->env) == -1)
+		{
+			printf("%s: command not found\n", token->cmd[0]);
+			exit(EXIT_FAILURE);
+		}
 	}
 	return (0);
 }
-

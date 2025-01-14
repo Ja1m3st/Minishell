@@ -108,7 +108,7 @@ int	tokenize_cmds(t_token *token, char **cmds)
 	}
 	new_cmds[old_len + new_len] = NULL;
 	if (token->cmd)
-		free_arr(token->cmd);
+		ft_freearr(token->cmd);
 	token->cmd = new_cmds;
 	return (j);
 }

@@ -37,7 +37,7 @@ char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 
 	i = 0;
 	j = 0;
-	while (i < array_len(mini->env))
+	while (i < ft_arrlen(mini->env))
 	{
 		if (ft_strncmp(mini->env[i], str,
 				ft_strlen(str)) == 0
@@ -62,11 +62,11 @@ void	unset(t_token *token, t_mini *mini)
 	{
 		if (find_env_variable(mini->env, token->cmd[x]) != NULL)
 		{
-			new_env = malloc(array_len(mini->env) * sizeof(char *));
+			new_env = malloc(ft_arrlen(mini->env) * sizeof(char *));
 			if (!new_env)
 				error(mini, 'M');
 			new_env = ft_new_env(mini, token->cmd[x], new_env);
-			free_arr(mini->env);
+			ft_freearr(mini->env);
 			mini->env = new_env;
 		}
 		x++;

@@ -18,7 +18,7 @@ void	free_main(t_mini *mini)
 		return ;
 	if (mini->commands)
 	{
-		free_arr_cmds(mini->mini_cmds);
+		ft_freearr(mini->mini_cmds);
 		mini->mini_cmds = NULL;
 	}
 	free_commands(mini);
@@ -44,7 +44,7 @@ void	free_mini(t_mini *mini)
 	if (mini->sesion_name)
 		free(mini->sesion_name);
 	if (mini->env)
-		free_arr(mini->env);
+		ft_freearr(mini->env);
 	if (mini->oldpath)
 		free(mini->oldpath);
 	if (mini->full_path)
@@ -58,7 +58,7 @@ void	free_mini(t_mini *mini)
 	if (mini->quote_types)
 		free(mini->quote_types);
 	if (mini->mini_cmds)
-		free_arr_cmds(mini->mini_cmds);
+		ft_freearr(mini->mini_cmds);
 	if (mini->commands)
 		free(mini->commands);
 }
@@ -88,7 +88,7 @@ void	free_commands2(t_token *token)
 	if (!token)
 		return ;
 	if (token->cmd)
-		free_arr(token->cmd);
+		ft_freearr(token->cmd);
 	if (token->path)
 		free(token->path);
 	if (token->input_redir)

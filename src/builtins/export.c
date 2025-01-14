@@ -84,7 +84,7 @@ int	export_exists(t_mini *mini, t_token *token, int n)
 	ft_strlcpy(var_name, token->cmd[n], i + 1);
 	i = 0;
 	len = ft_strlen(var_name);
-	while (i < array_len(mini->env))
+	while (i < ft_arrlen(mini->env))
 	{
 		if (!ft_strncmp(mini->env[i], var_name, len)
 			&& mini->env[i][ft_strlen(var_name)] == '=')
@@ -100,7 +100,7 @@ void	new_export(t_mini *mini, t_token *token, int n)
 	int		len;
 	int		i;
 
-	len = array_len(mini->env);
+	len = ft_arrlen(mini->env);
 	new_env = malloc((len + 2) * sizeof(char *));
 	if (!new_env)
 		return ;
@@ -112,6 +112,6 @@ void	new_export(t_mini *mini, t_token *token, int n)
 	}
 	new_env[len] = ft_strdup(token->cmd[n]);
 	new_env[len + 1] = NULL;
-	free_arr(mini->env);
+	ft_freearr(mini->env);
 	mini->env = new_env;
 }

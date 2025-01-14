@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotations_commands.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/14 12:49:53 by ctommasi          #+#    #+#             */
+/*   Updated: 2025/01/14 12:49:55 by ctommasi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	get_qouble_single_quotes(t_quote *q, int c)
@@ -150,9 +162,9 @@ int	check_quotation(t_mini *mini)
 		}
 		if (!token->is_builtin && !token->path)
 			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
-		if (token->input_file)
+		if (token->input_file && *token->input_file )
 			token->input_file = remove_quotes(mini, q, token->output_file);
-		if (token->output_file)
+		if (token->output_file && *token->output_file)
 			token->output_file = remove_quotes(mini, q, token->output_file);
 		token = token->next;
 	}

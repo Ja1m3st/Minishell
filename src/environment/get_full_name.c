@@ -32,18 +32,18 @@ void	get_session_name(t_mini *mini)
 	{
 		split1 = ft_split(mini->env[i], '=');
 		if (!split1 || !split1[0])
-			return (free_arr(split1));
+			return (ft_freearr(split1));
 		if (!ft_strcmp(split1[0], "SESSION_MANAGER"))
 		{
 			split2 = ft_split(split1[1], '/');
 			if (!split2 || !split2[1])
-				return (free_arr(split1), free_arr(split2));
+				return (ft_freearr(split1), ft_freearr(split2));
 			split3 = ft_split(split2[1], '.');
 			if (split3 && split3[0])
 				mini->sesion_name = ft_strdup(split3[0]);
-			return (free_arr(split1), free_arr(split2), free_arr(split3));
+			return (ft_freearr(split1), ft_freearr(split2), ft_freearr(split3));
 		}
-		free_arr(split1);
+		ft_freearr(split1);
 		i++;
 	}
 }

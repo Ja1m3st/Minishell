@@ -102,7 +102,7 @@ char	*get_var_value(t_mini *mini, char *var_name)
 	int		arr_len;
 	char	*value;
 
-	arr_len = array_len(mini->env);
+	arr_len = ft_arrlen(mini->env);
 	i = 0;
 	while (i < arr_len)
 	{

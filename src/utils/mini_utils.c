@@ -36,59 +36,13 @@ void	builtin_commands(t_mini *mini, t_token *token)
 	mini->exit_code = 0;
 }
 
-void	free_arr_cmds(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array || !*array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	free(array);
-	array = NULL;
-}
-
-void	free_arr(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array || !*array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	free(array);
-	array = NULL;
-}
-
-int	array_len(char **array)
-{
-	int	i;
-
-	if (!array || !*array)
-		return (-1);
-	i = 0;
-	while (array && array[i])
-		i++;
-	return (i);
-}
-
 char	*find_path(t_mini *mini, char *path)
 {
 	int		len;
 	int		i;
 	char	*find;
 
-	len = array_len(mini->env);
+	len = ft_arrlen(mini->env);
 	i = 0;
 	while (i < len)
 	{
@@ -101,4 +55,42 @@ char	*find_path(t_mini *mini, char *path)
 		i++;
 	}
 	return (NULL);
+}
+
+void	init_fds(t_mini *mini)
+{
+	mini->infile = STDIN_FILENO;
+	mini->outfile = STDOUT_FILENO;
+	mini->fd[0] = -1;
+	mini->fd[1] = -1;
+	mini->is_first_cmd = 1;
+	mini->is_last_cmd = 0;
+}
+
+void	restore_fds(t_mini *mini)
+{
+	if (mini->infile != STDIN_FILENO)
+	{
+		close(mini->infile);
+		mini->infile = STDIN_FILENO;
+	}
+	if (mini->outfile != STDOUT_FILENO)
+	{
+		close(mini->outfile);
+		mini->outfile = STDOUT_FILENO;
+	}
+}
+
+char	**remap_cmds(t_token *token)
+{
+	char	**new_cmd;
+	char	*path;
+
+	new_cmd = ft_split(token->cmd[0], ' ');
+	if (!new_cmd)
+		return (token->cmd);
+	path = ft_strjoin("/usr/bin/", new_cmd[0]);
+	if (!is_builtin(new_cmd[0]) && access(path, F_OK))
+		return (ft_freearr(new_cmd), free(path), token->cmd);
+	return (ft_freearr(token->cmd), free(path), new_cmd);
 }

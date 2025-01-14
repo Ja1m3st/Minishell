@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dup_env.c                                          :+:      :+:    :+:   */
+/*   ft_arrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 13:05:03 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/11/26 13:05:04 by ctommasi         ###   ########.fr       */
+/*   Created: 2025/01/14 12:37:49 by ctommasi          #+#    #+#             */
+/*   Updated: 2025/01/14 12:38:14 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/libft.h"
 
-void	dup_env(t_mini *mini, char **env)
+int	ft_arrlen(char **array)
 {
-	int	len;
 	int	i;
 
-	len = ft_arrlen(env);
-	mini->env = malloc((len + 1) * sizeof(char *));
-	if (!mini->env)
-		return ;
+	if (!array)
+		return (-1);
 	i = 0;
-	while (i < len)
-	{
-		mini->env[i] = ft_strdup(env[i]);
-		if (!mini->env[i])
-			return ;
+	while (array && array[i])
 		i++;
-	}
-	mini->env[i] = NULL;
+	return (i);
 }

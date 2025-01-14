@@ -19,7 +19,7 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	int		i;
 	int		j;
 
-	len = array_len(mini->env);
+	len = ft_arrlen(mini->env);
 	new_env = malloc((len + 1) * sizeof(char *));
 	if (!new_env)
 		error(mini, 'M');
@@ -34,7 +34,7 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 		i++;
 	}
 	new_env[j] = NULL;
-	free_arr(mini->env);
+	ft_freearr(mini->env);
 	mini->env = new_env;
 }
 

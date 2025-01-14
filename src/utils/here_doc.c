@@ -16,7 +16,6 @@ void	here_doc(t_mini *mini, t_token *token)
 {
 	char	*line;
 	int		fd[2];
-	t_quote *q = malloc(sizeof(t_quote));
 
 	if (pipe(fd) == -1)
 		return (perror("Pipe Error\n"));
@@ -33,7 +32,7 @@ void	here_doc(t_mini *mini, t_token *token)
 			break ;
 		}
 		if (line && ft_strchr(line, '$'))
-			line = remove_quotes(mini, q, line);
+			line = expand_variable(mini, line);
 		write(fd[1], line, ft_strlen(line));
 		free(line);
 	}

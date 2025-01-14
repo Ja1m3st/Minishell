@@ -101,6 +101,8 @@ char	*remove_quotes(t_mini *mini, t_quote *q, char *cmd)
 
 	i = 0;
 	j = 0;
+	if (!cmd || !*cmd)
+    	return (cmd);
 	res = ft_strdup("");
 	init_quotes(q);
 	while (cmd[i])
@@ -146,24 +148,27 @@ int	check_quotation(t_mini *mini)
 
 	q = malloc(sizeof(t_quote));
 	token = *(mini->commands);
-	while (token)
+	while (token != NULL)
 	{
 		i = 0;
-		while (token->cmd[i] != NULL)
+		if (token->cmd != NULL)
 		{
-			token->cmd[i] = remove_quotes(mini, q, token->cmd[i]);
-			if (q->SINGLE_QUOTES || q->DOUBLE_QUOTES)
-				return (write(2, "Error: Unclosed quotes\n", 23), free(q), 0);
-			if (is_builtin(token->cmd[0]))
-				token->is_builtin = 1;
-			if (!ft_strncmp(token->cmd[i], "./", 2))
-				token->path = ft_strjoin(getenv("$HOME"), token->cmd[0]);
-			i++;
+			while (token->cmd[i] != NULL)
+			{
+				token->cmd[i] = remove_quotes(mini, q, token->cmd[i]);
+				if (q->SINGLE_QUOTES || q->DOUBLE_QUOTES)
+					return (write(2, "Error: Unclosed quotes\n", 23), free(q), 0);
+				if (is_builtin(token->cmd[0]))
+					token->is_builtin = 1;
+				if (!ft_strncmp(token->cmd[i], "./", 2))
+					token->path = ft_strjoin(getenv("$HOME"), token->cmd[0]);
+				i++;
+			}
 		}
-		if (!token->is_builtin && !token->path)
+		if (!token->is_builtin && !token->path && token->cmd != NULL)
 			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
-		if (token->input_file && *token->input_file )
-			token->input_file = remove_quotes(mini, q, token->output_file);
+		if (token->input_file && *token->input_file)
+			token->input_file = remove_quotes(mini, q, token->input_file);
 		if (token->output_file && *token->output_file)
 			token->output_file = remove_quotes(mini, q, token->output_file);
 		token = token->next;

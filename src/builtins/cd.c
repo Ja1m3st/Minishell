@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 13:28:44 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 11:01:07 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,44 +38,49 @@ void	save_oldpath(t_mini *mini, char *oldpath)
 	mini->env = new_env;
 }
 
-char	*check_per(t_mini *mini, t_token *token, char *path)
+char    *check_per(t_mini *mini, t_token *token, char *path)
 {
-	if (!token->cmd[1] || ft_strcmp(token->cmd[1], "~") == 0)
-		path = ft_strdup(find_path(mini, "HOME="));
-	else if (ft_strncmp(token->cmd[1], "~", 1) == 0 && token->cmd[1][1] != '\0')
-		path = ft_strjoin(find_path(mini, "HOME="), token->cmd[1] + 1);
-	return (path);
+   if (!token->cmd[1] || ft_strcmp(token->cmd[1], "~") == 0
+           || !ft_strcmp(token->cmd[1], "--"))
+       path = ft_strdup(find_path(mini, "HOME="));
+   else if (ft_strncmp(token->cmd[1], "~", 1) == 0 && token->cmd[1][1] != '\0')
+       path = ft_strjoin(find_path(mini, "HOME="), token->cmd[1] + 1);
+   return (path);
 }
 
-char	*resolve_cd_path(t_mini *mini, t_token *token)
-{
-	char	*path;
-	char	*cleaned_cmd;
 
-	path = NULL;
-	cleaned_cmd = NULL;
-	if (token->cmd[1])
-		cleaned_cmd = ft_strdelchar(token->cmd[1], "'\"");
-	if (token->cmd[1] && (!ft_strncmp(token->cmd[1], "\"~", 2)
-			|| !ft_strncmp(token->cmd[1], "\'~", 2)))
-	{
-		write(2, "cd: ~: No such file or directory\n", 34);
-		return (free(cleaned_cmd), NULL);
-	}
-	if (!token->cmd[1] || ft_strchr(cleaned_cmd, '~'))
-		path = check_per(mini, token, path);
-	else if (!ft_strcmp(cleaned_cmd, "-"))
-	{
-		if (mini->oldpath == NULL)
-			return (free(cleaned_cmd), NULL);
-		path = ft_strdup(mini->oldpath);
-		write(mini->outfile, path, ft_strlen(path));
-		write(mini->outfile, "\n", 1);
-	}
-	else
-		path = ft_strdup(cleaned_cmd);
-	return (free(cleaned_cmd), path);
+char    *resolve_cd_path(t_mini *mini, t_token *token)
+{
+   char    *path;
+   char    *cleaned_cmd;
+
+
+   path = NULL;
+   cleaned_cmd = NULL;
+   if (token->cmd[1])
+       cleaned_cmd = ft_strdelchar(token->cmd[1], "'\"");
+   if (token->cmd[1] && (!ft_strncmp(token->cmd[1], "\"~", 2)
+           || !ft_strncmp(token->cmd[1], "\'~", 2)))
+   {
+       write(2, "cd: ~: No such file or directory\n", 34);
+       return (free(cleaned_cmd), NULL);
+   }
+   if (!token->cmd[1] || ft_strchr(cleaned_cmd, '~')
+       || !ft_strcmp(cleaned_cmd, "--"))
+       path = check_per(mini, token, path);
+   else if (!ft_strcmp(cleaned_cmd, "-"))
+   {
+       if (mini->oldpath == NULL)
+           return (free(cleaned_cmd), NULL);
+       path = ft_strdup(mini->oldpath);
+       write(mini->outfile, path, ft_strlen(path));
+       write(mini->outfile, "\n", 1);
+   }
+   else
+       path = ft_strdup(cleaned_cmd);
+   return (free(cleaned_cmd), path);
 }
+
 
 void	cd(t_mini *mini, t_token *token)
 {

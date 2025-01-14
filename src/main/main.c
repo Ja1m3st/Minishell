@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/10 12:47:08 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 11:33:35 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **env)
 		if (!check_quotation(&mini))
 			continue ;
 		// print_tree_structure(&mini);
-		// execute_commands(&mini);
+		execute_commands(&mini);
 		free_main(&mini);
 	}
 	return (error(&mini, '!'), 0);

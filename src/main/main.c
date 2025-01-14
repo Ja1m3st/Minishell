@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int g_status;
+int	g_status;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -28,18 +28,12 @@ int	main(int argc, char **argv, char **env)
 		mini.input = readline(env_name);
 		if (!mini.input)
 			break ;
-		if (*mini.input == '\0')
-		{
-			free(mini.input);
-			continue ;
-		}
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
 		tokenize_commands(&mini, mini.mini_cmds, NULL);
 		if (!check_quotation(&mini))
 			continue ;
-		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}

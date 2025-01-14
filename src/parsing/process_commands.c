@@ -44,12 +44,12 @@ void	process_commands(t_mini *mini)
 		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_del(mini->input[i])))
 			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
 		if (quote == NO_QUOTE && (mini->input[i] == ' ' || is_del(mini->input[i])))
-			handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
+			handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
 		if (quote == NO_QUOTE && is_del(mini->input[i]))
 			handle_redirections(mini, &cmd, &i, &j);
 		i++;
 	}
-	handle_end_of_command(mini->mini_cmds, &cmd, &k, &j);
+	handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
 	mini->mini_cmds[j] = NULL;
 }
 
@@ -101,7 +101,7 @@ char	*append_character_to_cmd(char *cmd, char c, int *k)
 	return (cmd);
 }
 
-void	handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j)
+void	handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j)
 {
 	if (*k > 0 && *cmd)
 	{

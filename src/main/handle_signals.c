@@ -51,11 +51,6 @@ void	disable_echoctl(void)
 	}
 }
 
-void	handle_sigbackslash(int signal)
-{
-	(void)signal;
-}
-
 void	handle_sigint(int signal)
 {
 	(void)signal;
@@ -81,4 +76,3 @@ void	exit_codes(void)
 	else
 		g_status = -1;
 }
-

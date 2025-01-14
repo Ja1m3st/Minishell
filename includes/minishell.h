@@ -83,11 +83,14 @@ typedef struct s_mini
 	t_quote_type	*quote_types;
 }	t_mini;
 
+extern int	g_status;
+
 //------------------------------------------------------------------MAIN
 int				main(int argc, char **argv, char **envp);
 void			init_struct(t_mini *mini, char **argv, char **env);
 void			init_fds(t_mini *mini);
 //----------------------------------------------------------------SIGNALS
+void			exit_codes(void);
 void			handle_sigint(int signal);
 void			handle_sigquit(int signal);
 void			handle_sigbackslash(int signal);
@@ -102,13 +105,8 @@ void			print_env(t_mini *mini);
 void			dup_env(t_mini *mini, char **env);
 char			*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-int				count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i);
-int				count_no_quote_single_redir(t_mini *mini,
-					t_quote_type quote, int *i);
-int				count_quote_chars(t_mini *mini, t_quote_type *quote, int *i);
 int				count_commands(t_mini *mini);
-void			handle_end_of_command(char **cmd_list,
-					char **cmd, int *k, int *j);
+void			handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j);
 void			handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
 char			*append_character_to_cmd(char *cmd, char c, int *k);
 void			allocate_command_memory(t_mini *mini);
@@ -135,6 +133,7 @@ int				get_escape_quotes(t_quote *q, int c, int c2);
 void			get_quotes(t_quote *q, int c, int c2);
 //-------------------------------------------------------------------PIPES
 void			pipex(t_mini *mini, t_token *token);
+void			close_fds(t_mini *mini, t_token *token, int mod);
 int				swap_fds(t_mini *mini, t_token *token);
 int				swap_fds2(t_mini *mini, t_token *token);
 int				execve_commands(t_mini *mini, t_token *token);
@@ -190,6 +189,5 @@ char			**remap_cmds(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);
-void			exit_codes(t_mini *mini, pid_t *pid, int *status);
 
 #endif

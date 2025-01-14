@@ -86,6 +86,8 @@ int	tokenize_cmds(t_token *token, char **cmds)
 	int		new_len;
 	char	**new_cmds;
 
+	old_len = 0;
+	new_len = 0;
 	new_cmds = allocate_new_cmds(token, cmds, &old_len, &new_len);
 	if (!new_cmds)
 		return (-1);

@@ -36,7 +36,6 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	setup_signals();
 	disable_echoctl();
 	get_env_name(mini);
-	mini->exit_code = 0;
 }
 
 void	init_quotes(t_quote *q)

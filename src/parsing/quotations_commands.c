@@ -173,5 +173,5 @@ int	check_quotation(t_mini *mini)
 			token->output_file = remove_quotes(mini, q, token->output_file);
 		token = token->next;
 	}
-	return (1);
+	return (free(q), 1);
 }

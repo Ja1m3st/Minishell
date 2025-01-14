@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-int	g_status;
-
 void	pipex(t_mini *mini, t_token *token)
 {
 	if (token->next && pipe(mini->fd) == -1)
@@ -23,6 +21,7 @@ void	pipex(t_mini *mini, t_token *token)
 		return (perror("Fork error\n"));
 	if (mini->pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (token->input_redir || token->output_redir)
 			set_in_out_file(mini, token);
 		swap_fds(mini, token);
@@ -34,23 +33,14 @@ void	pipex(t_mini *mini, t_token *token)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		if (token->next)
 			close(mini->fd[1]);
 		if (mini->is_last_cmd)
 			close(mini->fd[0]);
-		exit_codes(mini, &mini->pid, &g_status);
+		waitpid(mini->pid, &g_status, 0);
+		exit_codes();
 	}
-}
-
-void	exit_codes(t_mini *mini, pid_t *pid, int *status)
-{
-	waitpid(*pid, status, 0);
-	if (WIFEXITED(*status))
-		mini->exit_code = WEXITSTATUS(*status);
-	else if (WIFSIGNALED(*status))
-		mini->exit_code = 128 + WTERMSIG(*status);
-	else
-		mini->exit_code = -1;
 }
 
 int	swap_fds(t_mini *mini, t_token *token)
@@ -104,14 +94,14 @@ int	execve_commands(t_mini *mini, t_token *token)
 	if (token->is_builtin)
 	{
 		builtin_commands(mini, token);
-		exit(EXIT_SUCCESS);
+		exit(0);
 	}
 	else if (!token->is_builtin)
 	{
 		if (execve(token->path, token->cmd, mini->env) == -1)
 		{
 			fprintf(stderr, "%s: command not found\n", token->cmd[0]);
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 	}
 	return (0);

@@ -51,6 +51,11 @@ void	disable_echoctl(void)
 	}
 }
 
+void	handle_sigbackslash(int signal)
+{
+	(void)signal;
+}
+
 void	handle_sigint(int signal)
 {
 	(void)signal;
@@ -58,14 +63,22 @@ void	handle_sigint(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_status = 130;
 }
 
 void	handle_sigquit(int signal)
 {
 	(void)signal;
+	g_status = 131;
 }
 
-void	handle_sigbackslash(int signal)
+void	exit_codes(void)
 {
-	(void)signal;
+	if (WIFEXITED(g_status))
+		g_status = WEXITSTATUS(g_status);
+	else if (WIFSIGNALED(g_status))
+		g_status = 128 + WTERMSIG(g_status);
+	else
+		g_status = -1;
 }
+

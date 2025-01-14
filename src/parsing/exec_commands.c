@@ -29,6 +29,7 @@ void	execute_commands(t_mini *mini)
 		if (!token->next)
 			mini->is_last_cmd = 1;
 		pipex(mini, token);
+		signal(SIGINT, &handle_sigint);
 		mini->is_first_cmd = 0;
 		token = token->next;
 	}

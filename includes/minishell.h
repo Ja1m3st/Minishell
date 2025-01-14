@@ -74,22 +74,22 @@ typedef struct s_mini
 	char			*full_path;
 	int				infile;
 	int				outfile;
+	int				prev_fd;
 	int				fd[2];
 	int				is_last_cmd;
 	int				is_first_cmd;
 	pid_t			pid;
 	t_token			**commands;
 	t_quote_type	*quote_types;
-	int				prev_fd;
-	int				exit_code;
 }	t_mini;
 
-
+extern int	g_status;
 //------------------------------------------------------------------MAIN
 int	main(int argc, char **argv, char **envp);
 void	init_struct(t_mini *mini, char **argv, char **env);
 void		init_fds(t_mini *mini);
 //----------------------------------------------------------------SIGNALS
+void		exit_codes(void);
 void		handle_sigint(int signal);
 void		handle_sigquit(int signal);
 void		handle_sigbackslash(int signal);
@@ -104,9 +104,6 @@ void		print_env(t_mini *mini);
 void		dup_env(t_mini *mini, char **env);
 char		*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
-int		count_no_quote_chars(t_mini *mini, t_quote_type *quote, int *i);
-int		count_no_quote_single_redir(t_mini *mini, t_quote_type quote, int *i);
-int		count_quote_chars(t_mini *mini, t_quote_type *quote, int *i);
 int		count_commands(t_mini *mini);
 void		handle_end_of_command(char **cmd_list, char **cmd, int *k, int *j);
 void		handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
@@ -161,13 +158,13 @@ int		get_escape_quotes(t_quote *q, int c, int c2);
 int		get_qouble_single_quotes(t_quote *q, int c);
 void		init_quotes(t_quote *q);
 //-------------------------------------------------------------------UTILS
+void		error(t_mini *mini, char c);
 void		free_main(t_mini *mini);
-void		restore_fds(t_mini *mini);
-void		here_doc(t_mini *mini, t_token *token);
 void		free_mini(t_mini *mini);
 void		free_commands(t_mini *mini);
 void		free_commands2(t_token *token);
-void		error(t_mini *mini, char c);
+void		restore_fds(t_mini *mini);
+void		here_doc(t_mini *mini, t_token *token);
 int		is_builtin(char *cmd);
 int		is_redirect(char *cmd);
 int		is_input_redirect(char *cmd);
@@ -180,7 +177,6 @@ char		**remap_cmds(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void		print_tree_structure(t_mini *mini);
 void		print_tree_structure2(t_token *token);
-void		exit_codes(t_mini *mini, pid_t *pid, int *status);
-
 
 #endif
+

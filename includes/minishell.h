@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 13:58:18 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:00:51 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,14 @@ int				tokenize_leftdirections(t_token *token, char **cmds);
 int				tokenize_cmds(t_token *token, char **cmds);
 void			tokenize_utils(t_token *token, char **cmds,
 					int *old_len, int *new_len);
+void			copy_new_cmds(char **new_cmds, char **cmds,
+					int old_len, int new_len);
+void			copy_old_cmds(char **new_cmds, t_token *token, int old_len);
+char			**allocate_new_cmds(t_token *token, char **cmds,
+					int *old_len, int *new_len);
+int				get_qouble_single_quotes(t_quote *q, int c);
+int				get_escape_quotes(t_quote *q, int c, int c2);
+void			get_quotes(t_quote *q, int c, int c2);
 //-------------------------------------------------------------------PIPES
 void			pipex(t_mini *mini, t_token *token);
 int				swap_fds(t_mini *mini, t_token *token);

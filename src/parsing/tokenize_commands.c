@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:27:59 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 13:47:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:51:41 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,32 +82,17 @@ void	tokenize_utils(t_token *token, char **cmds, int *old_len, int *new_len)
 
 int	tokenize_cmds(t_token *token, char **cmds)
 {
-	int		new_len;
 	int		old_len;
-	int		i;
-	int		j;
+	int		new_len;
 	char	**new_cmds;
 
-	old_len = 0;
-	new_len = 0;
-	tokenize_utils(token, cmds, &old_len, &new_len);
-	new_cmds = malloc(sizeof(char *) * (old_len + new_len + 1));
+	new_cmds = allocate_new_cmds(token, cmds, &old_len, &new_len);
 	if (!new_cmds)
 		return (-1);
-	i = 0;
-	while (i < old_len)
-	{
-		new_cmds[i] = ft_strdup(token->cmd[i]);
-	}
-	j = 0;
-	while (j < new_len)
-	{
-		new_cmds[j + old_len] = ft_strdup(cmds[j]);
-		j++;
-	}
-	new_cmds[old_len + new_len] = NULL;
+	copy_old_cmds(new_cmds, token, old_len);
+	copy_new_cmds(new_cmds, cmds, old_len, new_len);
 	if (token->cmd)
 		ft_freearr(token->cmd);
 	token->cmd = new_cmds;
-	return (j);
+	return (new_len);
 }

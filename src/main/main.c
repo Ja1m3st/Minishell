@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 13:51:11 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:59:29 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_mini	mini;
+	char	*env_name;
 
 	if (argc != 1)
 		return (1);
 	init_struct(&mini, argv, env);
 	while (1)
 	{
-		mini.input = readline(join_env_name(&mini));
+		env_name = join_env_name(&mini);
+		mini.input = readline(env_name);
 		if (!mini.input)
 			break ;
 		if (*mini.input == '\0')
@@ -35,6 +37,7 @@ int	main(int argc, char **argv, char **env)
 		tokenize_commands(&mini, mini.mini_cmds, NULL);
 		if (!check_quotation(&mini))
 			continue ;
+		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}

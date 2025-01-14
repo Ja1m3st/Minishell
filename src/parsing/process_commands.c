@@ -6,11 +6,18 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/09 12:56:33 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:25:08 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	init(int *i, int *j, int *k)
+{
+	*i = 0;
+	*j = 0;
+	*k = 0;
+}
 
 void	process_commands(t_mini *mini)
 {
@@ -20,9 +27,7 @@ void	process_commands(t_mini *mini)
 	t_quote_type	quote;
 	char			*cmd;
 
-	i = 0;
-	j = 0;
-	k = 0;
+	init(&i, &j, &k);
 	cmd = NULL;
 	quote = NO_QUOTE;
 	allocate_command_memory(mini);

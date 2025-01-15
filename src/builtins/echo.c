@@ -16,6 +16,7 @@ void	echo(t_mini *mini, t_token *token)
 {
 	char	*str;
 
+	g_status = 0;
 	if (token->cmd[1] && !ft_strcmp(token->cmd[1], "-n"))
 		token->newline = 1;
 	if (token->newline && !token->cmd[1 + token->newline])

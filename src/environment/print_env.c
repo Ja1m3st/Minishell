@@ -17,6 +17,9 @@ void	print_env(t_mini *mini)
 	int		i;
 
 	i = 0;
+	g_status = 0;
+	if (!mini->env)
+		return ;
 	while (mini->env[i] != NULL)
 	{
 		printf("%s\n", mini->env[i]);

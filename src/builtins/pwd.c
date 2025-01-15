@@ -20,5 +20,8 @@ void	print_pwd(t_mini *mini)
 	{
 		write(mini->outfile, cwd, ft_strlen(cwd));
 		write(mini->outfile, "\n", 1);
+		g_status = 0;
 	}
+	else
+		g_status = 1;
 }

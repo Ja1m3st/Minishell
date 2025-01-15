@@ -26,5 +26,8 @@ void	print_history(void)
 			printf("%d %s\n", i + history_base, hist_entries[i]->line);
 			i++;
 		}
+		g_status = 0;
 	}
+	else
+		g_status = 1;
 }

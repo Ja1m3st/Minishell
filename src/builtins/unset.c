@@ -58,13 +58,14 @@ void	unset(t_token *token, t_mini *mini)
 	int		x;
 
 	x = 1;
+	g_status = 0;
 	while (token->cmd[x])
 	{
 		if (find_env_variable(mini->env, token->cmd[x]) != NULL)
 		{
 			new_env = malloc(ft_arrlen(mini->env) * sizeof(char *));
 			if (!new_env)
-				error(mini, 'M');
+				return ;
 			new_env = ft_new_env(mini, token->cmd[x], new_env);
 			ft_freearr(mini->env);
 			mini->env = new_env;

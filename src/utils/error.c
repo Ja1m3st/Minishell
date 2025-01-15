@@ -32,7 +32,8 @@ void	error(t_mini *mini, char c)
 	free_mini(mini);
 	if (c == '!')
 		exit(EXIT_SUCCESS);
-	exit(EXIT_FAILURE);
+	else
+		exit(EXIT_FAILURE);
 }
 
 void	free_mini(t_mini *mini)

@@ -30,12 +30,31 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		if (*mini.input)
 			add_history(mini.input);
-		process_commands(&mini);
-		tokenize_commands(&mini, mini.mini_cmds, NULL);
-		if (!check_quotation(&mini))
+		if (main_commands(&mini))
 			continue ;
 		execute_commands(&mini);
 		free_main(&mini);
 	}
 	return (error(&mini, '!'), 0);
+}
+
+int	main_commands(t_mini *mini)
+{
+	if (*mini->input == '\0')
+	{
+		free(mini->input);
+		return (1);
+	}
+	process_commands(mini);
+	if (tokenize_commands(mini, mini->mini_cmds, NULL))
+	{
+		free_main(mini);
+		return (1);
+	}
+	if (check_quotation(mini))
+	{
+		free_main(mini);
+		return (1);
+	}
+	return (0);
 }

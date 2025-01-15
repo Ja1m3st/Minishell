@@ -62,7 +62,8 @@ int	swap_fds(t_mini *mini, t_token *token)
 		if (dup2(mini->infile, STDIN_FILENO) == -1)
 		{
 			perror("dup2 error (input)\n");
-			exit(EXIT_FAILURE);
+			g_status = -1;
+			exit(g_status);
 		}
 		close(mini->infile);
 	}
@@ -71,7 +72,8 @@ int	swap_fds(t_mini *mini, t_token *token)
 		if (dup2(mini->fd[0], STDIN_FILENO) == -1)
 		{
 			perror("dup2 error (pipe input)\n");
-			exit(EXIT_FAILURE);
+			g_status = -1;
+			exit(g_status);
 		}
 		close(mini->fd[0]);
 	}
@@ -85,7 +87,8 @@ int	swap_fds2(t_mini *mini, t_token *token)
 		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error (output)\n");
-			exit(EXIT_FAILURE);
+			g_status = -1;
+			exit(g_status);
 		}
 		close(mini->outfile);
 	}
@@ -94,7 +97,8 @@ int	swap_fds2(t_mini *mini, t_token *token)
 		if (dup2(mini->fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error (pipe output)\n");
-			exit(EXIT_FAILURE);
+			g_status = -1;
+			exit(g_status);
 		}
 		close(mini->fd[1]);
 	}
@@ -106,14 +110,15 @@ int	execve_commands(t_mini *mini, t_token *token)
 	if (token->is_builtin)
 	{
 		builtin_commands(mini, token);
-		exit(0);
+		exit(g_status);
 	}
 	else if (!token->is_builtin)
 	{
 		if (execve(token->path, token->cmd, mini->env) == -1)
 		{
 			fprintf(stderr, "%s: command not found\n", token->cmd[0]);
-			exit(127);
+			g_status = 127;
+			exit(g_status);
 		}
 	}
 	return (0);

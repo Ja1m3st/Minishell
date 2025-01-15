@@ -65,7 +65,7 @@ int	check_valid_export(t_token *token, int n)
 	}
 	if (token->cmd[n][i] == '=' && !check)
 		return (0);
-	perror("export: Bad Assignment!\n");
+	write(2, "export: Bad Assignment!\n", 24);
 	return (1);
 }
 

@@ -90,3 +90,20 @@ void	get_quotes(t_quote *q, int c, int c2)
 	}
 	q->print = 1;
 }
+
+int	check_valid_var(char *var_name)
+{
+	int	i;
+
+	i = 1;
+	while (var_name[i])
+	{
+		if (i == 1 && (ft_isdigit(var_name[i]) && var_name[i] != '?'))
+			return (0);
+		else if (!ft_isalnum(var_name[i]) && var_name[i] != '_'
+			&& var_name[i] != '?')
+			return (0);
+		i++;
+	}
+	return (1);
+}

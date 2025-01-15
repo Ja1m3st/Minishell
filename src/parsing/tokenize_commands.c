@@ -12,13 +12,13 @@
 
 #include "minishell.h"
 
-void	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
+int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 {
 	t_token	*token;
 
 	token = cur;
 	if (!cmds || !*cmds)
-		return ;
+		return (1);
 	if (!token || (token && token->complete))
 	{
 		token = ft_newtoken(NULL);
@@ -26,49 +26,60 @@ void	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 	}
 	if (*cmds && !is_redirect(*cmds) && ft_strcmp(*cmds, "|"))
 		cmds += tokenize_cmds(token, cmds);
-	if (*cmds && is_input_redirect(*cmds))
-		cmds += tokenize_leftdirections(token, cmds);
-	if (*cmds && is_output_redirect(*cmds))
-		cmds += tokenize_rightdirections(token, cmds);
+	if (*cmds && is_redirect(*cmds))
+	{
+		if (tokenize_redirections(token, cmds))
+			return (1);
+		cmds += 2;
+	}
 	if (*cmds && !ft_strcmp(*cmds, "|"))
 	{
-		token->pipe = ft_strdup(*cmds);
-		token->complete = 1;
-		cmds++;
-		tokenize_commands(mini, cmds, NULL);
-		return ;
+		if (tokenize_pipes(token, cmds))
+			return (1);
+		return (tokenize_commands(mini, ++cmds, NULL));
 	}
-	tokenize_commands(mini, cmds, token);
+	return (tokenize_commands(mini, cmds, token), 0);
 }
 
-int	tokenize_leftdirections(t_token *token, char **cmds)
+int	tokenize_redirections(t_token *token, char **cmds)
 {
-	token->input_redir = ft_strdup(*cmds);
-	if (!ft_strcmp(*cmds, "<<"))
+	g_status = 0;
+	if (is_input_redirect(*cmds))
 	{
+		token->input_redir = ft_strdup(*cmds);
 		cmds++;
-		if (*cmds)
+		if (*cmds && !ft_strcmp(*cmds, "<<"))
 			token->delimeter = ft_strdup(*cmds);
-	}
-	else if (!ft_strcmp(*cmds, "<"))
-	{
-		cmds++;
-		if (*cmds)
+		else if (*cmds && !ft_strcmp(*cmds, "<"))
 			token->input_file = ft_strdup(*cmds);
+		else
+			g_status = 2;
 	}
-	return (2);
-}
-
-int	tokenize_rightdirections(t_token *token, char **cmds)
-{
-	token->output_redir = ft_strdup(*cmds);
-	if (!ft_strcmp(*cmds, ">>") || !ft_strcmp(*cmds, ">"))
+	else if (is_output_redirect(*cmds))
 	{
+		token->output_redir = ft_strdup(*cmds);
 		cmds++;
 		if (*cmds)
 			token->output_file = ft_strdup(*cmds);
+		else
+			g_status = 2;
 	}
-	return (2);
+	if (g_status == 2)
+		return (write(2, "Syntax error\n", 13), 1);
+	return (0);
+}
+
+int	tokenize_pipes(t_token *token, char **cmds)
+{
+	token->pipe = ft_strdup(*cmds);
+	cmds++;
+	if (!(*cmds))
+	{
+		g_status = 2;
+		return (write(2, "Syntax error\n", 13), 1);
+	}
+	token->complete = 1;
+	return (0);
 }
 
 void	tokenize_utils(t_token *token, char **cmds, int *old_len, int *new_len)

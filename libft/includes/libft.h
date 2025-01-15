@@ -33,7 +33,9 @@ typedef struct s_list
 	struct s_list	*prev;
 }	t_list;
 
-/// @brief Returns 1 if char is A - Z / a - z.
+/// @brief Returns 1 if char is A-Z / a-z.
+int		ft_isalpha(int c);
+/// @brief Returns 1 if char is 0-9.
 int		ft_isdigit(int c);
 /// @brief Returns 1 if char 0 - 9 / A - Z / a - z.
 int		ft_isalnum(int c);

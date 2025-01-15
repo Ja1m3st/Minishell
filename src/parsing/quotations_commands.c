@@ -20,7 +20,7 @@ static char	*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i)
 	temp = ft_strdup("$");
 	(*i)++;
 	k = 1;
-	while (cmd[*i] && (ft_isalnum(cmd[*i]) || cmd[*i] == '_' || cmd[*i] == '?'))
+	while (cmd[*i] && cmd[*i] != '$')
 	{
 		temp = ft_realloc(temp, k, k + 2);
 		temp[k++] = cmd[*i];
@@ -30,7 +30,8 @@ static char	*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i)
 		(*i)++;
 	}
 	q->expansion = 0;
-	temp = expand_variable(mini, temp);
+	if (check_valid_var(temp))
+		temp = expand_variable(mini, temp);
 	return (temp);
 }
 
@@ -84,7 +85,10 @@ static int	process_token(t_mini *mini, t_quote *q, t_token *token)
 	{
 		token->cmd[i] = remove_quotes(mini, q, token->cmd[i]);
 		if (q->single_quote || q->double_quote)
+		{
+			g_status = 130;
 			return (write(2, "Error: Unclosed quotes\n", 23), 0);
+		}
 		if (is_builtin(token->cmd[0]))
 			token->is_builtin = 1;
 		if (!ft_strncmp(token->cmd[i], "./", 2))
@@ -100,11 +104,13 @@ int	check_quotation(t_mini *mini)
 	t_quote	*q;
 
 	q = malloc(sizeof(t_quote));
+	if (!q)
+		return (1);
 	token = *(mini->commands);
 	while (token != NULL)
 	{
 		if (token->cmd && !process_token(mini, q, token))
-			return (free(q), 0);
+			return (free(q), 1);
 		if (!token->is_builtin && !token->path && token->cmd != NULL)
 			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
 		if (token->input_file && *token->input_file)
@@ -113,5 +119,5 @@ int	check_quotation(t_mini *mini)
 			token->output_file = remove_quotes(mini, q, token->output_file);
 		token = token->next;
 	}
-	return (free(q), 1);
+	return (free(q), 0);
 }

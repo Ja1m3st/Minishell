@@ -63,9 +63,13 @@ void	cd(t_mini *mini, t_token *token)
 	free(oldpath);
 	path = resolve_cd_path(mini, token);
 	if (!path)
+	{
+		g_status = 1;
 		return ;
+	}
 	if (chdir(path) == -1)
 	{
+		g_status = 1;
 		free(path);
 		perror("Error");
 		return ;
@@ -74,4 +78,5 @@ void	cd(t_mini *mini, t_token *token)
 	free(mini->oldpath);
 	mini->oldpath = NULL;
 	mini->oldpath = ft_strdup(cwd);
+	g_status = 0;
 }

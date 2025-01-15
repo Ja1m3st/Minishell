@@ -33,7 +33,6 @@ void	builtin_commands(t_mini *mini, t_token *token)
 		write(mini->outfile, "exit\n", 5);
 		error(mini, '!');
 	}
-	g_status = 0;
 }
 
 char	*find_path(t_mini *mini, char *path)

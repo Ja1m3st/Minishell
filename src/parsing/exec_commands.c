@@ -44,7 +44,8 @@ void	set_in_out_file(t_mini *mini, t_token *token)
 		if (mini->infile == -1)
 		{
 			perror("Error opening file.\n");
-			exit(EXIT_FAILURE);
+			g_status = 2;
+			exit(g_status);
 		}
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
@@ -63,7 +64,8 @@ void	set_in_out_file2(t_mini *mini, t_token *token)
 		if (mini->outfile == -1)
 		{
 			perror("Error redirecting to file.\n");
-			exit(EXIT_FAILURE);
+			g_status = 2;
+			exit(g_status);
 		}
 	}
 	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
@@ -73,7 +75,8 @@ void	set_in_out_file2(t_mini *mini, t_token *token)
 		if (mini->outfile == -1)
 		{
 			perror("Error appending to file.\n");
-			exit(EXIT_FAILURE);
+			g_status = 2;
+			exit(g_status);
 		}
 	}
 }

@@ -87,6 +87,7 @@ extern int	g_status;
 
 //------------------------------------------------------------------MAIN
 int				main(int argc, char **argv, char **envp);
+int				main_commands(t_mini *mini);
 void			init_struct(t_mini *mini, char **argv, char **env);
 void			init_fds(t_mini *mini);
 //----------------------------------------------------------------SIGNALS
@@ -113,13 +114,14 @@ void			allocate_command_memory(t_mini *mini);
 void			process_commands(t_mini *mini);
 void			builtin_commands(t_mini *mini, t_token *token);
 void			execute_commands(t_mini *mini);
-void			tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
+int			tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);
 void			set_in_out_file(t_mini *mini, t_token *token);
 void			set_in_out_file2(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
-int				tokenize_rightdirections(t_token *token, char **cmds);
-int				tokenize_leftdirections(t_token *token, char **cmds);
+int			tokenize_pipes(t_token *token, char **cmds);
+
+int			tokenize_redirections(t_token *token, char **cmds);
 int				tokenize_cmds(t_token *token, char **cmds);
 void			tokenize_utils(t_token *token, char **cmds,
 					int *old_len, int *new_len);
@@ -186,6 +188,7 @@ int				count_commands(t_mini *mini);
 t_quote_type	get_quote(t_quote_type quote, char c);
 int				is_del(char cmd);
 char			**remap_cmds(t_token *token);
+int				check_valid_var(char *var_name);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);

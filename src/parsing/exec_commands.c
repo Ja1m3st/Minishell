@@ -33,6 +33,7 @@ void	execute_commands(t_mini *mini)
 		mini->is_first_cmd = 0;
 		token = token->next;
 	}
+	while (waitpid(mini->pid, &g_status, 0) > 0);
 	restore_fds(mini);
 }
 

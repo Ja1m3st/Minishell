@@ -22,7 +22,8 @@ void	free_main(t_mini *mini)
 		mini->mini_cmds = NULL;
 	}
 	free_commands(mini);
-	free(mini->input);
+	if (mini->input)
+		free(mini->input);
 }
 
 void	error(t_mini *mini, char c)

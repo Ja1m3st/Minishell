@@ -28,12 +28,10 @@ static int	ft_check_one_path(t_token *token)
 	return (0);
 }
 
-static void	ft_check_free(char **paths, char *tmp, t_token *token)
+static void	ft_check_free(char **paths, t_token *token)
 {
 	if (paths)
 		ft_freearr(paths);
-	if (tmp)
-		free(tmp);
 	if (token->path == NULL)
 		token->path = ft_strdup(token->cmd[0]);
 }
@@ -76,5 +74,5 @@ void	ft_check_path(t_token *token)
 			i++;
 		}
 	}
-	ft_check_free(paths, tmp, token);
+	ft_check_free(paths, token);
 }

@@ -15,26 +15,30 @@
 void	pipex(t_mini *mini, t_token *token)
 {
 	if (token->next && pipe(mini->fd) == -1)
-		return (perror("Pipe Error\n"));
+	{
+		perror("Pipe Error\n");
+		exit(EXIT_FAILURE);
+	}
 	mini->pid = fork();
 	if (mini->pid == -1)
-		return (perror("Fork error\n"));
+	{
+		perror("Fork Error\n");
+		exit(EXIT_FAILURE);
+	}
 	if (mini->pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		if (token->input_redir || token->output_redir)
 			set_in_out_file(mini, token);
 		swap_fds(mini, token);
-		close_fds(mini, token, 1);
-		execve_commands(mini, token);
 	}
 	else
 	{
 		signal(SIGINT, SIG_IGN);
 		close_fds(mini, token, 1);
-		waitpid(mini->pid, &g_status, 0);
 		exit_codes();
 	}
+
 }
 
 void	close_fds(t_mini *mini, t_token *token, int mod)
@@ -110,6 +114,7 @@ int	execve_commands(t_mini *mini, t_token *token)
 	if (token->is_builtin)
 	{
 		builtin_commands(mini, token);
+		close_fds(mini, token, 0);
 		exit(g_status);
 	}
 	else if (!token->is_builtin)
@@ -118,6 +123,7 @@ int	execve_commands(t_mini *mini, t_token *token)
 		{
 			fprintf(stderr, "%s: command not found\n", token->cmd[0]);
 			g_status = 127;
+			close_fds(mini, token, 0);
 			exit(g_status);
 		}
 	}

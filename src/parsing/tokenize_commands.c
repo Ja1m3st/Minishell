@@ -48,9 +48,9 @@ int	tokenize_redirections(t_token *token, char **cmds)
 	{
 		token->input_redir = ft_strdup(*cmds);
 		cmds++;
-		if (*cmds && !ft_strcmp(*cmds, "<<"))
+		if (*cmds && !ft_strcmp(token->input_redir, "<<"))
 			token->delimeter = ft_strdup(*cmds);
-		else if (*cmds && !ft_strcmp(*cmds, "<"))
+		else if (*cmds && !ft_strcmp(token->input_redir, "<"))
 			token->input_file = ft_strdup(*cmds);
 		else
 			g_status = 2;

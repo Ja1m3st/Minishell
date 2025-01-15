@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/16 11:44:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:52:47 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	execute_commands(t_mini *mini)
 		mini->is_first_cmd = 0;
 		token = token->next;
 	}
+	while (waitpid(mini->pid, &g_status, 0) > 0); 
 	restore_fds(mini);
 }
 

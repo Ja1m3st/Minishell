@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 12:54:04 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:50:59 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	pipex(t_mini *mini, t_token *token)
 	{
 		signal(SIGINT, SIG_IGN);
 		close_fds(mini, token, 1);
-		waitpid(mini->pid, &g_status, 0);
 		exit_codes();
 	}
 }
@@ -61,7 +60,7 @@ int	swap_fds(t_mini *mini, t_token *token)
 	{
 		if (dup2(mini->infile, STDIN_FILENO) == -1)
 		{
-			perror("dup2 error (input)\n");
+			perror("dup2 error (input)");
 			exit(EXIT_FAILURE);
 		}
 		close(mini->infile);
@@ -70,7 +69,7 @@ int	swap_fds(t_mini *mini, t_token *token)
 	{
 		if (dup2(mini->fd[0], STDIN_FILENO) == -1)
 		{
-			perror("dup2 error (pipe input)\n");
+			perror("dup2 error (pipe input)");
 			exit(EXIT_FAILURE);
 		}
 		close(mini->fd[0]);
@@ -84,7 +83,7 @@ int	swap_fds2(t_mini *mini, t_token *token)
 	{
 		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
 		{
-			perror("dup2 error (output)\n");
+			perror("dup2 error (output)");
 			exit(EXIT_FAILURE);
 		}
 		close(mini->outfile);
@@ -93,7 +92,7 @@ int	swap_fds2(t_mini *mini, t_token *token)
 	{
 		if (dup2(mini->fd[1], STDOUT_FILENO) == -1)
 		{
-			perror("dup2 error (pipe output)\n");
+			perror("dup2 error (pipe output)");
 			exit(EXIT_FAILURE);
 		}
 		close(mini->fd[1]);

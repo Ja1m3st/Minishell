@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 16:15:20 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:50:59 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	pipex(t_mini *mini, t_token *token)
 	{
 		signal(SIGINT, SIG_IGN);
 		close_fds(mini, token, 1);
-		waitpid(mini->pid, &g_status, 0);
 		exit_codes();
 	}
 }

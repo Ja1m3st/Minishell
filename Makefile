@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2025/01/14 15:04:26 by jaimesan         ###   ########.fr        #
+#    Updated: 2025/01/15 12:50:17 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/parsing/tokenize_commands.c ./src/utils/parsing_utils.c ./src/parsing/create_commands.c \
 	./src/utils/command_utils.c ./src/parsing/process_commands.c ./src/parsing/quotations_commands.c \
 	./src/utils/here_doc.c ./x_delete_after/delete_after.c ./src/builtins/resolve_path.c \
-	./src/parsing/tokenize_commands_utils.c ./src/parsing/quotations_commands_utils.c 
+	./src/parsing/tokenize_commands_utils.c ./src/parsing/quotations_commands_utils.c \
+	./src/utils/check_path.c
 	
 
 #OBJS--------------------------------------------------------------------------------------

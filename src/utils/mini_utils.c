@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
-/*   Updated: 2024/12/13 12:26:47 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:11:15 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	**remap_cmds(t_token *token)
 	char	**new_cmd;
 	char	*path;
 
+	path = NULL;
 	new_cmd = ft_split(token->cmd[0], ' ');
 	if (!new_cmd)
 		return (token->cmd);

@@ -6,13 +6,20 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 16:59:29 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:53:44 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_status;
+
+int	check_input(char *str)
+{
+	if (*str == '\0')
+		return (free(str), 1);
+	return (0);
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -28,6 +35,8 @@ int	main(int argc, char **argv, char **env)
 		mini.input = readline(env_name);
 		if (!mini.input)
 			break ;
+		if (check_input(mini.input))
+			continue ;
 		if (*mini.input)
 			add_history(mini.input);
 		if (main_commands(&mini))

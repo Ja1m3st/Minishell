@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:49:53 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 15:02:35 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 12:49:18 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	check_quotation(t_mini *mini)
 		if (token->cmd && !process_token(mini, q, token))
 			return (free(q), 0);
 		if (!token->is_builtin && !token->path && token->cmd != NULL)
-			token->path = ft_strjoin("/usr/bin/", token->cmd[0]);
+			ft_check_path(token);
 		if (token->input_file && *token->input_file)
 			token->input_file = remove_quotes(mini, q, token->input_file);
 		if (token->output_file && *token->output_file)

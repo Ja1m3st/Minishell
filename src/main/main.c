@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 16:59:29 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:13:09 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ int	main(int argc, char **argv, char **env)
 		mini.input = readline(env_name);
 		if (!mini.input)
 			break ;
+		if (*mini.input == '\0')
+		{
+			free(mini.input);
+			continue;
+		}
 		if (*mini.input)
 			add_history(mini.input);
 		process_commands(&mini);
 		tokenize_commands(&mini, mini.mini_cmds, NULL);
+		print_tree_structure(&mini);
 		if (!check_quotation(&mini))
 			continue ;
 		execute_commands(&mini);

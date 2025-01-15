@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 17:00:51 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/15 12:52:55 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ int				count_commands(t_mini *mini);
 t_quote_type	get_quote(t_quote_type quote, char c);
 int				is_del(char cmd);
 char			**remap_cmds(t_token *token);
+void			ft_check_path(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);

@@ -77,7 +77,6 @@ typedef struct s_mini
 	int				prev_fd;
 	int				fd[2];
 	int				is_last_cmd;
-	int				is_first_cmd;
 	pid_t			pid;
 	t_token			**commands;
 	t_quote_type	*quote_types;
@@ -94,7 +93,6 @@ void			init_fds(t_mini *mini);
 void			exit_codes(void);
 void			handle_sigint(int signal);
 void			handle_sigquit(int signal);
-void			handle_sigbackslash(int signal);
 void			disable_echoctl(void);
 void			setup_signals(void);
 //----------------------------------------------------------------HISTORY
@@ -120,7 +118,6 @@ void			set_in_out_file(t_mini *mini, t_token *token);
 void			set_in_out_file2(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
 int			tokenize_pipes(t_token *token, char **cmds);
-
 int			tokenize_redirections(t_token *token, char **cmds);
 int				tokenize_cmds(t_token *token, char **cmds);
 void			tokenize_utils(t_token *token, char **cmds,
@@ -134,11 +131,10 @@ int				get_qouble_single_quotes(t_quote *q, int c);
 int				get_escape_quotes(t_quote *q, int c, int c2);
 void			get_quotes(t_quote *q, int c, int c2);
 //-------------------------------------------------------------------PIPES
+void			execve_commands(t_mini *mini, t_token *token);
 void			pipex(t_mini *mini, t_token *token);
-void			close_fds(t_mini *mini, t_token *token, int mod);
-int				swap_fds(t_mini *mini, t_token *token);
-int				swap_fds2(t_mini *mini, t_token *token);
-int				execve_commands(t_mini *mini, t_token *token);
+void			swap_fds(t_mini *mini, t_token *token);
+void			close_fds(t_mini *mini);
 //--------------------------------------------------------------------ECHO
 void			echo(t_mini *mini, t_token *token);
 char			*parse_string(t_token *token);
@@ -164,6 +160,7 @@ char			*extract_var_name(char *str, int *i);
 char			*add_var_value(t_mini *mini, char *res, char *var_name);
 char			*process_regular_char(char *res, char current_char, int *k);
 char			*get_var_value(t_mini *mini, char *var_name);
+int				check_valid_var(char *var_name);
 //----------------------------------------------------------QUOTATIONS
 int				check_quotation(t_mini *mini);
 char			*remove_quotes(t_mini *mini, t_quote *q, char *cmd);
@@ -173,7 +170,6 @@ int				get_qouble_single_quotes(t_quote *q, int c);
 void			init_quotes(t_quote *q);
 //-------------------------------------------------------------------UTILS
 void			free_main(t_mini *mini);
-void			restore_fds(t_mini *mini);
 void			here_doc(t_mini *mini, t_token *token);
 void			free_mini(t_mini *mini);
 void			free_commands(t_mini *mini);
@@ -183,15 +179,13 @@ int				is_builtin(char *cmd);
 int				is_redirect(char *cmd);
 int				is_input_redirect(char *cmd);
 int				is_output_redirect(char *cmd);
-int				check_quotation(t_mini *mini);
 int				count_commands(t_mini *mini);
 t_quote_type	get_quote(t_quote_type quote, char c);
 int				is_del(char cmd);
-char			**remap_cmds(t_token *token);
 void			ft_check_path(t_token *token);
-int				check_valid_var(char *var_name);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);
+char			**remap_cmds(t_token *token);
 
 #endif

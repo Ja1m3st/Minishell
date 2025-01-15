@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+void	error(t_mini *mini, char c)
+{
+	rl_clear_history();
+	free_commands(mini);
+	free_mini(mini);
+	if (c == '!')
+		exit(EXIT_SUCCESS);
+	else
+		exit(EXIT_FAILURE);
+}
+
 void	free_main(t_mini *mini)
 {
 	if (!mini)
@@ -24,17 +35,6 @@ void	free_main(t_mini *mini)
 	free_commands(mini);
 	if (mini->input)
 		free(mini->input);
-}
-
-void	error(t_mini *mini, char c)
-{
-	rl_clear_history();
-	free_commands(mini);
-	free_mini(mini);
-	if (c == '!')
-		exit(EXIT_SUCCESS);
-	else
-		exit(EXIT_FAILURE);
 }
 
 void	free_mini(t_mini *mini)

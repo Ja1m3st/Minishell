@@ -32,6 +32,7 @@ void	pipex(t_mini *mini, t_token *token)
 	{
 		signal(SIGINT, SIG_IGN);
 		close_fds(mini, token, 1);
+		waitpid(mini->pid, &g_status, 0);
 		exit_codes();
 	}
 }

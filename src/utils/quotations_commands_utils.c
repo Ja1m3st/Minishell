@@ -96,8 +96,6 @@ int	check_valid_var(char *var_name)
 	int	i;
 
 	i = 1;
-	// if (var_name[0] == '$' && !var_name[1])
-	// 	return (0);
 	while (var_name[i])
 	{
 		if (i == 1 && (ft_isdigit(var_name[i]) && var_name[i] != '?'))

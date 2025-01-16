@@ -136,7 +136,7 @@ void			pipex(t_mini *mini, t_token *token);
 void			swap_fds(t_mini *mini, t_token *token);
 void			close_fds(t_mini *mini);
 //--------------------------------------------------------------------ECHO
-void			echo(t_mini *mini, t_token *token);
+void			echo(t_token *token);
 char			*parse_string(t_token *token);
 //---------------------------------------------------------------------PWD
 void			print_pwd(t_mini *mini);

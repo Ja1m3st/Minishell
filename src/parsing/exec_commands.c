@@ -6,22 +6,26 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/16 11:24:42 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:27:52 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_commands(t_mini *mini)
+int	execute_commands(t_mini *mini)
 {
 	t_token	*token;
 
 	if (!mini->commands)
-		return ;
+		return (0);
 	init_fds(mini);
 	token = *mini->commands;
 	if (token && !token->next && token->is_builtin)
-		return (set_in_out_file(mini, token), builtin_commands(mini, token));
+	{
+		if (set_in_out_file(mini, token) == 0)
+			return (0);
+		return (builtin_commands(mini, token));
+	}
 	while (token)
 	{
 		if (!token->next)
@@ -36,6 +40,7 @@ void	execute_commands(t_mini *mini)
 	}
 	if (mini->prev_fd != -1 && mini->prev_fd != STDIN_FILENO)
 		close(mini->prev_fd);
+	return (1);
 }
 
 void	pipex(t_mini *mini, t_token *token)

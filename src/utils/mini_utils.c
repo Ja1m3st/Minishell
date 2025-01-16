@@ -55,18 +55,3 @@ char	*find_path(t_mini *mini, char *path)
 	}
 	return (NULL);
 }
-
-char	**remap_cmds(t_token *token)
-{
-	char	**new_cmd;
-	char	*path;
-
-	path = NULL;
-	new_cmd = ft_split(token->cmd[0], ' ');
-	if (!new_cmd)
-		return (token->cmd);
-	path = ft_strjoin("/usr/bin/", new_cmd[0]);
-	if (!is_builtin(new_cmd[0]) && access(path, F_OK))
-		return (ft_freearr(new_cmd), free(path), token->cmd);
-	return (ft_freearr(token->cmd), free(path), new_cmd);
-}

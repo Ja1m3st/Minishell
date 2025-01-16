@@ -80,6 +80,7 @@ typedef struct s_mini
 	pid_t			pid;
 	t_token			**commands;
 	t_quote_type	*quote_types;
+	t_quote_type	q;
 }	t_mini;
 
 extern int	g_status;
@@ -107,18 +108,18 @@ char			*join_env_name(t_mini *mini);
 int				count_commands(t_mini *mini);
 void			handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j);
 void			handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
-char			*append_character_to_cmd(char *cmd, char c, int *k);
-void			allocate_command_memory(t_mini *mini);
+char			*append_char_cmd(char *cmd, char c, int *k);
 void			process_commands(t_mini *mini);
+void			process_commands2(t_mini *mini, int i, int j, int k);
 void			builtin_commands(t_mini *mini, t_token *token);
 void			execute_commands(t_mini *mini);
-int			tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
+int				tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);
 void			set_in_out_file(t_mini *mini, t_token *token);
 void			set_in_out_file2(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
-int			tokenize_pipes(t_token *token, char **cmds);
-int			tokenize_redirections(t_token *token, char **cmds);
+int				tokenize_pipes(t_token *token, char **cmds);
+int				tokenize_redirections(t_token *token, char **cmds);
 int				tokenize_cmds(t_token *token, char **cmds);
 void			tokenize_utils(t_token *token, char **cmds,
 					int *old_len, int *new_len);

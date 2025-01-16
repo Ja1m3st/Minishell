@@ -12,52 +12,14 @@
 
 #include "minishell.h"
 
-void	init(int *i, int *j, int *k)
-{
-	*i = 0;
-	*j = 0;
-	*k = 0;
-}
-
 void	process_commands(t_mini *mini)
-{
-	int				i;
-	int				j;
-	int				k;
-	t_quote_type	quote;
-	char			*cmd;
-
-	init(&i, &j, &k);
-	cmd = NULL;
-	quote = NO_QUOTE;
-	allocate_command_memory(mini);
-	while (mini->input[i])
-	{
-		if (mini->input[i] == '\\' && mini->input[i + 1] != '\0')
-		{
-			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
-			cmd = append_character_to_cmd(cmd, mini->input[i + 1], &k);
-			i += 2;
-			continue ;
-		}
-		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE || (mini->input[i] != ' ' && !is_del(mini->input[i])))
-			cmd = append_character_to_cmd(cmd, mini->input[i], &k);
-		if (quote == NO_QUOTE && (mini->input[i] == ' ' || is_del(mini->input[i])))
-			handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
-		if (quote == NO_QUOTE && is_del(mini->input[i]))
-			handle_redirections(mini, &cmd, &i, &j);
-		i++;
-	}
-	handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
-	mini->mini_cmds[j] = NULL;
-}
-
-void	allocate_command_memory(t_mini *mini)
 {
 	int	count;
 	int	i;
+	int	j;
+	int	k;
 
+	mini->q = NO_QUOTE;
 	count = count_commands(mini);
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
 	if (!mini->mini_cmds)
@@ -72,6 +34,39 @@ void	allocate_command_memory(t_mini *mini)
 		mini->mini_cmds[i] = NULL;
 		i++;
 	}
+	i = 0;
+	j = 0;
+	k = 0;
+	process_commands2(mini, i, j, k);
+}
+
+void	process_commands2(t_mini *mini, int i, int j, int k)
+{
+	char	*cmd;
+
+	cmd = NULL;
+	while (mini->input[i])
+	{
+		if (mini->input[i] == '\\' && mini->input[i + 1] != '\0')
+		{
+			cmd = append_char_cmd(cmd, mini->input[i], &k);
+			cmd = append_char_cmd(cmd, mini->input[i + 1], &k);
+			i += 2;
+			continue ;
+		}
+		mini->q = get_quote(mini->q, mini->input[i]);
+		if (mini->q != NO_QUOTE || (mini->input[i] != ' '
+				&& !is_del(mini->input[i])))
+			cmd = append_char_cmd(cmd, mini->input[i], &k);
+		if (mini->q == NO_QUOTE && (mini->input[i] == ' '
+				|| is_del(mini->input[i])))
+			handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
+		if (mini->q == NO_QUOTE && is_del(mini->input[i]))
+			handle_redirections(mini, &cmd, &i, &j);
+		i++;
+	}
+	handle_end_cmd(mini->mini_cmds, &cmd, &k, &j);
+	mini->mini_cmds[j] = NULL;
 }
 
 void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)
@@ -92,7 +87,7 @@ void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)
 	(*j)++;
 }
 
-char	*append_character_to_cmd(char *cmd, char c, int *k)
+char	*append_char_cmd(char *cmd, char c, int *k)
 {
 	cmd = ft_realloc(cmd, *k, *k + 2);
 	cmd[*k] = c;

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 12:49:06 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 12:52:06 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 10:42:56 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	ft_check_bucle(char *tmp, char *potential_path, t_token *token)
 	if (access(potential_path, X_OK) == 0)
 	{
 		token->path = potential_path;
+		free(tmp);
 		return (1);
 	}
 	free(tmp);

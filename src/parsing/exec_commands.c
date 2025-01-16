@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:30:27 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 13:52:47 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:24:42 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	pipex(t_mini *mini, t_token *token)
 {
 	if (!mini->is_last_cmd)
 		if (pipe(mini->fd) == -1)
-			return (exit(EXIT_FAILURE), perror("Pipe Error\n"));
+			return (exit(EXIT_FAILURE), perror("Pipe Error"));
 	mini->pid = fork();
 	if (mini->pid == -1)
-		return (exit(EXIT_FAILURE), perror("Fork Error\n"));
+		return (exit(EXIT_FAILURE), perror("Fork Error"));
 	if (mini->pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);

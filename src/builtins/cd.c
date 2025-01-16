@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 12:59:22 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 10:55:38 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,18 @@ char	*check_per(t_mini *mini, t_token *token, char *path)
 	return (path);
 }
 
+int	ft_chdir(char *path)
+{
+	if (chdir(path) == -1)
+	{
+		g_status = 1;
+		free(path);
+		perror("Error");
+		return (1);
+	}
+	return (0);
+}
+
 void	cd(t_mini *mini, t_token *token)
 {
 	char	*path;
@@ -67,13 +79,8 @@ void	cd(t_mini *mini, t_token *token)
 		g_status = 1;
 		return ;
 	}
-	if (chdir(path) == -1)
-	{
-		g_status = 1;
-		free(path);
-		perror("Error");
+	if (ft_chdir(path) == 1)
 		return ;
-	}
 	free(path);
 	free(mini->oldpath);
 	mini->oldpath = NULL;

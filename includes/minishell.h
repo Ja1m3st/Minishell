@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 12:52:55 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:41:25 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,12 @@ void			handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
 char			*append_char_cmd(char *cmd, char c, int *k);
 void			process_commands(t_mini *mini);
 void			process_commands2(t_mini *mini, int i, int j, int k);
-void			builtin_commands(t_mini *mini, t_token *token);
-void			execute_commands(t_mini *mini);
+int				builtin_commands(t_mini *mini, t_token *token);
+int				execute_commands(t_mini *mini);
 int				tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);
-void			set_in_out_file(t_mini *mini, t_token *token);
-void			set_in_out_file2(t_mini *mini, t_token *token);
+int				set_in_out_file(t_mini *mini, t_token *token);
+int				set_in_out_file2(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
 int				tokenize_pipes(t_token *token, char **cmds);
 int				tokenize_redirections(t_token *token, char **cmds);

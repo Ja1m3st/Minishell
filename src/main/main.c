@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:43:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 13:53:44 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:33:37 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(mini.input);
 		if (main_commands(&mini))
 			continue ;
+		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}

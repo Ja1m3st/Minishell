@@ -71,7 +71,10 @@ char	*add_var_value(t_mini *mini, char *res, char *var_name)
 	if (!var_value)
 	{
 		if (!ft_strncmp(var_name, "?", 1))
+		{
+			free(res);
 			res = ft_itoa(g_status);
+		}
 		free(var_name);
 		return (res);
 	}

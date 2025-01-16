@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:49:53 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/15 12:49:18 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:17:51 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static char	*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i)
 		(*i)++;
 	}
 	q->expansion = 0;
-	if (check_valid_var(temp) && cmd[*i] && cmd[*i] != '\\')
+	if (check_valid_var(temp) && cmd[*i] != '\\' && (cmd[*i]
+			|| cmd[(*i) - 1] == '?' || cmd[(*i) - 1] != '$'))
 		temp = expand_variable(mini, temp);
 	return (temp);
 }

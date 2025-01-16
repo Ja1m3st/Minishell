@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_commands.c                                    :+:      :+:    :+:   */
+/*   fd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:02:40 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 13:50:59 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:39:34 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_in_out_file(t_mini *mini, t_token *token)
+int	set_in_out_file(t_mini *mini, t_token *token)
 {
 	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
 	{
 		mini->infile = open(token->input_file, O_RDONLY);
 		if (mini->infile == -1)
 		{
-			perror("Error opening file.\n");
-			g_status = 2;
-			exit(g_status);
+			write(1, token->input_file, ft_strlen(token->input_file));
+			write(1, ": No such file or directory\n", 28);
+			g_status = 1;
+			if (!token->next)
+				return (0);
+			else
+				exit(g_status);
 		}
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
 		here_doc(mini, token);
 	}
-	set_in_out_file2(mini, token);
+	return(set_in_out_file2(mini, token));
 }
 
-void	set_in_out_file2(t_mini *mini, t_token *token)
+int	set_in_out_file2(t_mini *mini, t_token *token)
 {
 	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{
@@ -55,6 +59,7 @@ void	set_in_out_file2(t_mini *mini, t_token *token)
 			exit(g_status);
 		}
 	}
+	return (1);
 }
 
 void	init_fds(t_mini *mini)

@@ -6,13 +6,13 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/15 13:11:15 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:40:22 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	builtin_commands(t_mini *mini, t_token *token)
+int	builtin_commands(t_mini *mini, t_token *token)
 {
 	if (!ft_strcmp(token->cmd[0], "history"))
 		print_history();
@@ -33,6 +33,7 @@ void	builtin_commands(t_mini *mini, t_token *token)
 		write(mini->outfile, "exit\n", 5);
 		error(mini, '!');
 	}
+	return (1);
 }
 
 char	*find_path(t_mini *mini, char *path)

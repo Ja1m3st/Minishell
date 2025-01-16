@@ -15,18 +15,25 @@
 void	echo(t_token *token)
 {
 	char	*str;
+	int	n;
 
 	g_status = 0;
-	if (token->cmd[1] && !ft_strcmp(token->cmd[1], "-n"))
+	n = 0;
+	token->newline = 0;
+	if (token->cmd[1] && !ft_strncmp(token->cmd[1], "-n", 2))
+	{
 		token->newline = 1;
-	if (token->newline && !token->cmd[1 + token->newline])
+		if (token->cmd[1][2] && !ft_strncmp(token->cmd[1], "-n ", 3))
+			n = 1;
+	}
+	if (token->newline && !token->cmd[1 + token->newline] && !n)
 		return ;
 	else if (!token->newline && !token->cmd[1])
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		return ;
 	}
-	str = parse_string(token);
+	str = parse_string(token, n);
 	if (str)
 	{
 		write(STDOUT_FILENO, str, ft_strlen(str));
@@ -34,13 +41,13 @@ void	echo(t_token *token)
 	}
 }
 
-char	*parse_string(t_token *token)
+char	*parse_string(t_token *token, int n)
 {
 	int		i;
 	char	*echo;
 	char	*temp;
 
-	i = 1 + token->newline;
+	i = 1 + token->newline - n;
 	echo = ft_strdup(token->cmd[i]);
 	i++;
 	while (token->cmd[i])

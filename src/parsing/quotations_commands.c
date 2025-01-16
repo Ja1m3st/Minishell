@@ -21,7 +21,7 @@ static char	*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i)
 	(*i)++;
 	k = 1;
 	while (cmd[*i] && cmd[*i] != '$' && cmd[*i] != '\''
-		&& cmd[*i] != '\"' && cmd[*i] != '\\')
+		&& cmd[*i] != '\"' && cmd[*i] != '\\' && cmd[*i] != '/')
 	{
 		temp = ft_realloc(temp, k, k + 2);
 		temp[k++] = cmd[*i];
@@ -31,7 +31,8 @@ static char	*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i)
 		(*i)++;
 	}
 	q->expansion = 0;
-	if (check_valid_var(temp) && cmd[*i] && cmd[*i] != '\\')
+	if (check_valid_var(temp) && cmd[*i] != '\\' && (cmd[*i]
+		|| cmd[*i - 1] == '?' || cmd[*i - 1] != '$'))
 		temp = expand_variable(mini, temp);
 	return (temp);
 }

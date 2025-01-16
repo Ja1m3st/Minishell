@@ -138,7 +138,7 @@ void			swap_fds(t_mini *mini, t_token *token);
 void			close_fds(t_mini *mini);
 //--------------------------------------------------------------------ECHO
 void			echo(t_token *token);
-char			*parse_string(t_token *token);
+char			*parse_string(t_token *token, int n);
 //---------------------------------------------------------------------PWD
 void			print_pwd(t_mini *mini);
 //----------------------------------------------------------------------CD

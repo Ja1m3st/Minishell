@@ -58,8 +58,8 @@ void	pipex(t_mini *mini, t_token *token)
 		signal(SIGINT, SIG_IGN);
 		if (!mini->is_last_cmd)
 			close(mini->fd[1]);
-		exit_codes();
 		waitpid(mini->pid, &g_status, 0);
+		exit_codes();
 	}
 }
 
@@ -102,7 +102,7 @@ void	execve_commands(t_mini *mini, t_token *token)
 			write(2, token->cmd[0], ft_strlen(token->cmd[0]));
 			write(2, ": command not found.\n", 22);
 			g_status = 127;
-			exit(g_status);
+			exit(EXIT_SUCCESS);
 		}
 	}
 }

@@ -107,7 +107,7 @@ void	execve_commands(t_mini *mini, t_token *token)
 			write(2, token->cmd[0], ft_strlen(token->cmd[0]));
 			write(2, ": command not found.\n", 22);
 			g_status = 127;
-			exit(EXIT_SUCCESS);
+			exit(g_status);
 		}
 	}
 }

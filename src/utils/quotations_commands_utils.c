@@ -76,7 +76,7 @@ void	get_quotes(t_quote *q, int c, int c2)
 		return ;
 	if (!get_escape_quotes(q, c, c2))
 		return ;
-	if (c == '$' && !q->single_quote && !q->escape)
+	if (c == '$' && !q->single_quote && !q->escape && !q->double_quote)
 	{
 		q->expansion = 1;
 		q->print = 0;

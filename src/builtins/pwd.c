@@ -16,10 +16,11 @@ void	print_pwd(t_mini *mini)
 {
 	char	cwd[1024];
 
+	(void)mini;
 	if (getcwd(cwd, sizeof(cwd)))
 	{
-		write(mini->outfile, cwd, ft_strlen(cwd));
-		write(mini->outfile, "\n", 1);
+		write(STDOUT_FILENO, cwd, ft_strlen(cwd));
+		write(STDOUT_FILENO, "\n", 1);
 		g_status = 0;
 	}
 	else

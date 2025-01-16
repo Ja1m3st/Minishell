@@ -21,7 +21,7 @@ static char	*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i)
 	(*i)++;
 	k = 1;
 	while (cmd[*i] && cmd[*i] != '$' && cmd[*i] != '\''
-		&& cmd[*i] != '\"' && cmd[*i] != '\\' && cmd[*i] != '/')
+		&& cmd[*i] != '\"' && cmd[*i] != '\\' && cmd[*i] != '/' && cmd[*i] != ' ')
 	{
 		temp = ft_realloc(temp, k, k + 2);
 		temp[k++] = cmd[*i];

@@ -114,7 +114,8 @@ void			builtin_commands(t_mini *mini, t_token *token);
 void			execute_commands(t_mini *mini);
 int			tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);
-int			set_in_out_file(t_mini *mini, t_token *token);
+void			set_in_out_file(t_mini *mini, t_token *token);
+void			set_in_out_file2(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
 int			tokenize_pipes(t_token *token, char **cmds);
 int			tokenize_redirections(t_token *token, char **cmds);
@@ -169,7 +170,7 @@ int				get_qouble_single_quotes(t_quote *q, int c);
 void			init_quotes(t_quote *q);
 //-------------------------------------------------------------------UTILS
 void			free_main(t_mini *mini);
-int			here_doc(t_mini *mini, t_token *token);
+void			here_doc(t_mini *mini, t_token *token);
 void			free_mini(t_mini *mini);
 void			free_commands(t_mini *mini);
 void			free_commands2(t_token *token);

@@ -76,10 +76,18 @@ void	get_quotes(t_quote *q, int c, int c2)
 		return ;
 	if (!get_escape_quotes(q, c, c2))
 		return ;
-	if (c == '$' && !q->single_quote && !q->escape && !q->double_quote)
+	if (c == '$')
 	{
-		q->expansion = 1;
-		q->print = 0;
+		if ((q->double_quote && c2 == '\"') || q->single_quote || q->escape || c2 == '/')
+		{
+			q->expansion = 0;
+			q->print = 1;
+		}
+		else
+		{
+			q->expansion = 1;
+			q->print = 0;
+		}	
 		return ;
 	}
 	if (q->escape)
@@ -98,12 +106,10 @@ int	check_valid_var(char *var_name)
 	i = 1;
 	while (var_name[i])
 	{
-		if (i == 1 && (ft_isdigit(var_name[i]) && var_name[i] != '?'))
+		if (!ft_isalnum(var_name[i]) || var_name[i] != '_' || var_name[i] != '?')
+			i++;
+		else
 			return (0);
-		else if (!ft_isalnum(var_name[i]) && var_name[i] != '_'
-			&& var_name[i] != '?')
-			return (0);
-		i++;
 	}
 	return (1);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	builtin_commands(t_mini *mini, t_token *token, int mod)
+int	builtin_commands(t_mini *mini, t_token *token)
 {
 	if (!ft_strcmp(token->cmd[0], "history"))
 		print_history();
@@ -28,11 +28,10 @@ int	builtin_commands(t_mini *mini, t_token *token, int mod)
 		export(mini, token);
 	else if (!ft_strcmp(token->cmd[0], "unset"))
 		unset(token, mini);
-	else if (!ft_strcmp(token->cmd[0], "exit") && mod)
+	else if (!ft_strcmp(token->cmd[0], "exit"))
 	{
-		write(STDOUT_FILENO, "exit\n", 5);
-		if (!token->cmd[1])
-			error(mini, '!');
+		write(STDOUT_FILENO, "exit\n", 6);
+		error(mini, '!');
 	}
 	else if (!ft_strcmp(token->cmd[0], "setcolour"))
 		set_colour(mini, token);
@@ -58,4 +57,19 @@ char	*find_path(t_mini *mini, char *path)
 		i++;
 	}
 	return (NULL);
+}
+
+void	command_count(t_mini *mini)
+{
+	t_token *token;
+	int	count;
+
+	token = *mini->commands;
+	count = 0;
+	while (token)
+	{
+		count++;
+		token = token->next;
+	}
+	mini->command_count = count;
 }

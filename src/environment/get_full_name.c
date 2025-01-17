@@ -12,11 +12,14 @@
 
 #include "minishell.h"
 
-static char    *get_colour(char *colour, char *prev_colour)
+static char    *get_colour(char *colour, char *p_clr)
 {
 	char	*temp;
 
 	temp = NULL;
+	if (!colour && !p_clr)
+		return (printf("Usage:\n\tsetcolour name %s\n",
+				"<colour> [pwd <colour>]"), NULL);
 	if (!ft_strcmp("gray", colour))
 		temp = ft_strdup("\033[1;90m");
 	else if (!ft_strcmp("red", colour))
@@ -34,9 +37,8 @@ static char    *get_colour(char *colour, char *prev_colour)
 	else if (!ft_strcmp("white", colour))
 		temp = ft_strdup("\033[1;38;5;7m");
 	else
-		return (printf("%s[setcolour list] for available colours.\n",
-			"Error: Colour not found.\n\t"), prev_colour);
-	return (free(prev_colour), temp);
+		return (printf("[setcolour list] for colour list.\n"), p_clr);
+	return (free(p_clr), temp);
 }
 
 void	set_colour(t_mini *m, t_token *t)
@@ -44,6 +46,8 @@ void	set_colour(t_mini *m, t_token *t)
 	int		i;
 
 	i = 1;
+	if (!t->cmd[i])
+		return ((void)get_colour(NULL, NULL));
 	if (!ft_strcmp("list", t->cmd[i]))
 		return ((void)printf("%s %s, %s, %s, %s, %s, %s, %s & %s.\n",
 			"Available Colours:\n\t", "gray", "red", "green",
@@ -61,8 +65,7 @@ void	set_colour(t_mini *m, t_token *t)
 			i++;
 		}
 		else
-			return ((void)printf("Usage:\n\tsetcolour name %s\n",
-				"<colour> [pwd <colour>]"));
+			return ((void)get_colour(NULL, NULL));
 		i++;
 	}
 }

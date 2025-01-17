@@ -79,6 +79,7 @@ typedef struct s_mini
 	int				is_last_cmd;
 	pid_t			pid;
 	t_token			**commands;
+	int			command_count;
 	t_quote_type	*quote_types;
 	t_quote_type	q;
 	char		*name_clr;
@@ -107,13 +108,14 @@ void			print_env(t_mini *mini);
 void			dup_env(t_mini *mini, char **env);
 char			*join_env_name(t_mini *mini);
 //----------------------------------------------------------------COMMANDS
+void			command_count(t_mini *mini);
 int				count_commands(t_mini *mini);
 void			handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j);
 void			handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
 char			*append_char_cmd(char *cmd, char c, int *k);
 void			process_commands(t_mini *mini);
 void			process_commands2(t_mini *mini, int i, int j, int k);
-int				builtin_commands(t_mini *mini, t_token *token, int mod);
+int				builtin_commands(t_mini *mini, t_token *token);
 int				execute_commands(t_mini *mini);
 int				tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);

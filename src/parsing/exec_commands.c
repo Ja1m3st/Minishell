@@ -24,7 +24,7 @@ int	execute_commands(t_mini *mini)
 	{
 		if (set_in_out_file(mini, token) == 0)
 			return (0);
-		return (builtin_commands(mini, token, 1));
+		return (builtin_commands(mini, token));
 	}
 	while (token)
 	{
@@ -97,7 +97,7 @@ void	execve_commands(t_mini *mini, t_token *token)
 {
 	if (token->is_builtin)
 	{
-		builtin_commands(mini, token, 0);
+		builtin_commands(mini, token);
 		exit(g_status);
 	}
 	else if (!token->is_builtin)

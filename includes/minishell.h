@@ -187,6 +187,6 @@ void			ft_check_path(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);
-char			**remap_cmds(t_token *token);
+void			set_colour(t_mini *mini, t_token *token);
 
 #endif

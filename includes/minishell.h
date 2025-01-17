@@ -81,6 +81,8 @@ typedef struct s_mini
 	t_token			**commands;
 	t_quote_type	*quote_types;
 	t_quote_type	q;
+	char		*name_clr;
+	char		*pwd_clr;
 }	t_mini;
 
 extern int	g_status;
@@ -111,7 +113,7 @@ void			handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
 char			*append_char_cmd(char *cmd, char c, int *k);
 void			process_commands(t_mini *mini);
 void			process_commands2(t_mini *mini, int i, int j, int k);
-int				builtin_commands(t_mini *mini, t_token *token);
+int				builtin_commands(t_mini *mini, t_token *token, int mod);
 int				execute_commands(t_mini *mini);
 int				tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
 void			ft_tokenadd_back(t_mini *mini, t_token *token);
@@ -187,6 +189,6 @@ void			ft_check_path(t_token *token);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);
-void			set_colour(t_mini *mini, t_token *token);
+void			set_colour(t_mini *m, t_token *t);
 
 #endif

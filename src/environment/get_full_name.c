@@ -12,6 +12,61 @@
 
 #include "minishell.h"
 
+static char    *get_colour(char *colour, char *prev_colour)
+{
+	char	*temp;
+
+	temp = NULL;
+	if (!ft_strcmp("gray", colour))
+		temp = ft_strdup("\033[1;90m");
+	else if (!ft_strcmp("red", colour))
+		temp = ft_strdup("\033[1;38;5;1m");
+	else if (!ft_strcmp("green", colour))
+		temp = ft_strdup("\033[1;38;5;2m");
+	else if (!ft_strcmp("orange", colour))
+		temp = ft_strdup("\033[1;38;5;214m");
+	else if (!ft_strcmp("blue", colour))
+		temp = ft_strdup("\033[1;96m");
+	else if (!ft_strcmp("magenta", colour))
+		temp = ft_strdup("\033[1;38;5;5m");
+	else if (!ft_strcmp("yellow", colour))
+		temp = ft_strdup("\033[1;93m");
+	else if (!ft_strcmp("white", colour))
+		temp = ft_strdup("\033[1;38;5;7m");
+	else
+		return (printf("%s[setcolour list] for available colours.\n",
+			"Error: Colour not found.\n\t"), prev_colour);
+	return (free(prev_colour), temp);
+}
+
+void	set_colour(t_mini *m, t_token *t)
+{
+	int		i;
+
+	i = 1;
+	if (!ft_strcmp("list", t->cmd[i]))
+		return ((void)printf("%s %s, %s, %s, %s, %s, %s, %s & %s.\n",
+			"Available Colours:\n\t", "gray", "red", "green",
+				"orange", "blue", "magenta", "yellow", "white"));
+	while (t->cmd[i])
+	{
+		if (!ft_strcmp("name", t->cmd[i]) && t->cmd[i + 1])
+		{
+			m->name_clr = get_colour(t->cmd[i + 1], m->name_clr);
+			i++;
+		}
+		else if (!ft_strcmp("pwd", t->cmd[i]) && t->cmd[i + 1])
+		{
+			m->pwd_clr = get_colour(t->cmd[i + 1], m->pwd_clr);
+			i++;
+		}
+		else
+			return ((void)printf("Usage:\n\tsetcolour name %s\n",
+				"<colour> [pwd <colour>]"));
+		i++;
+	}
+}
+
 void	get_env_name(t_mini *mini)
 {
 	mini->log_name = getenv("LOGNAME");
@@ -56,12 +111,12 @@ char	*join_env_name(t_mini *mini)
 
 	if (mini->env_name != NULL)
 		free(mini->env_name);
-	join1 = ft_strjoin("\033[1;38;5;214m", mini->full_name);
+	join1 = ft_strjoin(mini->name_clr, mini->full_name);
 	join2 = ft_strjoin(join1, "\033[0m");
 	free(join1);
 	join1 = ft_strjoin(join2, ":~");
 	free(join2);
-	join2 = ft_strjoin(join1, "\033[1;95m");
+	join2 = ft_strjoin(join1, mini->pwd_clr);
 	free(join1);
 	join1 = ft_strjoin(join2, getcwd(cwd, sizeof(cwd)));
 	free(join2);

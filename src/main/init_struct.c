@@ -33,6 +33,8 @@ void	init_struct(t_mini *mini, char **argv, char **env)
 	dup_env(mini, env);
 	setup_signals();
 	disable_echoctl();
+	mini->name_clr = ft_strdup("\033[1;38;5;214m");
+	mini->pwd_clr = ft_strdup("\033[1;38;5;5m");
 	get_env_name(mini);
 }
 

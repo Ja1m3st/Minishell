@@ -17,6 +17,10 @@ void	error(t_mini *mini, char c)
 	rl_clear_history();
 	free_commands(mini);
 	free_mini(mini);
+	if (mini->name_clr)
+		free(mini->name_clr);
+	if (mini->pwd_clr)
+		free(mini->pwd_clr);
 	if (c == '!')
 		exit(EXIT_SUCCESS);
 	else

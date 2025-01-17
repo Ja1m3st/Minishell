@@ -48,21 +48,23 @@ char	*parse_string(t_token *token, int n)
 	char	*temp;
 
 	i = 1 + token->newline - n;
-	echo = ft_strdup(token->cmd[i]);
-	i++;
+	echo = NULL;
+	if (!ft_strncmp(token->cmd[i], "-n", 2) && token->newline)
+			i++;
 	while (token->cmd[i])
 	{
-		temp = ft_strjoin(echo, " ");
-		free(echo);
-		echo = ft_strjoin(temp, token->cmd[i]);
-		free(temp);
+		if (!echo)
+			echo = ft_strdup(token->cmd[i]);
+		else
+		{
+			temp = ft_strjoin(echo, " ");
+			free(echo);
+			echo = ft_strjoin(temp, token->cmd[i]);
+			free(temp);
+		}
 		i++;
 	}
-	if (token->newline == 0)
-	{
-		temp = ft_strjoin(echo, "\n");
-		free(echo);
-		return (temp);
-	}
+	if (!token->newline)
+		echo = ft_strjoinf(echo, "\n");
 	return (echo);
 }

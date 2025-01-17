@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	builtin_commands(t_mini *mini, t_token *token)
+int	builtin_commands(t_mini *mini, t_token *token, int mod)
 {
 	if (!ft_strcmp(token->cmd[0], "history"))
 		print_history();
@@ -28,11 +28,14 @@ int	builtin_commands(t_mini *mini, t_token *token)
 		export(mini, token);
 	else if (!ft_strcmp(token->cmd[0], "unset"))
 		unset(token, mini);
-	else if (!ft_strcmp(token->cmd[0], "exit"))
+	else if (!ft_strcmp(token->cmd[0], "exit") && mod)
 	{
-		write(mini->outfile, "exit\n", 5);
-		error(mini, '!');
+		write(STDOUT_FILENO, "exit\n", 5);
+		if (!token->cmd[1])
+			error(mini, '!');
 	}
+	else if (!ft_strcmp(token->cmd[0], "setcolour"))
+		set_colour(mini, token);
 	return (1);
 }
 

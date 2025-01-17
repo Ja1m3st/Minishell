@@ -21,7 +21,8 @@ int	is_builtin(char *cmd)
 		|| !ft_strcmp(cmd, "pwd")
 		|| !ft_strcmp(cmd, "export")
 		|| !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "exit"));
+		|| !ft_strcmp(cmd, "exit")
+		|| !ft_strcmp(cmd, "setcolour"));
 }
 
 int	is_output_redirect(char *cmd)

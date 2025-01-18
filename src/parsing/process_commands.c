@@ -12,46 +12,35 @@
 
 #include "minishell.h"
 
-static void	handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j)
+void	process_commands(t_mini *mini)
 {
-	if (*k > 0 && *cmd)
+	int	count;
+	int	i;
+	int	j;
+	int	k;
+
+	mini->q = NO_QUOTE;
+	count = count_commands(mini);
+	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
+	if (!mini->mini_cmds)
 	{
-		cmd_list[*j] = ft_strdup(*cmd);
-		free(*cmd);
-		(*j)++;
-		*k = 0;
-		*cmd = NULL;
+		perror("Memory Allocation Failure\n");
+		exit(EXIT_FAILURE);
+		return ;
 	}
-}
-
-static char	*append_char_cmd(char *cmd, char c, int *k)
-{
-	cmd = ft_realloc(cmd, *k, *k + 2);
-	cmd[*k] = c;
-	(*k)++;
-	cmd[*k] = '\0';
-	return (cmd);
-}
-
-static void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)
-{
-	*cmd = ft_realloc(*cmd, 0, 2);
-	(*cmd)[0] = mini->input[*i];
-	(*cmd)[1] = '\0';
-	if (mini->input[*i + 1] && is_del(mini->input[*i + 1]))
+	i = 0;
+	while (i < count)
 	{
-		(*i)++;
-		*cmd = ft_realloc(*cmd, 1, 3);
-		(*cmd)[1] = mini->input[*i];
-		(*cmd)[2] = '\0';
+		mini->mini_cmds[i] = NULL;
+		i++;
 	}
-	mini->mini_cmds[*j] = ft_strdup(*cmd);
-	free(*cmd);
-	*cmd = NULL;
-	(*j)++;
+	i = 0;
+	j = 0;
+	k = 0;
+	process_commands2(mini, i, j, k);
 }
 
-static void	process_commands2(t_mini *mini, int i, int j, int k)
+void	process_commands2(t_mini *mini, int i, int j, int k)
 {
 	char	*cmd;
 
@@ -80,30 +69,41 @@ static void	process_commands2(t_mini *mini, int i, int j, int k)
 	mini->mini_cmds[j] = NULL;
 }
 
-void	process_commands(t_mini *mini)
+void	handle_redirections(t_mini *mini, char **cmd, int *i, int *j)
 {
-	int	count;
-	int	i;
-	int	j;
-	int	k;
+	*cmd = ft_realloc(*cmd, 0, 2);
+	(*cmd)[0] = mini->input[*i];
+	(*cmd)[1] = '\0';
+	if (mini->input[*i + 1] && is_del(mini->input[*i + 1]))
+	{
+		(*i)++;
+		*cmd = ft_realloc(*cmd, 1, 3);
+		(*cmd)[1] = mini->input[*i];
+		(*cmd)[2] = '\0';
+	}
+	mini->mini_cmds[*j] = ft_strdup(*cmd);
+	free(*cmd);
+	*cmd = NULL;
+	(*j)++;
+}
 
-	mini->q = NO_QUOTE;
-	count = count_commands(mini);
-	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
-	if (!mini->mini_cmds)
+char	*append_char_cmd(char *cmd, char c, int *k)
+{
+	cmd = ft_realloc(cmd, *k, *k + 2);
+	cmd[*k] = c;
+	(*k)++;
+	cmd[*k] = '\0';
+	return (cmd);
+}
+
+void	handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j)
+{
+	if (*k > 0 && *cmd)
 	{
-		perror("Memory Allocation Failure\n");
-		exit(EXIT_FAILURE);
-		return ;
+		cmd_list[*j] = ft_strdup(*cmd);
+		free(*cmd);
+		(*j)++;
+		*k = 0;
+		*cmd = NULL;
 	}
-	i = 0;
-	while (i < count)
-	{
-		mini->mini_cmds[i] = NULL;
-		i++;
-	}
-	i = 0;
-	j = 0;
-	k = 0;
-	process_commands2(mini, i, j, k);
 }

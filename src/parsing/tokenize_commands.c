@@ -12,89 +12,6 @@
 
 #include "minishell.h"
 
-static char	**allocate_new_cmds(t_token *token, char **cmds,
-	int *old_len, int *new_len)
-{
-	while (token->cmd && token->cmd[*old_len])
-		(*old_len)++;
-	while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|")
-		&& !is_redirect(cmds[*new_len]))
-		(*new_len)++;
-	return (malloc(sizeof(char *) * (*old_len + *new_len + 1)));
-}
-
-static int	tokenize_cmds(t_token *token, char **cmds)
-{
-	int		old_len;
-	int		new_len;
-	char	**new_cmds;
-	int		i;
-
-	old_len = 0;
-	new_len = 0;
-	new_cmds = allocate_new_cmds(token, cmds, &old_len, &new_len);
-	if (!new_cmds)
-		return (-1);
-	i = 0;
-	while (i < old_len)
-	{
-		new_cmds[i] = ft_strdup(token->cmd[i]);
-		i++;
-	}
-	i = 0;
-	while (i < new_len)
-	{
-		new_cmds[i + old_len] = ft_strdup(cmds[i]);
-		i++;
-	}
-	new_cmds[old_len + new_len] = NULL;
-	if (token->cmd)
-		ft_freearr(token->cmd);
-	token->cmd = new_cmds;
-	return (new_len);
-}
-
-static int	tokenize_pipes(t_token *token, char **cmds)
-{
-	token->pipe = ft_strdup(*cmds);
-	cmds++;
-	if (!(*cmds))
-	{
-		g_status = 2;
-		return (write(2, "Syntax error\n", 13), 1);
-	}
-	token->complete = 1;
-	return (0);
-}
-
-static int	tokenize_redirections(t_token *token, char **cmds)
-{
-	g_status = 0;
-	if (is_input_redirect(*cmds))
-	{
-		token->input_redir = ft_strdup(*cmds);
-		cmds++;
-		if (*cmds && !ft_strcmp(token->input_redir, "<<"))
-			token->delimeter = ft_strdup(*cmds);
-		else if (*cmds && !ft_strcmp(token->input_redir, "<"))
-			token->input_file = ft_strdup(*cmds);
-		else
-			g_status = 2;
-	}
-	else if (is_output_redirect(*cmds))
-	{
-		token->output_redir = ft_strdup(*cmds);
-		cmds++;
-		if (*cmds)
-			token->output_file = ft_strdup(*cmds);
-		else
-			g_status = 2;
-	}
-	if (g_status == 2)
-		return (write(2, "Syntax error\n", 13), 1);
-	return (0);
-}
-
 int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 {
 	t_token	*token;
@@ -122,4 +39,84 @@ int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 		return (tokenize_commands(mini, ++cmds, NULL));
 	}
 	return (tokenize_commands(mini, cmds, token), 0);
+}
+
+int	tokenize_redirections(t_token *token, char **cmds)
+{
+	g_status = 0;
+	if (is_input_redirect(*cmds))
+	{
+		token->input_redir = ft_strdup(*cmds);
+		cmds++;
+		if (*cmds && !ft_strcmp(token->input_redir, "<<"))
+			token->delimeter = ft_strdup(*cmds);
+		else if (*cmds && !ft_strcmp(token->input_redir, "<"))
+			token->input_file = ft_strdup(*cmds);
+		else
+			g_status = 2;
+	}
+	else if (is_output_redirect(*cmds))
+	{
+		token->output_redir = ft_strdup(*cmds);
+		cmds++;
+		if (*cmds)
+			token->output_file = ft_strdup(*cmds);
+		else
+			g_status = 2;
+	}
+	if (g_status == 2)
+		return (write(2, "Syntax error\n", 13), 1);
+	return (0);
+}
+
+int	tokenize_pipes(t_token *token, char **cmds)
+{
+	token->pipe = ft_strdup(*cmds);
+	cmds++;
+	if (!(*cmds))
+	{
+		g_status = 2;
+		return (write(2, "Syntax error\n", 13), 1);
+	}
+	token->complete = 1;
+	return (0);
+}
+
+int	tokenize_cmds(t_token *token, char **cmds)
+{
+	int		old_len;
+	int		new_len;
+	char	**new_cmds;
+	int		i;
+
+	old_len = 0;
+	new_len = 0;
+	new_cmds = allocate_new_cmds(token, cmds, &old_len, &new_len);
+	if (!new_cmds)
+		return (-1);
+	i = 0;
+	while (i < new_len)
+	{
+		if (i < old_len)
+			new_cmds[i] = ft_strdup(token->cmd[i]);
+		if (i < new_len)
+			new_cmds[i + old_len] = ft_strdup(cmds[i]);
+		i++;
+	}
+	new_cmds[old_len + new_len] = NULL;
+	if (token->cmd)
+		ft_freearr(token->cmd);
+	token->cmd = new_cmds;
+	return (new_len);
+}
+
+char	**allocate_new_cmds(t_token *token, char **cmds,
+	int *old_len, int *new_len)
+{
+	while (token->cmd && token->cmd[*old_len])
+		(*old_len)++;
+	while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|")
+		&& !is_redirect(cmds[*new_len]))
+		(*new_len)++;
+	return (malloc(sizeof(char *) * (*old_len + *new_len + 1)));
 }

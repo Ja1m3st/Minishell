@@ -100,23 +100,70 @@ void			get_env_name(t_mini *mini);
 void			get_session_name(t_mini *mini);
 void			dup_env(t_mini *mini, char **env);
 char			*join_env_name(t_mini *mini);
-//--------------------------------------------------------------------BUILTINS
-void			echo(t_token *token);
-void			print_pwd(t_mini *mini);
-void			cd(t_mini *mini, t_token *token);
-void			export(t_mini *mini, t_token *token);
-void			unset(t_token *token, t_mini *mini);
-void			print_history(void);
+//----------------------------------------------------------------SETCOLOUR
 void			set_colour(t_mini *m, t_token *t);
-char			*expand_variable(t_mini *mini, char *str);
+//----------------------------------------------------------------CD
+void			cd(t_mini *mini, t_token *token);
+void			save_oldpath(t_mini *mini, char *oldpath);
+char			*check_per(t_mini *mini, t_token *token, char *path);
+int				ft_chdir(char *path);
+char			*handle_tilde_error(char *cleaned_cmd);
+char			*handle_dash_option(t_mini *mini, char *cleaned_cmd);
+char			*handle_general_path(t_mini *mini, t_token *token, char *cleaned_cmd);
+char			*resolve_cd_path(t_mini *mini, t_token *token);
+//----------------------------------------------------------------ENV
 void			print_env(t_mini *mini);
-//----------------------------------------------------------------COMMANDS
+//----------------------------------------------------------------HISTORY
+void			print_history(void);
+//----------------------------------------------------------------EXPORT
+void			export(t_mini *mini, t_token *token);
+void			new_export(t_mini *mini, t_token *token, int n);
+int				export_exists(t_mini *mini, t_token *token, int n);
+int				check_valid_export(t_token *token, int n);
+//----------------------------------------------------------------UNSET
+void			unset(t_token *token, t_mini *mini);
+char			*find_env_variable(char **env, const char *key);
+char			**ft_new_env(t_mini *mini, char *str, char **new_env);
+//----------------------------------------------------------------ECHO
+void			echo(t_token *token);
+char			*parse_string(t_token *token, int n);
+//----------------------------------------------------------------PWD
+void			print_pwd(t_mini *mini);
+//----------------------------------------------------------------VARIABLE EXPANSION
+char			*expand_variable(t_mini *mini, char *str);
+char			*get_var_value(t_mini *mini, char *var_name);
+char			*process_regular_char(char *res, char current_char, int *k);
+char			*add_var_value(t_mini *mini, char *res, char *var_name);
+char			*extract_var_name(char *str, int *i);
+
+//-------------------------------------------------------PROCESS COMMANDS
 void			process_commands(t_mini *mini);
+void			process_commands2(t_mini *mini, int i, int j, int k);
+void			handle_end_cmd(char **cmd_list, char **cmd, int *k, int *j);
+char			*append_char_cmd(char *cmd, char c, int *k);
+void			handle_redirections(t_mini *mini, char **cmd, int *i, int *j);
+//-------------------------------------------------------TOKENIZE COMMANDS
 int				tokenize_commands(t_mini *mini, char **cmds, t_token *cur);
+char			**allocate_new_cmds(t_token *token, char **cmds,
+				int *old_len, int *new_len);
+int				tokenize_cmds(t_token *token, char **cmds);
+int				tokenize_pipes(t_token *token, char **cmds);
+int				tokenize_redirections(t_token *token, char **cmds);
+//-------------------------------------------------------QUOTATIONS COMMANDS
+int				check_quotation(t_mini *mini);
+char			*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i);
+char			*process_quotes(t_mini *mini, t_quote *q, char *cmd, char *res);
+char			*remove_quotes(t_mini *mini, t_quote *q, char *cmd);
+int				process_token(t_mini *mini, t_quote *q, t_token *token);
+void			init_quotes(t_quote *q);
+//-------------------------------------------------------EXECUTE COMMANDS
+void			execute_commands(t_mini *mini);
+void			execve_commands(t_mini *mini, t_token *token);
+void			close_pipes(t_mini *mini, t_token *token, int pipes[][2], int mode);
+void			child_processing(t_mini *mini, t_token *token, int pipes[][2]);
+void			fork_commands(t_mini *mini, t_token *token, int pipes[][2], pid_t pids[]);
 void			execute_commands(t_mini *mini);
 void			set_redirections(t_mini *mini, t_token *token);
-void			close_pipes(t_mini *mini, t_token *token,
-							int pipes[][2], int mode);
 int				count_commands(t_mini *mini);
 void			command_count(t_mini *mini);
 int				count_commands(t_mini *mini);
@@ -125,9 +172,6 @@ void			ft_tokenadd_back(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
 void			get_quotes(t_quote *q, int c, int c2);
 void			here_doc(t_mini *mini, t_token *token);
-//----------------------------------------------------------------QUOTATIONS
-int				check_quotation(t_mini *mini);
-void			init_quotes(t_quote *q);
 //-------------------------------------------------------------------UTILS
 void			free_main(t_mini *mini);
 void			free_mini(t_mini *mini);
@@ -149,6 +193,5 @@ int				check_valid_var(char *var_name);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);
-
 
 #endif

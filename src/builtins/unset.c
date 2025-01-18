@@ -12,25 +12,29 @@
 
 #include "minishell.h"
 
-static char	*find_env_variable(char **env, const char *key)
+void	unset(t_token *token, t_mini *mini)
 {
-	int	i;
-	int	key_len;
+	char	**new_env;
+	int		x;
 
-	i = 0;
-	if (!env || !key)
-		return (NULL);
-	key_len = ft_strlen(key);
-	while (env[i])
+	x = 1;
+	g_status = 0;
+	while (token->cmd[x])
 	{
-		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
-			return (env[i]);
-		i++;
+		if (find_env_variable(mini->env, token->cmd[x]) != NULL)
+		{
+			new_env = malloc(ft_arrlen(mini->env) * sizeof(char *));
+			if (!new_env)
+				return ;
+			new_env = ft_new_env(mini, token->cmd[x], new_env);
+			ft_freearr(mini->env);
+			mini->env = new_env;
+		}
+		x++;
 	}
-	return (NULL);
 }
 
-static char	**ft_new_env(t_mini *mini, char *str, char **new_env)
+char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 {
 	int	i;
 	int	j;
@@ -52,24 +56,20 @@ static char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 	return (new_env);
 }
 
-void	unset(t_token *token, t_mini *mini)
+char	*find_env_variable(char **env, const char *key)
 {
-	char	**new_env;
-	int		x;
+	int	i;
+	int	key_len;
 
-	x = 1;
-	g_status = 0;
-	while (token->cmd[x])
+	i = 0;
+	if (!env || !key)
+		return (NULL);
+	key_len = ft_strlen(key);
+	while (env[i])
 	{
-		if (find_env_variable(mini->env, token->cmd[x]) != NULL)
-		{
-			new_env = malloc(ft_arrlen(mini->env) * sizeof(char *));
-			if (!new_env)
-				return ;
-			new_env = ft_new_env(mini, token->cmd[x], new_env);
-			ft_freearr(mini->env);
-			mini->env = new_env;
-		}
-		x++;
+		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
+			return (env[i]);
+		i++;
 	}
+	return (NULL);
 }

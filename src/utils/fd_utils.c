@@ -85,33 +85,3 @@ void	here_doc(t_mini *mini, t_token *token)
 	close(fd[1]);
 	mini->infile = fd[0];
 }
-
-void	close_pipes(t_mini *mini, t_token *token, int pipes[][2], int mode)
-{
-	int		i;
-
-	i = 0;
-	if (mode == 1)
-	{
-		while (i < mini->pipes_i)
-		{
-			if (i != mini->i - 1 || token->input_redir)
-				close(pipes[i][0]);
-			if (i != mini->i || token->output_redir)
-				close(pipes[i][1]);
-			i++;
-		}
-		if (mini->infile)
-			close(mini->infile);
-		if (mini->outfile)
-			close(mini->outfile);
-		return ;
-	}
-	while (i < mini->pipes_i)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
-}
-

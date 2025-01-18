@@ -36,7 +36,8 @@ int	main(int argc, char **argv, char **env)
 		execute_commands(&mini);
 		free_main(&mini);
 	}
-	return (error(&mini, '!'), 0);
+	error(&mini, '!');
+	return (0);
 }
 
 int	main_commands(t_mini *mini)
@@ -57,5 +58,6 @@ int	main_commands(t_mini *mini)
 		free_main(mini);
 		return (1);
 	}
+	command_count(mini);
 	return (0);
 }

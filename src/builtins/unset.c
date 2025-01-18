@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*find_env_variable(char **env, const char *key)
+static char	*find_env_variable(char **env, const char *key)
 {
 	int	i;
 	int	key_len;
@@ -30,7 +30,7 @@ char	*find_env_variable(char **env, const char *key)
 	return (NULL);
 }
 
-char	**ft_new_env(t_mini *mini, char *str, char **new_env)
+static char	**ft_new_env(t_mini *mini, char *str, char **new_env)
 {
 	int	i;
 	int	j;

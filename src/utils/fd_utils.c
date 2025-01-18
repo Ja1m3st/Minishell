@@ -12,30 +12,7 @@
 
 #include "minishell.h"
 
-int	set_in_out_file(t_mini *mini, t_token *token)
-{
-	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
-	{
-		mini->infile = open(token->input_file, O_RDONLY);
-		if (mini->infile == -1)
-		{
-			write(1, token->input_file, ft_strlen(token->input_file));
-			write(1, ": No such file or directory\n", 28);
-			g_status = 1;
-			if (!token->next)
-				return (0);
-			else
-				exit(g_status);
-		}
-	}
-	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
-	{
-		here_doc(mini, token);
-	}
-	return(set_in_out_file2(mini, token));
-}
-
-int	set_in_out_file2(t_mini *mini, t_token *token)
+static void	set_redirections2(t_mini *mini, t_token *token)
 {
 	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{
@@ -59,32 +36,26 @@ int	set_in_out_file2(t_mini *mini, t_token *token)
 			exit(g_status);
 		}
 	}
-	return (1);
 }
 
-void	init_fds(t_mini *mini)
+void	set_redirections(t_mini *mini, t_token *token)
 {
-	mini->fd[0] = -1;
-	mini->fd[1] = -1;
-	mini->outfile = -1;
-	mini->infile = -1;
-	mini->is_last_cmd = 0;
-	mini->prev_fd = STDIN_FILENO;
-}
-
-void	close_fds(t_mini *mini)
-{
-	if (mini->infile != -1)
-		close(mini->infile);
-	if (mini->outfile != -1)
-		close(mini->outfile);
-	if (mini->prev_fd != -1 && mini->prev_fd != STDIN_FILENO)
-		close(mini->prev_fd);
-	if (!mini->is_last_cmd)
+	if (token->input_redir && !ft_strcmp(token->input_redir, "<"))
 	{
-		close(mini->fd[0]);
-		close(mini->fd[1]);
+		mini->infile = open(token->input_file, O_RDONLY);
+		if (mini->infile == -1)
+		{
+			write(1, token->input_file, ft_strlen(token->input_file));
+			write(1, ": No such file or directory\n", 28);
+			g_status = 1;
+			exit(g_status);
+		}
 	}
+	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
+	{
+		here_doc(mini, token);
+	}
+	set_redirections2(mini, token);
 }
 
 void	here_doc(t_mini *mini, t_token *token)
@@ -114,3 +85,33 @@ void	here_doc(t_mini *mini, t_token *token)
 	close(fd[1]);
 	mini->infile = fd[0];
 }
+
+void	close_pipes(t_mini *mini, t_token *token, int pipes[][2], int mode)
+{
+	int		i;
+
+	i = 0;
+	if (mode == 1)
+	{
+		while (i < mini->pipes_i)
+		{
+			if (i != mini->i - 1 || token->input_redir)
+				close(pipes[i][0]);
+			if (i != mini->i || token->output_redir)
+				close(pipes[i][1]);
+			i++;
+		}
+		if (mini->infile)
+			close(mini->infile);
+		if (mini->outfile)
+			close(mini->outfile);
+		return ;
+	}
+	while (i < mini->pipes_i)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
+}
+

@@ -12,6 +12,34 @@
 
 #include "minishell.h"
 
+static char	*parse_string(t_token *token, int n)
+{
+	int		i;
+	char	*echo;
+	char	*temp;
+
+	i = 1 + token->newline - n;
+	echo = NULL;
+	if (!ft_strncmp(token->cmd[i], "-n", 2) && token->newline)
+			i++;
+	while (token->cmd[i])
+	{
+		if (!echo)
+			echo = ft_strdup(token->cmd[i]);
+		else
+		{
+			temp = ft_strjoin(echo, " ");
+			free(echo);
+			echo = ft_strjoin(temp, token->cmd[i]);
+			free(temp);
+		}
+		i++;
+	}
+	if (!token->newline)
+		echo = ft_strjoinf(echo, "\n");
+	return (echo);
+}
+
 void	echo(t_token *token)
 {
 	char	*str;
@@ -39,32 +67,4 @@ void	echo(t_token *token)
 		write(STDOUT_FILENO, str, ft_strlen(str));
 		free(str);
 	}
-}
-
-char	*parse_string(t_token *token, int n)
-{
-	int		i;
-	char	*echo;
-	char	*temp;
-
-	i = 1 + token->newline - n;
-	echo = NULL;
-	if (!ft_strncmp(token->cmd[i], "-n", 2) && token->newline)
-			i++;
-	while (token->cmd[i])
-	{
-		if (!echo)
-			echo = ft_strdup(token->cmd[i]);
-		else
-		{
-			temp = ft_strjoin(echo, " ");
-			free(echo);
-			echo = ft_strjoin(temp, token->cmd[i]);
-			free(temp);
-		}
-		i++;
-	}
-	if (!token->newline)
-		echo = ft_strjoinf(echo, "\n");
-	return (echo);
 }

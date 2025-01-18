@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	builtin_commands(t_mini *mini, t_token *token)
+void	builtin_commands(t_mini *mini, t_token *token)
 {
 	if (!ft_strcmp(token->cmd[0], "history"))
 		print_history();
@@ -35,7 +35,6 @@ int	builtin_commands(t_mini *mini, t_token *token)
 	}
 	else if (!ft_strcmp(token->cmd[0], "setcolour"))
 		set_colour(mini, token);
-	return (1);
 }
 
 char	*find_path(t_mini *mini, char *path)
@@ -71,5 +70,44 @@ void	command_count(t_mini *mini)
 		count++;
 		token = token->next;
 	}
-	mini->command_count = count;
+	mini->cmd_count = count;
+	mini->pipes_i = count - 1;
+}
+
+t_token	*ft_newtoken(t_token *token)
+{
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->cmd = NULL;
+	token->path = NULL;
+	token->input_redir = NULL;
+	token->output_redir = NULL;
+	token->input_file = NULL;
+	token->output_file = NULL;
+	token->delimeter = NULL;
+	token->pipe = NULL;
+	token->is_builtin = 0;
+	token->complete = 0;
+	token->newline = 0;
+	token->expansion = 0;
+	token->next = NULL;
+	return (token);
+}
+
+void	ft_tokenadd_back(t_mini *mini, t_token *token)
+{
+	t_token	*last;
+
+	if (!mini->commands || !token)
+		return ;
+	if (!*mini->commands)
+	{
+		*mini->commands = token;
+		return ;
+	}
+	last = *mini->commands;
+	while (last->next)
+		last = last->next;
+	last->next = token;
 }

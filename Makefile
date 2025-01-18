@@ -34,9 +34,9 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/builtins/variable_expansion.c ./src/utils/mini_utils.c ./src/utils/error.c  \
 	./src/environment/print_env.c ./src/environment/dup_env.c ./src/environment/get_full_name.c \
 	./src/utils/fd_utils.c ./src/main/handle_signals.c ./src/parsing/tokenize_commands.c \
-	./src/utils/parsing_utils.c ./src/parsing/create_commands.c ./src/utils/command_utils.c \
+	./src/utils/parsing_utils.c ./src/utils/command_utils.c \
 	./src/parsing/process_commands.c ./src/parsing/quotations_commands.c ./src/builtins/resolve_path.c \
-	./src/utils/tokenize_commands_utils.c ./src/utils/quotations_commands_utils.c \
+	./src/utils/quotations_commands_utils.c \
 	./src/utils/check_path.c ./x_delete_after/delete_after.c
 	
 

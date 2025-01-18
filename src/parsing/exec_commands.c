@@ -12,88 +12,7 @@
 
 #include "minishell.h"
 
-int	execute_commands(t_mini *mini)
-{
-	t_token	*token;
-
-	if (!mini->commands)
-		return (0);
-	init_fds(mini);
-	token = *mini->commands;
-	if (token && !token->next && token->is_builtin)
-	{
-		if (set_in_out_file(mini, token) == 0)
-			return (0);
-		return (builtin_commands(mini, token));
-	}
-	while (token)
-	{
-		if (!token->next)
-			mini->is_last_cmd = 1;
-		pipex(mini, token);
-		if (mini->prev_fd != -1 && mini->prev_fd != STDIN_FILENO
-			&& mini->prev_fd != mini->fd[0])
-			close(mini->prev_fd);
-		mini->prev_fd = mini->fd[0];
-		signal(SIGINT, &handle_sigint);
-		token = token->next;
-	}
-	if (mini->prev_fd != -1 && mini->prev_fd != STDIN_FILENO)
-		close(mini->prev_fd);
-	return (1);
-}
-
-void	pipex(t_mini *mini, t_token *token)
-{
-	if (!mini->is_last_cmd)
-		if (pipe(mini->fd) == -1)
-			return (exit(EXIT_FAILURE), perror("Pipe Error"));
-	mini->pid = fork();
-	if (mini->pid == -1)
-		return (exit(EXIT_FAILURE), perror("Fork Error"));
-	if (mini->pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		set_in_out_file(mini, token);
-		swap_fds(mini, token);
-		execve_commands(mini, token);
-	}
-	else
-	{
-		signal(SIGINT, SIG_IGN);
-		if (!mini->is_last_cmd)
-			close(mini->fd[1]);
-		waitpid(mini->pid, &g_status, 0);
-		exit_codes();
-	}
-}
-
-void	swap_fds(t_mini *mini, t_token *token)
-{
-	if (token->input_redir)
-	{
-		if (dup2(mini->infile, STDIN_FILENO) == -1)
-			return (exit(EXIT_FAILURE), perror("dup2 input error."));
-	}
-	else if (mini->prev_fd != -1 && mini->prev_fd != STDIN_FILENO)
-	{
-		if (dup2(mini->prev_fd, STDIN_FILENO) == -1)
-			return (exit(EXIT_FAILURE), perror("dup2 input error."));
-	}
-	if (token->output_redir)
-	{
-		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
-			return (exit(EXIT_FAILURE), perror("dup2 output error."));
-	}
-	else if (!mini->is_last_cmd)
-	{
-		if (dup2(mini->fd[1], STDOUT_FILENO) == -1)
-			return (exit(EXIT_FAILURE), perror("dup2 output error."));
-	}
-	close_fds(mini);
-}
-
-void	execve_commands(t_mini *mini, t_token *token)
+static void	execve_commands(t_mini *mini, t_token *token)
 {
 	if (token->is_builtin)
 	{
@@ -110,4 +29,95 @@ void	execve_commands(t_mini *mini, t_token *token)
 			exit(g_status);
 		}
 	}
+}
+
+static void	child_processing(t_mini *mini, t_token *token, int pipes[][2])
+{
+	if (token->input_redir)
+	{
+		if (dup2(mini->infile, STDIN_FILENO) == -1)
+		{
+			perror("dup2 input error");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (mini->i > 0)
+	{
+		if (dup2(pipes[mini->i - 1][0], STDIN_FILENO) == -1)
+		{
+			perror("dup2 input error");
+			exit(EXIT_FAILURE);
+		}
+	}
+	if (token->output_redir)
+	{
+		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
+		{
+			perror("dup2 output error");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (mini->i < mini->cmd_count - 1)
+	{
+		if (dup2(pipes[mini->i][1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 output error");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
+static void	fork_commands(t_mini *mini, t_token *token, int pipes[][2], pid_t pids[])
+{
+	mini->i = 0;
+	while (token)
+	{
+		pids[mini->i] = fork();
+		if (pids[mini->i] == -1)
+			return (exit(EXIT_FAILURE), perror("Fork Error"));
+		if (pids[mini->i] == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			set_redirections(mini, token);
+			child_processing(mini, token, pipes);
+			execve_commands(mini, token);
+		}
+		else
+		{
+			signal(SIGINT, SIG_IGN);
+			if (mini->i > 0)
+				close(pipes[mini->i - 1][0]);
+			if (mini->i < mini->pipes_i)
+				close(pipes[mini->i][1]);
+		}
+		signal(SIGINT, &handle_sigint);
+		token = token->next;
+		mini->i++;
+	}
+}
+
+void	execute_commands(t_mini *mini)
+{
+	int     pipes[mini->pipes_i][2];
+	pid_t   pids[mini->cmd_count];
+	t_token		*token;
+	int			i;
+
+	if (!mini->commands)
+		return ;
+	token = *mini->commands;
+	if (mini->cmd_count == 1 && is_builtin(token->cmd[0]))
+		return (set_redirections(mini, token), builtin_commands(mini, token));
+	i = 0;
+	while (i < mini->pipes_i)
+	{
+		if (pipe(pipes[i++]) == -1)
+			return (perror("Pipe Error"), exit(EXIT_FAILURE));
+	}
+	fork_commands(mini, token, pipes, pids);
+	close_pipes(mini, token, pipes, 1);
+	exit_codes();
+	i = 0;
+	while (i < mini->cmd_count)
+		waitpid(pids[i++], &g_status, 0);
 }

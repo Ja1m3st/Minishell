@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	save_oldpath(t_mini *mini, char *oldpath)
+static void	save_oldpath(t_mini *mini, char *oldpath)
 {
 	char	**new_env;
 	int		len;
@@ -48,7 +48,7 @@ char	*check_per(t_mini *mini, t_token *token, char *path)
 	return (path);
 }
 
-int	ft_chdir(char *path)
+static int	ft_chdir(char *path)
 {
 	if (chdir(path) == -1)
 	{

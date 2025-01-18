@@ -31,7 +31,7 @@ t_quote_type	get_quote(t_quote_type quote, char c)
 	return (quote);
 }
 
-int	handle_quotes(const char *input, int *i, t_quote_type *quote)
+static int	handle_quotes(const char *input, int *i, t_quote_type *quote)
 {
 	int	count;
 
@@ -45,7 +45,7 @@ int	handle_quotes(const char *input, int *i, t_quote_type *quote)
 	return (count);
 }
 
-int	handle_word(const char *input, int *i)
+static int	handle_word(const char *input, int *i)
 {
 	int	count;
 
@@ -57,7 +57,7 @@ int	handle_word(const char *input, int *i)
 	return (count);
 }
 
-int	handle_delimiters(const char *input, int *i)
+static int	handle_delimiters(const char *input, int *i)
 {
 	int	count;
 

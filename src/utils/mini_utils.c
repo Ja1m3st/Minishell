@@ -71,7 +71,8 @@ void	command_count(t_mini *mini)
 		token = token->next;
 	}
 	mini->cmd_count = count;
-	mini->pipes_i = count - 1;
+	if (count != 0)
+		mini->pipes_i = count - 1;
 }
 
 t_token	*ft_newtoken(t_token *token)

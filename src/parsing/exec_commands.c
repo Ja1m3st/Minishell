@@ -22,6 +22,7 @@ void	execute_commands(t_mini *mini)
 	if (!mini->commands)
 		return ;
 	token = *mini->commands;
+	mini->i = 0;
 	if (mini->cmd_count == 1 && is_builtin(token->cmd[0]))
 		return (set_redirections(mini, token), builtin_commands(mini, token));
 	i = 0;
@@ -142,6 +143,3 @@ void	execve_commands(t_mini *mini, t_token *token)
 		}
 	}
 }
-
-
-

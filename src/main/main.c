@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **env)
 		if (main_commands(&mini))
 			continue ;
 		// print_tree_structure(&mini);
+		command_count(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}
@@ -58,6 +59,5 @@ int	main_commands(t_mini *mini)
 		free_main(mini);
 		return (1);
 	}
-	command_count(mini);
 	return (0);
 }

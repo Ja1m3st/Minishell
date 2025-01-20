@@ -118,11 +118,10 @@ void	new_export(t_mini *mini, t_token *token, int n)
 
 void	sort_export(t_mini *mini)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	**sorted;
-	int	len;
-
+	int		len;
 
 	sorted = ft_arrdup(mini->env);
 	len = ft_arrlen(sorted);

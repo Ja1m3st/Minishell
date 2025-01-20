@@ -1,96 +1,116 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_utils.c                                    :+:      :+:    :+:   */
+/*   mini_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 12:36:16 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 13:48:13 by jaimesan         ###   ########.fr       */
+/*   Created: 2024/11/25 13:22:34 by jaimesan          #+#    #+#             */
+/*   Updated: 2025/01/16 15:40:22 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_quote_type	get_quote(t_quote_type quote, char c)
+void	builtin_commands(t_mini *mini, t_token *token)
 {
-	if (c == '\'')
-	{
-		if (quote == NO_QUOTE)
-			return (SINGLE_QUOTE);
-		else if (quote == SINGLE_QUOTE)
-			return (NO_QUOTE);
-	}
-	else if (c == '\"')
-	{
-		if (quote == NO_QUOTE)
-			return (DOUBLE_QUOTE);
-		else if (quote == DOUBLE_QUOTE)
-			return (NO_QUOTE);
-	}
-	return (quote);
+	if (!ft_strcmp(token->cmd[0], "history"))
+		print_history();
+	else if (!ft_strcmp(token->cmd[0], "env"))
+		print_env(mini);
+	else if (!ft_strcmp(token->cmd[0], "echo"))
+		echo(token);
+	else if (!ft_strcmp(token->cmd[0], "pwd"))
+		print_pwd(mini);
+	else if (!ft_strcmp(token->cmd[0], "cd"))
+		cd(mini, token);
+	else if (!ft_strcmp(token->cmd[0], "export"))
+		export(mini, token);
+	else if (!ft_strcmp(token->cmd[0], "unset"))
+		unset(token, mini);
+	else if (!ft_strcmp(token->cmd[0], "exit"))
+		exit_command(mini, token);
+	else if (!ft_strcmp(token->cmd[0], "setcolour"))
+		set_colour(mini, token);
 }
 
-static int	handle_quotes(const char *input, int *i, t_quote_type *quote)
+char	*find_path(t_mini *mini, char *path)
 {
-	int	count;
+	int		len;
+	int		i;
+	char	*find;
 
-	count = 1;
-	*i += 1;
-	while (input[*i] && *quote != NO_QUOTE)
-	{
-		*quote = get_quote(*quote, input[*i]);
-		*i += 1;
-	}
-	return (count);
-}
-
-static int	handle_word(const char *input, int *i)
-{
-	int	count;
-
-	count = 1;
-	while (input[*i] && input[*i] != ' ' && !is_del(input[*i]))
-	{
-		*i += 1;
-	}
-	return (count);
-}
-
-static int	handle_delimiters(const char *input, int *i)
-{
-	int	count;
-
-	count = 1;
-	if ((input[*i] == '>' && input[*i + 1] == '>')
-		|| (input[*i] == '<' && input[*i + 1] == '<'))
-	{
-		*i += 1;
-	}
-	*i += 1;
-	return (count);
-}
-
-int	count_commands(t_mini *mini)
-{
-	int				i;
-	int				count;
-	t_quote_type	quote;
-
+	len = ft_arrlen(mini->env);
 	i = 0;
-	count = 0;
-	quote = NO_QUOTE;
-	while (mini->input[i])
+	while (i < len)
 	{
-		quote = get_quote(quote, mini->input[i]);
-		if (quote != NO_QUOTE)
-			count += handle_quotes(mini->input, &i, &quote);
-		else if (mini->input[i] != ' ' && !is_del(mini->input[i]))
-			count += handle_word(mini->input, &i);
-		else if (is_del(mini->input[i]))
-			count += handle_delimiters(mini->input, &i);
-		else if (mini->input[i] == ' ')
-			i++;
+		if (ft_strncmp(mini->env[i], path, 5) == 0)
+		{
+			find = ft_strrchr(mini->env[i], '=');
+			find++;
+			return (find);
+		}
+		i++;
 	}
-	return (count);
+	return (NULL);
+}
+
+void	command_setup(t_mini *mini)
+{
+	t_token	*token;
+	int		count;
+
+	token = *mini->commands;
+	count = 0;
+	while (token)
+	{
+		count++;
+		token = token->next;
+	}
+	mini->cmd_count = count;
+	mini->pipes_i = 0;
+	if (count != 0)
+		mini->pipes_i = count - 1;
+	mini->infile = -1;
+	mini->outfile = -1;
+	mini->pids = NULL;
+	mini->pipes = NULL;
+}
+
+t_token	*ft_newtoken(t_token *token)
+{
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->cmd = NULL;
+	token->path = NULL;
+	token->input_redir = NULL;
+	token->output_redir = NULL;
+	token->input_file = NULL;
+	token->output_file = NULL;
+	token->delimeter = NULL;
+	token->pipe = NULL;
+	token->is_builtin = 0;
+	token->complete = 0;
+	token->newline = 0;
+	token->expansion = 0;
+	token->next = NULL;
+	return (token);
+}
+
+void	ft_tokenadd_back(t_mini *mini, t_token *token)
+{
+	t_token	*last;
+
+	if (!mini->commands || !token)
+		return ;
+	if (!*mini->commands)
+	{
+		*mini->commands = token;
+		return ;
+	}
+	last = *mini->commands;
+	while (last->next)
+		last = last->next;
+	last->next = token;
 }

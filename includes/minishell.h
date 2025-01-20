@@ -77,6 +77,8 @@ typedef struct s_mini
 	t_quote_type	q;
 	char			*name_clr;
 	char			*pwd_clr;
+	int				original_stdin;
+	int				original_stdout;
 	int				infile;
 	int				outfile;
 	int				cmd_count;
@@ -84,8 +86,6 @@ typedef struct s_mini
 	int				i;
 	int				**pipes;
 	pid_t			*pids;
-	int				original_stdin;
-	int				original_stdout;
 }	t_mini;
 
 extern int	g_status;
@@ -95,6 +95,7 @@ int				main_commands(t_mini *mini);
 void			init_struct(t_mini *mini, char **argv, char **env);
 //----------------------------------------------------------------SIGNALS
 void			exit_codes(void);
+void			exit_command(t_mini *mini, t_token *token);
 void			handle_sigint(int signal);
 void			handle_sigquit(int signal);
 void			disable_echoctl(void);

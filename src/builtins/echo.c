@@ -15,7 +15,7 @@
 void	echo(t_token *token)
 {
 	char	*str;
-	int	n;
+	int		n;
 
 	g_status = 0;
 	n = 0;
@@ -50,7 +50,7 @@ char	*parse_string(t_token *token, int n)
 	i = 1 + token->newline - n;
 	echo = NULL;
 	if (!ft_strncmp(token->cmd[i], "-n", 2) && token->newline)
-			i++;
+		i++;
 	while (token->cmd[i])
 	{
 		if (!echo)

@@ -32,8 +32,6 @@ int	main(int argc, char **argv, char **env)
 			add_history(mini.input);
 		if (main_commands(&mini))
 			continue ;
-		// print_tree_structure(&mini);
-		command_count(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}

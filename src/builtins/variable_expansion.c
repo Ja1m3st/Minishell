@@ -118,8 +118,3 @@ char	*get_var_value(t_mini *mini, char *var_name)
 	}
 	return (NULL);
 }
-
-
-
-
-

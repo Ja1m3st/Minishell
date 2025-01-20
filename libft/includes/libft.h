@@ -47,6 +47,8 @@ int		ft_isprint(int c);
 size_t	ft_strlen(const char *s);
 /// @brief Frees an array and sets it all to NULL.
 void	ft_freearr(char **array);
+/// @brief Frees an int array and sets it all to NULL.
+void	ft_freeiarr(int **array, int size);
 /// @brief Returns length of an array, not including NULL.
 int		ft_arrlen(char **array);
 /// @brief Returns length of string until c is found.
@@ -106,6 +108,9 @@ void	*ft_calloc(size_t nmemb, size_t size);
 /// @brief Returns a pointer to a new string allocated 
 /// @brief which is a duplicate of the string s.
 char	*ft_strdup(const char *s);
+/// @brief Returns a pointer to a new array allocated 
+/// @brief which is a duplicate of the array src_array.
+char	**ft_arrdup(char **src_array);
 /// @brief Extracts a substring from start to len.
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 /// @brief Returns a new string of s1 and s2 concatenated.
@@ -191,6 +196,8 @@ void	ft_lstfree(t_list **stack_x);
 char	*get_next_line(int fd);
 /// @brief Returns a new string of s1 and s2 concatenated and frees s1.
 char	*ft_strjoinf(char *total_chars, char *temp);
+/// @brief Swaps str1 with str2
+void	ft_swap(char **str1, char **str2);
 /// @brief Function to formar a string and write to stdout.
 int		ft_printf(const char *format, ...);
 int		ft_putchar(char c);

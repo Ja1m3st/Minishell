@@ -58,10 +58,10 @@ char	*find_path(t_mini *mini, char *path)
 	return (NULL);
 }
 
-void	command_count(t_mini *mini)
+void	command_setup(t_mini *mini)
 {
-	t_token *token;
-	int	count;
+	t_token	*token;
+	int		count;
 
 	token = *mini->commands;
 	count = 0;
@@ -71,8 +71,13 @@ void	command_count(t_mini *mini)
 		token = token->next;
 	}
 	mini->cmd_count = count;
+	mini->pipes_i = 0;
 	if (count != 0)
 		mini->pipes_i = count - 1;
+	mini->infile = -1;
+	mini->outfile = -1;
+	mini->pids = NULL;
+	mini->pipes = NULL;
 }
 
 t_token	*ft_newtoken(t_token *token)

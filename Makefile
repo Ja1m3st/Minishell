@@ -14,9 +14,9 @@ NAME = minishell
 
 #CFLAGS----------------------------------------------------------------------------------
 
-CC 	= gcc
+CC 	= cc
 CFLAGS 	= -Wall -Wextra -Werror -I ./includes
-LDFLAGS = -fsanitize=address #DELETE AFTER
+LDFLAGS = -g3 -fsanitize=address #DELETE AFTER
 RM	= rm -rf
 NOPRINT = --no-print-directory
 

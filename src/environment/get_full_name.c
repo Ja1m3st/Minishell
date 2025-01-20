@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char    *get_colour(char *colour, char *p_clr)
+static char	*get_colour(char *colour, char *p_clr)
 {
 	char	*temp;
 
@@ -50,7 +50,7 @@ void	set_colour(t_mini *m, t_token *t)
 		return ((void)get_colour(NULL, NULL));
 	if (!ft_strcmp("list", t->cmd[i]))
 		return ((void)printf("%s %s, %s, %s, %s, %s, %s, %s & %s.\n",
-			"Available Colours:\n\t", "gray", "red", "green",
+				"Available Colours:\n\t", "gray", "red", "green",
 				"orange", "blue", "magenta", "yellow", "white"));
 	while (t->cmd[i])
 	{

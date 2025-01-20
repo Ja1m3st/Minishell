@@ -18,7 +18,7 @@ void	export(t_mini *mini, t_token *token)
 	int		pos;
 
 	if (!token->cmd[1])
-		return ;
+		return (sort_export(mini));
 	n = 1;
 	pos = -1;
 	while (token->cmd[n])
@@ -116,4 +116,30 @@ void	new_export(t_mini *mini, t_token *token, int n)
 	mini->env = new_env;
 }
 
+void	sort_export(t_mini *mini)
+{
+	int	i;
+	int	j;
+	char	**sorted;
+	int	len;
 
+
+	sorted = ft_arrdup(mini->env);
+	len = ft_arrlen(sorted);
+	i = 0;
+	while (i < len)
+	{
+		j = 0;
+		while (j < len - i - 1)
+		{
+			if (ft_strcmp(sorted[j], sorted[j + 1]) > 0)
+				ft_swap(&sorted[j], &sorted[j + 1]);
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (sorted[i])
+		printf("%s\n", sorted[i++]);
+	ft_freearr(sorted);
+}

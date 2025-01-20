@@ -1,45 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_freearr.c                                       :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ctommasi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/14 12:36:44 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 12:37:28 by ctommasi         ###   ########.fr       */
+/*   Created: 2025/01/20 10:48:20 by ctommasi          #+#    #+#             */
+/*   Updated: 2025/01/20 10:48:21 by ctommasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-void	ft_freearr(char **array)
+void	ft_swap(char **str1, char **str2)
 {
-	int	i;
+	char	*swap;
 
-	i = 0;
-	if (!array || !*array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	free(array);
-	array = NULL;
-}
-
-void	ft_freeiarr(int **array, int size)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (i < size)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
+	swap = *str1;
+	*str1 = *str2;
+	*str2 = swap;
 }

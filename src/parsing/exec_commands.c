@@ -14,44 +14,68 @@
 
 void	execute_commands(t_mini *mini)
 {
-	int     pipes[mini->pipes_i][2];
-	pid_t   pids[mini->cmd_count];
-	t_token		*token;
-	int			i;
+	int		i;
+	t_token	*token;
 
-	if (!mini->commands)
-		return ;
 	token = *mini->commands;
-	mini->i = 0;
-	if (mini->cmd_count == 1 && is_builtin(token->cmd[0]))
-		return (set_redirections(mini, token), builtin_commands(mini, token));
+	command_setup(mini);
+	mini->pipes = malloc((mini->pipes_i + 1) * sizeof(int *));
+	if (!mini->pipes)
+		return ;
 	i = 0;
 	while (i < mini->pipes_i)
 	{
-		if (pipe(pipes[i++]) == -1)
-			return (perror("Pipe Error"), exit(EXIT_FAILURE));
+		mini->pipes[i] = malloc(sizeof(int) * 2);
+		if (!mini->pipes[i])
+			return ;
+		mini->pipes[i][0] = -1;
+		mini->pipes[i][1] = -1;
+		i++;
 	}
-	fork_commands(mini, token, pipes, pids);
-	close_pipes(mini, token, pipes, 1);
+	mini->pipes[i] = NULL;
+	mini->pids = malloc((mini->cmd_count + 1) * sizeof(pid_t));
+	if (!mini->pids)
+		return ;
+	execute_pipes(mini, token);
 	exit_codes();
-	i = 0;
-	while (i < mini->cmd_count)
-		waitpid(pids[i++], &g_status, 0);
 }
 
-void	fork_commands(t_mini *mini, t_token *token, int pipes[][2], pid_t pids[])
+void	execute_pipes(t_mini *mini, t_token *token)
+{
+	int		i;
+
+	i = 0;
+	if (!token->next && mini->cmd_count == 1 && token->is_builtin)
+		return (single_command(mini, token));
+	while (i < mini->pipes_i)
+	{
+		if (pipe(mini->pipes[i]) == -1)
+			return (perror("Pipe Error"), exit(EXIT_FAILURE));
+		i++;
+	}
+	fork_commands(mini, token);
+	close_pipes(mini);
+	i = 0;
+	while (i < mini->cmd_count)
+	{
+		waitpid(mini->pids[i], &g_status, 0);
+		i++;
+	}
+}
+
+void	fork_commands(t_mini *mini, t_token *token)
 {
 	mini->i = 0;
 	while (token)
 	{
-		pids[mini->i] = fork();
-		if (pids[mini->i] == -1)
+		mini->pids[mini->i] = fork();
+		if (mini->pids[mini->i] == -1)
 			return (exit(EXIT_FAILURE), perror("Fork Error"));
-		if (pids[mini->i] == 0)
+		if (mini->pids[mini->i] == 0)
 		{
 			signal(SIGINT, SIG_DFL);
 			set_redirections(mini, token);
-			child_processing(mini, token, pipes);
+			child_processing(mini, token);
 			execve_commands(mini, token);
 		}
 		else
@@ -59,16 +83,16 @@ void	fork_commands(t_mini *mini, t_token *token, int pipes[][2], pid_t pids[])
 			signal(SIGINT, &handle_sigint);
 			signal(SIGINT, SIG_IGN);
 			if (mini->i > 0)
-				close(pipes[mini->i - 1][0]);
+				close(mini->pipes[mini->i - 1][0]);
 			if (mini->i < mini->pipes_i)
-				close(pipes[mini->i][1]);
+				close(mini->pipes[mini->i][1]);
 		}
 		token = token->next;
 		mini->i++;
 	}
 }
 
-void	child_processing(t_mini *mini, t_token *token, int pipes[][2])
+void	child_processing(t_mini *mini, t_token *token)
 {
 	if (token->input_redir)
 	{
@@ -80,7 +104,7 @@ void	child_processing(t_mini *mini, t_token *token, int pipes[][2])
 	}
 	else if (mini->i > 0)
 	{
-		if (dup2(pipes[mini->i - 1][0], STDIN_FILENO) == -1)
+		if (dup2(mini->pipes[mini->i - 1][0], STDIN_FILENO) == -1)
 		{
 			perror("dup2 input error");
 			exit(EXIT_FAILURE);
@@ -92,37 +116,8 @@ void	child_processing(t_mini *mini, t_token *token, int pipes[][2])
 			return (perror("dup2 output error"), exit(EXIT_FAILURE));
 	}
 	else if (mini->i < mini->cmd_count - 1)
-		if (dup2(pipes[mini->i][1], STDOUT_FILENO) == -1)
+		if (dup2(mini->pipes[mini->i][1], STDOUT_FILENO) == -1)
 			return (perror("dup2 output error"), exit(EXIT_FAILURE));
-}
-
-void	close_pipes(t_mini *mini, t_token *token, int pipes[][2], int mode)
-{
-	int		i;
-
-	i = 0;
-	if (mode == 1)
-	{
-		while (i < mini->pipes_i)
-		{
-			if (i != mini->i - 1 || token->input_redir)
-				close(pipes[i][0]);
-			if (i != mini->i || token->output_redir)
-				close(pipes[i][1]);
-			i++;
-		}
-		if (mini->infile)
-			close(mini->infile);
-		if (mini->outfile)
-			close(mini->outfile);
-		return ;
-	}
-	while (i < mini->pipes_i)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
 }
 
 void	execve_commands(t_mini *mini, t_token *token)

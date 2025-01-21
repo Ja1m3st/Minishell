@@ -16,10 +16,10 @@ void	exit_command(t_mini *mini, t_token *token)
 {
 	int	i;
 
-	i = 0;
 	write(STDOUT_FILENO, "exit\n", 6);
 	if (token->cmd[1])
 	{
+		i = 0;
 		while (token->cmd[1][i])
 		{
 			if (ft_isalpha(token->cmd[1][i]))
@@ -32,7 +32,7 @@ void	exit_command(t_mini *mini, t_token *token)
 			i++;
 		}
 	}
-	if (token->cmd[2])
+	if (token->cmd[1] && token->cmd[2])
 		return ((void)write(STDOUT_FILENO,
 				"minishel: exit: too many arguments\n", 36));
 	error(mini, '!');

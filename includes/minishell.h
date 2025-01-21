@@ -154,7 +154,7 @@ char			**allocate_new_cmds(t_token *token, char **cmds,
 					int *old_len, int *new_len);
 int				tokenize_cmds(t_token *token, char **cmds);
 int				tokenize_pipes(t_token *token, char **cmds);
-int				tokenize_redirections(t_token *token, char **cmds);
+int				tokenize_redirections(t_token *token, char **cmds, t_mini *mini);
 //-------------------------------------------------------QUOTATIONS COMMANDS
 int				check_quotation(t_mini *mini);
 char			*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i);

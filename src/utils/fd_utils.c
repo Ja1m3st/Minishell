@@ -65,6 +65,8 @@ void	here_doc(t_mini *mini, t_token *token)
 
 	if (pipe(fd) == -1)
 		return (perror("Pipe Error\n"));
+	// if (ft_strchr(token->delimeter, '\"') || ft_strchr(token->delimeter, '\"'))
+	// 	token->delimeter = ft_strdelchar(token->delimeter, "\"\'");
 	while (1)
 	{
 		write(1, "> ", 2);

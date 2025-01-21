@@ -15,6 +15,8 @@
 void	init_struct(t_mini *mini, char **argv, char **env)
 {
 	(void)argv;
+	mini->pids = NULL;
+	mini->pipes = NULL;
 	mini->input = NULL;
 	mini->mini_cmds = NULL;
 	mini->env = NULL;

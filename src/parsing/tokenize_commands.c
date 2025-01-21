@@ -11,7 +11,10 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+char	**allocate_new_cmds(t_token *token, char **cmds,
+	int *old_len, int *new_len);
+void	copy_old_cmds(char **new_cmds, t_token *token, int old_len);
+void	copy_new_cmds(char **new_cmds, char **cmds, int old_len, int new_len);
 int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 {
 	t_token	*token;
@@ -28,7 +31,7 @@ int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 		cmds += tokenize_cmds(token, cmds);
 	if (*cmds && is_redirect(*cmds))
 	{
-		if (tokenize_redirections(token, cmds))
+		if (tokenize_redirections(token, cmds, mini))
 			return (1);
 		cmds += 2;
 	}
@@ -41,9 +44,8 @@ int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 	return (tokenize_commands(mini, cmds, token), 0);
 }
 
-int	tokenize_redirections(t_token *token, char **cmds)
+int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 {
-	g_status = 0;
 	if (is_input_redirect(*cmds))
 	{
 		token->input_redir = ft_strdup(*cmds);
@@ -58,6 +60,8 @@ int	tokenize_redirections(t_token *token, char **cmds)
 	else if (is_output_redirect(*cmds))
 	{
 		token->output_redir = ft_strdup(*cmds);
+		mini->outfile = open(token->output_file,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		cmds++;
 		if (*cmds)
 			token->output_file = ft_strdup(*cmds);

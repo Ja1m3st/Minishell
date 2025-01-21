@@ -12,9 +12,8 @@
 
 #include "minishell.h"
 
-void	init_struct(t_mini *mini, char **argv, char **env)
+void	init_struct(t_mini *mini, char **env)
 {
-	(void)argv;
 	mini->pids = NULL;
 	mini->pipes = NULL;
 	mini->input = NULL;

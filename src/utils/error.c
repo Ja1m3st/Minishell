@@ -39,10 +39,6 @@ void	free_main(t_mini *mini)
 	free_commands(mini);
 	if (mini->input)
 		free(mini->input);
-	if (mini->pids)
-		free(mini->pids);
-	if (mini->pipes)
-		ft_freeiarr(mini->pipes, mini->pipes_i);
 }
 
 void	free_mini(t_mini *mini)

@@ -77,3 +77,14 @@ void	ft_check_path(t_token *token)
 	}
 	ft_check_free(paths, token);
 }
+
+char	**allocate_new_cmds(t_token *token, char **cmds,
+	int *old_len, int *new_len)
+{
+	while (token->cmd && token->cmd[*old_len])
+		(*old_len)++;
+	while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|")
+		&& !is_redirect(cmds[*new_len]))
+		(*new_len)++;
+	return (malloc(sizeof(char *) * (*old_len + *new_len + 1)));
+}

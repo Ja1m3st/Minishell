@@ -92,7 +92,7 @@ extern int	g_status;
 //------------------------------------------------------------------MAIN
 int				main(int argc, char **argv, char **envp);
 int				main_commands(t_mini *mini);
-void			init_struct(t_mini *mini, char **argv, char **env);
+void			init_struct(t_mini *mini, char **env);
 //----------------------------------------------------------------SIGNALS
 void			exit_codes(void);
 void			exit_command(t_mini *mini, t_token *token);
@@ -154,7 +154,10 @@ char			**allocate_new_cmds(t_token *token, char **cmds,
 					int *old_len, int *new_len);
 int				tokenize_cmds(t_token *token, char **cmds);
 int				tokenize_pipes(t_token *token, char **cmds);
-int				tokenize_redirections(t_token *token, char **cmds, t_mini *mini);
+int				tokenize_redirections(t_token *token,
+					char **cmds, t_mini *mini);
+void			tokenize_redirections_utils(t_token *token,
+					char **cmds, t_mini *mini);
 //-------------------------------------------------------QUOTATIONS COMMANDS
 int				check_quotation(t_mini *mini);
 char			*process_expansion(t_mini *mini, t_quote *q, char *cmd, int *i);
@@ -168,7 +171,7 @@ void			execute_commands(t_mini *mini);
 void			execute_pipes(t_mini *mini, t_token *token);
 void			single_command(t_mini *mini, t_token *token);
 void			child_processing(t_mini *mini, t_token *token);
-void			close_pipes(t_mini *mini);
+void			close_or_free_pipes(t_mini *mini, int mod);
 void			fork_commands(t_mini *mini, t_token *token);
 void			set_redirections(t_mini *mini, t_token *token);
 void			set_redirections2(t_mini *mini, t_token *token);

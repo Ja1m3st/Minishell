@@ -21,7 +21,8 @@ int	main(int argc, char **argv, char **env)
 
 	if (argc != 1)
 		return (1);
-	init_struct(&mini, argv, env);
+	(void)argv;
+	init_struct(&mini, env);
 	while (1)
 	{
 		env_name = join_env_name(&mini);

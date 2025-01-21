@@ -65,8 +65,7 @@ void	here_doc(t_mini *mini, t_token *token)
 
 	if (pipe(fd) == -1)
 		return (perror("Pipe Error\n"));
-	// if (ft_strchr(token->delimeter, '\"') || ft_strchr(token->delimeter, '\"'))
-	// 	token->delimeter = ft_strdelchar(token->delimeter, "\"\'");
+	token->delimeter = ft_strdelchar(token->delimeter, "\"\'");
 	while (1)
 	{
 		write(1, "> ", 2);
@@ -88,20 +87,30 @@ void	here_doc(t_mini *mini, t_token *token)
 	mini->infile = fd[0];
 }
 
-void	close_pipes(t_mini *mini)
+void	close_or_free_pipes(t_mini *mini, int mod)
 {
 	int		i;
 
-	i = 0;
-	if (mini->infile && mini->infile > -1)
-		close(mini->infile);
-	if (mini->infile && mini->outfile > -1)
-		close(mini->outfile);
-	while (i < mini->pipes_i && mini->pipes[i] != NULL)
+	if (mod == 0)
 	{
-		close(mini->pipes[i][0]);
-		close(mini->pipes[i][1]);
-		i++;
+		if (mini->infile && mini->infile > -1)
+			close(mini->infile);
+		if (mini->infile && mini->outfile > -1)
+			close(mini->outfile);
+		i = 0;
+		while (i < mini->pipes_i && mini->pipes[i] != NULL)
+		{
+			close(mini->pipes[i][0]);
+			close(mini->pipes[i][1]);
+			i++;
+		}
+	}
+	else if (mod == 1)
+	{
+		if (mini->pids)
+			free(mini->pids);
+		if (mini->pipes)
+			ft_freeiarr(mini->pipes, mini->pipes_i);
 	}
 }
 

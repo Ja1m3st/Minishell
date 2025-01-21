@@ -39,7 +39,9 @@ void	ft_freeiarr(int **array, int size)
 	while (i < size)
 	{
 		free(array[i]);
+		array[i] = NULL;
 		i++;
 	}
 	free(array);
+	array = NULL;
 }

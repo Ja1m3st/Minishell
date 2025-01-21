@@ -38,6 +38,7 @@ void	execute_commands(t_mini *mini)
 		return ;
 	execute_pipes(mini, token);
 	exit_codes();
+	close_or_free_pipes(mini, 1);
 }
 
 void	execute_pipes(t_mini *mini, t_token *token)
@@ -45,6 +46,8 @@ void	execute_pipes(t_mini *mini, t_token *token)
 	int		i;
 
 	i = 0;
+	if (!token->cmd)
+		return ;
 	if (!token->next && mini->cmd_count == 1 && token->is_builtin)
 		return (single_command(mini, token));
 	while (i < mini->pipes_i)
@@ -54,7 +57,7 @@ void	execute_pipes(t_mini *mini, t_token *token)
 		i++;
 	}
 	fork_commands(mini, token);
-	close_pipes(mini);
+	close_or_free_pipes(mini, 0);
 	i = 0;
 	while (i < mini->cmd_count)
 	{

@@ -11,10 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-char	**allocate_new_cmds(t_token *token, char **cmds,
-	int *old_len, int *new_len);
-void	copy_old_cmds(char **new_cmds, t_token *token, int old_len);
-void	copy_new_cmds(char **new_cmds, char **cmds, int old_len, int new_len);
+
 int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 {
 	t_token	*token;
@@ -59,18 +56,29 @@ int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 	}
 	else if (is_output_redirect(*cmds))
 	{
-		token->output_redir = ft_strdup(*cmds);
-		mini->outfile = open(token->output_file,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
-		cmds++;
-		if (*cmds)
-			token->output_file = ft_strdup(*cmds);
-		else
-			g_status = 2;
+		tokenize_redirections_utils(token, cmds, mini);
 	}
 	if (g_status == 2)
 		return (write(2, "Syntax error\n", 13), 1);
 	return (0);
+}
+
+void	tokenize_redirections_utils(t_token *token, char **cmds, t_mini *mini)
+{
+	if (token->output_redir)
+		free(token->output_redir);
+	if (token->output_file)
+		free(token->output_file);
+	token->output_redir = ft_strdup(*cmds);
+	cmds++;
+	token->output_file = ft_strdup(*cmds);
+	mini->outfile = open(token->output_file,
+			O_RDONLY | O_CREAT | O_APPEND, 0644);
+	free(token->output_file);
+	if (*cmds)
+		token->output_file = ft_strdup(*cmds);
+	else
+		g_status = 2;
 }
 
 int	tokenize_pipes(t_token *token, char **cmds)
@@ -112,15 +120,4 @@ int	tokenize_cmds(t_token *token, char **cmds)
 		ft_freearr(token->cmd);
 	token->cmd = new_cmds;
 	return (new_len);
-}
-
-char	**allocate_new_cmds(t_token *token, char **cmds,
-	int *old_len, int *new_len)
-{
-	while (token->cmd && token->cmd[*old_len])
-		(*old_len)++;
-	while (cmds[*new_len] && ft_strcmp(cmds[*new_len], "|")
-		&& !is_redirect(cmds[*new_len]))
-		(*new_len)++;
-	return (malloc(sizeof(char *) * (*old_len + *new_len + 1)));
 }

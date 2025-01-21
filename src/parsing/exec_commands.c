@@ -46,8 +46,6 @@ void	execute_pipes(t_mini *mini, t_token *token)
 	int		i;
 
 	i = 0;
-	if (!token->cmd)
-		return ;
 	if (!token->next && mini->cmd_count == 1 && token->is_builtin)
 		return (single_command(mini, token));
 	while (i < mini->pipes_i)
@@ -130,7 +128,7 @@ void	execve_commands(t_mini *mini, t_token *token)
 		builtin_commands(mini, token);
 		exit(g_status);
 	}
-	else if (!token->is_builtin)
+	else if (!token->is_builtin && token->cmd)
 	{
 		if (execve(token->path, token->cmd, mini->env) == -1)
 		{
@@ -140,4 +138,6 @@ void	execve_commands(t_mini *mini, t_token *token)
 			exit(g_status);
 		}
 	}
+	else
+		exit(g_status);
 }

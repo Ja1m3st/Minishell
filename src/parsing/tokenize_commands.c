@@ -43,6 +43,7 @@ int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 
 int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 {
+	g_status = 0;
 	if (is_input_redirect(*cmds))
 	{
 		token->input_redir = ft_strdup(*cmds);
@@ -72,13 +73,24 @@ void	tokenize_redirections_utils(t_token *token, char **cmds, t_mini *mini)
 	token->output_redir = ft_strdup(*cmds);
 	cmds++;
 	token->output_file = ft_strdup(*cmds);
+	if (token->output_file == NULL)
+	{
+		g_status = 2;
+		return ;
+	}
+	if (ft_strchr(token->output_file, '$'))
+		token->output_file = expand_variable(mini, token->output_file);
 	mini->outfile = open(token->output_file,
 			O_RDONLY | O_CREAT | O_APPEND, 0644);
 	free(token->output_file);
 	if (*cmds)
 		token->output_file = ft_strdup(*cmds);
 	else
+	{
 		g_status = 2;
+		return ;
+	}
+	return ;
 }
 
 int	tokenize_pipes(t_token *token, char **cmds)

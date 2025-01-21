@@ -58,6 +58,7 @@ typedef struct s_token
 	int				complete;
 	int				newline;
 	int				expansion;
+	int				access;
 }	t_token;
 
 typedef struct s_mini

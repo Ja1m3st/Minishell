@@ -19,10 +19,11 @@ void	set_redirections(t_mini *mini, t_token *token)
 		mini->infile = open(token->input_file, O_RDONLY);
 		if (mini->infile == -1)
 		{
-			write(1, token->input_file, ft_strlen(token->input_file));
-			write(1, ": No such file or directory\n", 28);
+			perror(token->input_file);
 			g_status = 1;
-			exit(g_status);
+			if (!token->access)
+				exit(g_status);
+			token->access = 0;
 		}
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
@@ -36,13 +37,14 @@ void	set_redirections2(t_mini *mini, t_token *token)
 {
 	if (token->output_redir && !ft_strcmp(token->output_redir, ">"))
 	{
-		mini->outfile = open(token->output_file,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		mini->outfile = open(token->output_file, 01 | 0100 | 01000, 0644);
 		if (mini->outfile == -1)
 		{
-			perror("Error redirecting to file.\n");
-			g_status = 2;
-			exit(g_status);
+			perror(token->output_file);
+			g_status = 1;
+			if (!token->access)
+				exit(g_status);
+			token->access = 0;
 		}
 	}
 	else if (token->output_redir && !ft_strcmp(token->output_redir, ">>"))
@@ -51,9 +53,11 @@ void	set_redirections2(t_mini *mini, t_token *token)
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (mini->outfile == -1)
 		{
-			perror("Error appending to file.\n");
-			g_status = 2;
-			exit(g_status);
+			perror(token->output_file);
+			g_status = 1;
+			if (!token->access)
+				exit(g_status);
+			token->access = 0;
 		}
 	}
 }
@@ -116,7 +120,10 @@ void	close_or_free_pipes(t_mini *mini, int mod)
 
 void	single_command(t_mini *mini, t_token *token)
 {
+	token->access = 1;
 	set_redirections(mini, token);
+	if (!token->access)
+		return ;
 	if (mini->infile != -1)
 	{
 		if (dup2(mini->infile, STDIN_FILENO) == -1)

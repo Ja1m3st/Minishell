@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:40:19 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 15:25:08 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 16:03:24 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	process_commands(t_mini *mini)
 
 	mini->q = NO_QUOTE;
 	count = count_commands(mini);
+	if (count == 0)
+		return ;
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
 	if (!mini->mini_cmds)
 	{

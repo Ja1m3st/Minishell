@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:57:39 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/22 12:50:40 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:13:55 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	set_colour(t_mini *m, t_token *t)
 
 void	get_env_name(t_mini *mini)
 {
+	mini->oldpwd_off = 1;
 	mini->log_name = ft_getenv("LOGNAME", mini->env);
 	get_session_name(mini);
 	mini->log_name = ft_strjoin(mini->log_name, "@");

@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/22 12:47:01 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:46:16 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_mini
 	int				cmd_count;
 	int				pipes_i;
 	int				i;
+	int				oldpwd_off;
 	int				**pipes;
 	pid_t			*pids;
 }	t_mini;
@@ -117,6 +118,7 @@ char			*handle_dash_option(t_mini *mini, char *cleaned_cmd);
 char			*handle_general_path(t_mini *mini, t_token *token,
 					char *cleaned_cmd);
 char			*resolve_cd_path(t_mini *mini, t_token *token);
+void			save_oldpwd(t_mini *mini, char *oldpath);
 //----------------------------------------------------------------ENV
 void			print_env(t_mini *mini);
 //----------------------------------------------------------------HISTORY

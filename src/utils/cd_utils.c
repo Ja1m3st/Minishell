@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:41:38 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/22 13:05:38 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:40:02 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,25 @@ char	*handle_dash_option(t_mini *mini, char *cleaned_cmd)
 {
 	char	*path;
 
+	path = NULL;
 	if (mini->oldpath == NULL)
 	{
 		free(cleaned_cmd);
 		return (NULL);
 	}
-	path = ft_strdup(mini->oldpath);
-	write(STDOUT_FILENO, path, ft_strlen(path));
-	write(STDOUT_FILENO, "\n", 1);
-	free(cleaned_cmd);
+	if (ft_getenv("OLDPWD", mini->env))
+	{
+		path = ft_strdup(mini->oldpath);
+		write(STDOUT_FILENO, path, ft_strlen(path));
+		write(STDOUT_FILENO, "\n", 1);
+		free(cleaned_cmd);
+	}
+	else
+	{
+		write(STDOUT_FILENO, "cd: OLDPWD not set\n", 20);
+		free(cleaned_cmd);
+	}
+	mini->oldpwd_off = 0;
 	return (path);
 }
 

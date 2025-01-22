@@ -34,6 +34,6 @@ void	exit_command(t_mini *mini, t_token *token)
 	}
 	if (token->cmd[1] && token->cmd[2])
 		return ((void)write(STDOUT_FILENO,
-				"minishel: exit: too many arguments\n", 36));
+				"minishell: exit: too many arguments\n", 37));
 	error(mini, '!');
 }

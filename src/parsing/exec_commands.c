@@ -62,6 +62,7 @@ void	execute_pipes(t_mini *mini, t_token *token)
 		waitpid(mini->pids[i], &g_status, 0);
 		i++;
 	}
+	signal(SIGINT, &handle_sigint);
 }
 
 void	fork_commands(t_mini *mini, t_token *token)
@@ -75,13 +76,13 @@ void	fork_commands(t_mini *mini, t_token *token)
 		if (mini->pids[mini->i] == 0)
 		{
 			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			set_redirections(mini, token);
 			child_processing(mini, token);
 			execve_commands(mini, token);
 		}
 		else
 		{
-			signal(SIGINT, &handle_sigint);
 			signal(SIGINT, SIG_IGN);
 			if (mini->i > 0)
 				close(mini->pipes[mini->i - 1][0]);

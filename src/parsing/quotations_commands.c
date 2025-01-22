@@ -46,7 +46,7 @@ int	process_token(t_mini *mini, t_quote *q, t_token *token)
 		token->cmd[i] = remove_quotes(mini, q, token->cmd[i]);
 		if (q->single_quote || q->double_quote)
 		{
-			g_status = 130;
+			g_status = 1;
 			return (write(2, "Error: Unclosed quotes\n", 23), 0);
 		}
 		if (is_builtin(token->cmd[0]))

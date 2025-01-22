@@ -99,7 +99,6 @@ void			exit_codes(void);
 void			exit_command(t_mini *mini, t_token *token);
 void			handle_sigint(int signal);
 void			handle_sigquit(int signal);
-void			disable_echoctl(void);
 void			setup_signals(void);
 //--------------------------------------------------------------------ENV
 void			get_env_name(t_mini *mini);
@@ -157,7 +156,7 @@ int				tokenize_cmds(t_token *token, char **cmds);
 int				tokenize_pipes(t_token *token, char **cmds);
 int				tokenize_redirections(t_token *token,
 					char **cmds, t_mini *mini);
-void			tokenize_redirections_utils(t_token *token,
+int				tokenize_redirections_utils(t_token *token,
 					char **cmds, t_mini *mini);
 //-------------------------------------------------------QUOTATIONS COMMANDS
 int				check_quotation(t_mini *mini);

@@ -28,12 +28,14 @@ int	main(int argc, char **argv, char **env)
 		env_name = join_env_name(&mini);
 		mini.input = readline(env_name);
 		if (!mini.input)
+		{
+			write(1, "exit\n", 6);
 			break ;
+		}
 		if (*mini.input)
 			add_history(mini.input);
 		if (main_commands(&mini))
 			continue ;
-		print_tree_structure(&mini);
 		execute_commands(&mini);
 		free_main(&mini);
 	}

@@ -16,39 +16,23 @@ void	setup_signals(void)
 {
 	struct sigaction	ctrl_c;
 	struct sigaction	ctrl_d;
-	struct sigaction	ctrl_backslash;
+	struct sigaction	ctrl_quit;
 
 	ft_memset(&ctrl_c, 0, sizeof(ctrl_c));
-	ft_memset(&ctrl_d, 0, sizeof(ctrl_d));
-	ft_memset(&ctrl_backslash, 0, sizeof(ctrl_backslash));
 	ctrl_c.sa_handler = &handle_sigint;
 	ctrl_c.sa_flags = SA_RESTART;
+	ft_memset(&ctrl_d, 0, sizeof(ctrl_d));
 	ctrl_d.sa_handler = &handle_sigquit;
 	ctrl_d.sa_flags = SA_RESTART;
-	ctrl_backslash.sa_handler = SIG_IGN;
-	ctrl_backslash.sa_flags = 0;
+	ft_memset(&ctrl_quit, 0, sizeof(ctrl_quit));
+	ctrl_quit.sa_handler = SIG_IGN;
+	ctrl_quit.sa_flags = 0;
 	if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
 		perror("sigaction ctrl + c");
 	if (sigaction(SIGQUIT, &ctrl_d, NULL) == -1)
 		perror("sigaction ctrl + d");
-	if (sigaction(SIGQUIT, &ctrl_backslash, NULL) == -1)
+	if (sigaction(SIGQUIT, &ctrl_quit, NULL) == -1)
 		perror("sigaction ctrl + \\");
-}
-
-void	disable_echoctl(void)
-{
-	struct termios	term;
-
-	if (tcgetattr(STDIN_FILENO, &term) == -1)
-	{
-		perror("tcgerattr");
-		return ;
-	}
-	term.c_lflag &= ~ECHOCTL;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
-	{
-		perror("tcsetattr");
-	}
 }
 
 void	handle_sigint(int signal)

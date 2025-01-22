@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:49:53 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/16 15:17:51 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:51:31 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_quotation(t_mini *mini)
 		if (token->cmd && !process_token(mini, q, token))
 			return (free(q), 1);
 		if (!token->is_builtin && !token->path && token->cmd != NULL)
-			ft_check_path(token);
+			ft_check_path(token, mini);
 		if (token->input_file && *token->input_file)
 			token->input_file = remove_quotes(mini, q, token->input_file);
 		if (token->output_file && *token->output_file)
@@ -52,7 +52,8 @@ int	process_token(t_mini *mini, t_quote *q, t_token *token)
 		if (is_builtin(token->cmd[0]))
 			token->is_builtin = 1;
 		if (!ft_strncmp(token->cmd[i], "./", 2))
-			token->path = ft_strjoin(getenv("$HOME"), token->cmd[0]);
+			token->path = ft_strjoin(ft_getenv("$HOME", mini->env),
+					token->cmd[0]);
 		i++;
 	}
 	return (1);

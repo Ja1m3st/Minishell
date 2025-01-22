@@ -57,7 +57,8 @@ int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 	}
 	else if (is_output_redirect(*cmds))
 	{
-		g_status = tokenize_redirections_utils(token, cmds, mini);
+		if (tokenize_redirections_utils(token, cmds, mini))
+			g_status = 1;
 	}
 	if (g_status == 1)
 		return (write(2, "Syntax error\n", 13), 1);
@@ -81,7 +82,10 @@ int	tokenize_redirections_utils(t_token *token, char **cmds, t_mini *mini)
 			&& !access(token->input_file, X_OK)) || !token->input_redir)
 		mini->outfile = open(token->output_file, 00 | 0100 | 02000, 0644);
 	else
-		return (1);
+	{
+		g_status = 2;
+		return (0);
+	}
 	free(token->output_file);
 	if (*cmds)
 		token->output_file = ft_strdup(*cmds);

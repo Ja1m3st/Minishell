@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **env)
 
 int	main_commands(t_mini *mini)
 {
-	if (*mini->input == '\0')
+	if (mini->input[0] == '\0')
 	{
 		free(mini->input);
 		return (1);

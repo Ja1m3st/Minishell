@@ -21,13 +21,11 @@ void	process_commands(t_mini *mini)
 
 	mini->q = NO_QUOTE;
 	count = count_commands(mini);
+	if (count == 0)
+		return ;
 	mini->mini_cmds = malloc(sizeof(char *) * (count + 1));
 	if (!mini->mini_cmds)
-	{
-		perror("Memory Allocation Failure\n");
-		exit(EXIT_FAILURE);
-		return ;
-	}
+		return (perror("Memory Allocation Failure\n"), exit(EXIT_FAILURE));
 	i = 0;
 	while (i < count)
 	{

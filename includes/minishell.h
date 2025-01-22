@@ -185,6 +185,7 @@ void			ft_tokenadd_back(t_mini *mini, t_token *token);
 t_token			*ft_newtoken(t_token *token);
 void			get_quotes(t_quote *q, int c, int c2);
 void			here_doc(t_mini *mini, t_token *token);
+void			reset_fds(t_mini *mini, int mod);
 //-------------------------------------------------------------------UTILS
 void			free_main(t_mini *mini);
 void			free_mini(t_mini *mini);

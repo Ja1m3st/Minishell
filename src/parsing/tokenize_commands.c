@@ -57,6 +57,10 @@ int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 	}
 	else if (is_output_redirect(*cmds))
 	{
+		if (token->output_redir)
+			free(token->output_redir);
+		if (token->output_file)
+			free(token->output_file);
 		if (tokenize_redirections_utils(token, cmds, mini))
 			g_status = 1;
 	}
@@ -67,14 +71,10 @@ int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 
 int	tokenize_redirections_utils(t_token *token, char **cmds, t_mini *mini)
 {
-	if (token->output_redir)
-		free(token->output_redir);
-	if (token->output_file)
-		free(token->output_file);
 	token->output_redir = ft_strdup(*cmds);
 	cmds++;
 	token->output_file = ft_strdup(*cmds);
-	if (token->output_file == NULL)
+	if (!token->output_file)
 		return (1);
 	if (ft_strchr(token->output_file, '$'))
 		token->output_file = expand_variable(mini, token->output_file);

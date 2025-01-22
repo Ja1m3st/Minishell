@@ -97,46 +97,52 @@ void	close_or_free_pipes(t_mini *mini, int mod)
 
 	if (mod == 0)
 	{
-		if (mini->infile && mini->infile > -1)
+		if (mini->infile != -1)
 			close(mini->infile);
-		if (mini->infile && mini->outfile > -1)
+		if (mini->outfile != -1)
 			close(mini->outfile);
 		i = 0;
 		while (i < mini->pipes_i && mini->pipes[i] != NULL)
 		{
-			close(mini->pipes[i][0]);
-			close(mini->pipes[i][1]);
+			if (mini->pipes[i][0] != -1)
+				close(mini->pipes[i][0]);
+			if (mini->pipes[i][1] != -1)
+				close(mini->pipes[i][1]);
 			i++;
 		}
+		return ;
 	}
-	else if (mod == 1)
-	{
-		if (mini->pids)
-			free(mini->pids);
-		if (mini->pipes)
-			ft_freeiarr(mini->pipes, mini->pipes_i);
-	}
+	if (mini->pids)
+		free(mini->pids);
+	if (mini->pipes)
+		ft_freeiarr(mini->pipes, mini->pipes_i);
 }
 
-void	single_command(t_mini *mini, t_token *token)
+void	reset_fds(t_mini *mini, int mod)
 {
-	token->access = 1;
-	set_redirections(mini, token);
-	if (!token->access)
+	int		i;
+
+	if (mod == 0)
+	{
+		i = 0;
+		while (i < mini->pipes_i)
+		{
+			mini->pipes[i][0] = -1;
+			mini->pipes[i][1] = -1;
+			i++;
+		}
+		mini->infile = -1;
+		mini->outfile = -1;
 		return ;
-	if (mini->infile != -1)
-	{
-		if (dup2(mini->infile, STDIN_FILENO) == -1)
-			return (exit(EXIT_FAILURE), perror("dup2 input error"));
 	}
-	if (mini->outfile != -1)
+	if (mini->i > 0)
 	{
-		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
-			return (exit(EXIT_FAILURE), perror("dup2 output error"));
+		close(mini->pipes[mini->i - 1][0]);
+		mini->pipes[mini->i - 1][0] = -1;
 	}
-	builtin_commands(mini, token);
-	if (mini->infile != STDIN_FILENO)
-		dup2(mini->original_stdin, STDIN_FILENO);
-	if (mini->outfile != STDOUT_FILENO)
-		dup2(mini->original_stdout, STDOUT_FILENO);
+	if (mini->i < mini->pipes_i)
+	{
+		close(mini->pipes[mini->i][1]);
+		mini->pipes[mini->i][1] = -1;
+	}
 }

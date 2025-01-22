@@ -74,3 +74,24 @@ char	*handle_tilde_error(char *cleaned_cmd)
 	free(cleaned_cmd);
 	return (NULL);
 }
+
+char	*find_path(t_mini *mini, char *path)
+{
+	int		len;
+	int		i;
+	char	*find;
+
+	len = ft_arrlen(mini->env);
+	i = 0;
+	while (i < len)
+	{
+		if (ft_strncmp(mini->env[i], path, 5) == 0)
+		{
+			find = ft_strrchr(mini->env[i], '=');
+			find++;
+			return (find);
+		}
+		i++;
+	}
+	return (NULL);
+}

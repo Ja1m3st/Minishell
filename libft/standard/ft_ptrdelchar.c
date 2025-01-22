@@ -16,13 +16,11 @@ void	ft_ptrdelchar(char *str, const char *chars)
 {
 	int		i;
 	int		j;
-	int		len;
 
 	if (!str || !chars)
 		return ;
 	i = 0;
 	j = 0;
-	len = ft_strlen(str);
 	while (str[i])
 	{
 		if (!ft_strchr(chars, str[i]))

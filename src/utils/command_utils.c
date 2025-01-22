@@ -34,25 +34,27 @@ void	builtin_commands(t_mini *mini, t_token *token)
 		set_colour(mini, token);
 }
 
-char	*find_path(t_mini *mini, char *path)
+void	single_command(t_mini *mini, t_token *token)
 {
-	int		len;
-	int		i;
-	char	*find;
-
-	len = ft_arrlen(mini->env);
-	i = 0;
-	while (i < len)
+	token->access = 1;
+	set_redirections(mini, token);
+	if (!token->access)
+		return ;
+	if (mini->infile != -1)
 	{
-		if (ft_strncmp(mini->env[i], path, 5) == 0)
-		{
-			find = ft_strrchr(mini->env[i], '=');
-			find++;
-			return (find);
-		}
-		i++;
+		if (dup2(mini->infile, STDIN_FILENO) == -1)
+			return (exit(EXIT_FAILURE), perror("dup2 input error"));
 	}
-	return (NULL);
+	if (mini->outfile != -1)
+	{
+		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
+			return (exit(EXIT_FAILURE), perror("dup2 output error"));
+	}
+	builtin_commands(mini, token);
+	if (mini->infile != STDIN_FILENO)
+		dup2(mini->original_stdin, STDIN_FILENO);
+	if (mini->outfile != STDOUT_FILENO)
+		dup2(mini->original_stdout, STDOUT_FILENO);
 }
 
 void	command_setup(t_mini *mini)
@@ -71,8 +73,6 @@ void	command_setup(t_mini *mini)
 	mini->pipes_i = 0;
 	if (count != 0)
 		mini->pipes_i = count - 1;
-	mini->infile = -1;
-	mini->outfile = -1;
 	mini->pids = NULL;
 	mini->pipes = NULL;
 }

@@ -56,7 +56,12 @@ void	exit_codes(void)
 	if (WIFEXITED(g_status))
 		g_status = WEXITSTATUS(g_status);
 	else if (WIFSIGNALED(g_status))
-		g_status = 128 + WTERMSIG(g_status);
+	{
+		if (g_status == 130 || g_status == 131)
+			g_status = WTERMSIG(g_status);
+		else
+			g_status = 128 + WTERMSIG(g_status);
+	}
 	else
 		g_status = -1;
 }

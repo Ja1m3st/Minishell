@@ -46,6 +46,7 @@ char	*handle_dash_option(t_mini *mini, char *cleaned_cmd)
 	path = NULL;
 	if (mini->oldpath == NULL)
 	{
+		g_status = 1;
 		free(cleaned_cmd);
 		return (NULL);
 	}
@@ -54,11 +55,13 @@ char	*handle_dash_option(t_mini *mini, char *cleaned_cmd)
 		path = ft_strdup(mini->oldpath);
 		write(STDOUT_FILENO, path, ft_strlen(path));
 		write(STDOUT_FILENO, "\n", 1);
+		g_status = 0;
 		free(cleaned_cmd);
 	}
 	else
 	{
-		write(STDOUT_FILENO, "cd: OLDPWD not set\n", 20);
+		g_status = 1;
+		write(2, "cd: OLDPWD not set\n", 20);
 		free(cleaned_cmd);
 	}
 	mini->oldpwd_off = 0;

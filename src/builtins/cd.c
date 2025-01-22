@@ -6,11 +6,19 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 10:57:13 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/16 10:55:38 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 15:51:25 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	set_cd(t_mini *mini, char *cwd)
+{
+	mini->oldpath = NULL;
+	mini->oldpath = ft_strdup(cwd);
+	if (mini->oldpwd_off == 1)
+		save_oldpwd(mini, mini->oldpath);
+}
 
 void	cd(t_mini *mini, t_token *token)
 {
@@ -19,6 +27,7 @@ void	cd(t_mini *mini, t_token *token)
 	char	cwd[1024];
 
 	oldpath = NULL;
+	mini->oldpwd_off = 1;
 	if (getcwd(cwd, sizeof(cwd)))
 		oldpath = ft_strdup(cwd);
 	save_oldpath(mini, oldpath);
@@ -35,8 +44,7 @@ void	cd(t_mini *mini, t_token *token)
 		return ;
 	free(path);
 	free(mini->oldpath);
-	mini->oldpath = NULL;
-	mini->oldpath = ft_strdup(cwd);
+	set_cd(mini, cwd);
 	g_status = 0;
 }
 

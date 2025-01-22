@@ -55,7 +55,7 @@ $(LIBFT):
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
-#$(LDFLAGS)
+
 $(NAME): $(OBJS) $(LIBFT) 
 	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline 
 	@echo "[100%] $(GREEN)(Minishell) Compilation  | Minishell | successful!$(RESET)"

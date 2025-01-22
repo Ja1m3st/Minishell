@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   resolve_path.c                                     :+:      :+:    :+:   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:41:38 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/14 13:44:26 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 13:05:38 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ char	*handle_dash_option(t_mini *mini, char *cleaned_cmd)
 		return (NULL);
 	}
 	path = ft_strdup(mini->oldpath);
-	write(mini->outfile, path, ft_strlen(path));
-	write(mini->outfile, "\n", 1);
+	write(STDOUT_FILENO, path, ft_strlen(path));
+	write(STDOUT_FILENO, "\n", 1);
 	free(cleaned_cmd);
 	return (path);
 }

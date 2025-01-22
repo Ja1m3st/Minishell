@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:41:22 by ctommasi          #+#    #+#             */
-/*   Updated: 2024/12/13 12:24:24 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:45:40 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,5 +205,6 @@ int		ft_putstr(char *s);
 int		ft_putnbr_dec(long nb);
 int		ft_putnbr_hex(unsigned long long nb, int up_or_low);
 int		ft_putptr(void *ptr);
+char	*ft_getenv(char *str, char **env);
 
 #endif

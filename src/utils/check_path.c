@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 12:49:06 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/16 10:42:56 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:47:14 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ft_check_bucle(char *tmp, char *potential_path, t_token *token)
 	return (0);
 }
 
-void	ft_check_path(t_token *token)
+void	ft_check_path(t_token *token, t_mini *mini)
 {
 	char	*path_env;
 	char	**paths;
@@ -60,7 +60,7 @@ void	ft_check_path(t_token *token)
 
 	potential_path = NULL;
 	paths = NULL;
-	path_env = getenv("PATH");
+	path_env = ft_getenv("PATH", mini->env);
 	tmp = NULL;
 	if (path_env)
 		paths = ft_split(path_env, ':');

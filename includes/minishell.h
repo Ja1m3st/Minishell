@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/16 15:41:25 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:47:01 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int				is_output_redirect(char *cmd);
 int				count_commands(t_mini *mini);
 t_quote_type	get_quote(t_quote_type quote, char c);
 int				is_del(char cmd);
-void			ft_check_path(t_token *token);
+void			ft_check_path(t_token *token, t_mini *mini);
 char			*find_path(t_mini *mini, char *path);
 char			*resolve_cd_path(t_mini *mini, t_token *token);
 char			*check_per(t_mini *mini, t_token *token, char *path);

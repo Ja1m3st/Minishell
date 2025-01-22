@@ -21,6 +21,8 @@ void	error(t_mini *mini, char c)
 		free(mini->name_clr);
 	if (mini->pwd_clr)
 		free(mini->pwd_clr);
+	close(mini->original_stdin);
+	close(mini->original_stdout);
 	if (c == '!')
 		exit(EXIT_SUCCESS);
 	else

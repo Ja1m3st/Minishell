@@ -103,6 +103,7 @@ void	child_processing(t_mini *mini, t_token *token)
 			perror("dup2 input error");
 			exit(EXIT_FAILURE);
 		}
+		close(mini->infile);
 	}
 	else if (mini->i > 0)
 	{
@@ -111,15 +112,20 @@ void	child_processing(t_mini *mini, t_token *token)
 			perror("dup2 input error");
 			exit(EXIT_FAILURE);
 		}
+		close(mini->pipes[mini->i - 1][0]);
 	}
 	if (token->output_redir)
 	{
 		if (dup2(mini->outfile, STDOUT_FILENO) == -1)
 			return (perror("dup2 output error"), exit(EXIT_FAILURE));
+		close(mini->outfile);
 	}
 	else if (mini->i < mini->cmd_count - 1)
+	{
 		if (dup2(mini->pipes[mini->i][1], STDOUT_FILENO) == -1)
 			return (perror("dup2 output error"), exit(EXIT_FAILURE));
+		close(mini->pipes[mini->i][1]);
+	}
 }
 
 void	execve_commands(t_mini *mini, t_token *token)

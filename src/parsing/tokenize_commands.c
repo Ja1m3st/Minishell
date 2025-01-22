@@ -80,7 +80,10 @@ int	tokenize_redirections_utils(t_token *token, char **cmds, t_mini *mini)
 		token->output_file = expand_variable(mini, token->output_file);
 	if ((token->input_redir && !access(token->input_file, F_OK)
 			&& !access(token->input_file, X_OK)) || !token->input_redir)
+	{
 		mini->outfile = open(token->output_file, 00 | 0100 | 02000, 0644);
+		close(mini->outfile);
+	}
 	else
 	{
 		g_status = 2;

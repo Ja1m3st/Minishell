@@ -6,7 +6,7 @@
 #    By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/11 11:54:42 by jaimesan          #+#    #+#              #
-#    Updated: 2025/01/22 15:46:33 by jaimesan         ###   ########.fr        #
+#    Updated: 2025/01/23 15:04:51 by jaimesan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/utils/parsing_utils.c ./src/utils/count_commands_utils.c \
 	./src/parsing/process_commands.c ./src/parsing/quotations_commands.c ./src/utils/cd_utils.c \
 	./src/utils/quotations_commands_utils.c ./src/utils/check_path.c ./src/builtins/exit.c \
-	./src/utils/cd_oldpwd.c ./x_delete_after/delete_after.c 
+	./src/utils/cd_oldpwd.c ./x_delete_after/delete_after.c ./src/utils/save_shlvl.c
 	
 
 #OBJS--------------------------------------------------------------------------------------
@@ -77,15 +77,3 @@ re: fclean all bonus
 .PHONY:	all clean fclean re bonus
 
 .SILENT:
-
-#BONUS-------------------------------------------------------------------------------------
-
-# bonus: $(OBJS_BONUS) $(LIBFT)
-# 	$(CC) $(OBJS_BONUS) $(LIBFT) -o $(NAME_BONUS)
-# 	@echo "[100%] $(GREEN)(Pipex_Bonus) Compilation  | pipex_bonus | successful!$(RESET)"
-#
-# clean:
-#	$(RM) $(OBJS_BONUS)
-#
-# fclean:
-#	$(RM) $(OBJS_BONUS) $(NAME_BONUS)

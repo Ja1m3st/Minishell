@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:59:33 by ctommasi          #+#    #+#             */
-/*   Updated: 2025/01/14 17:00:10 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:03:51 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	init_struct(t_mini *mini, char **env)
 	get_env_name(mini);
 	mini->original_stdin = dup(STDIN_FILENO);
 	mini->original_stdout = dup(STDOUT_FILENO);
+	save_shlvl(mini);
 }
 
 void	init_quotes(t_quote *q)

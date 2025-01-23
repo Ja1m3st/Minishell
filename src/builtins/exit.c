@@ -22,18 +22,21 @@ void	exit_command(t_mini *mini, t_token *token)
 		i = 0;
 		while (token->cmd[1][i])
 		{
-			if (ft_isalpha(token->cmd[1][i]))
+			if (ft_isalpha(token->cmd[1][i++]))
 			{
-				write(STDOUT_FILENO, "minishell: exit: ", 18);
-				write(STDOUT_FILENO, token->cmd[1], ft_strlen(token->cmd[1]));
-				write(STDOUT_FILENO, ": numeric argument required\n", 29);
+				printf("minishell: exit: %s: numeric argument required\n",
+					token->cmd[1]);
+				g_status = 2;
 				error(mini, '!');
 			}
-			i++;
 		}
 	}
 	if (token->cmd[1] && token->cmd[2])
-		return ((void)write(STDOUT_FILENO,
-				"minishell: exit: too many arguments\n", 37));
+	{
+		g_status = 256;
+		return ((void)printf("minishell: exit: too many arguments\n"));
+	}
+	else if (token->cmd[1])
+		g_status = ft_atoi(token->cmd[1]) % 256;
 	error(mini, '!');
 }

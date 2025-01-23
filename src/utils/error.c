@@ -23,10 +23,10 @@ void	error(t_mini *mini, char c)
 		free(mini->pwd_clr);
 	close(mini->original_stdin);
 	close(mini->original_stdout);
-	if (c == '!')
+	if (c == '0')
 		exit(EXIT_SUCCESS);
 	else
-		exit(EXIT_FAILURE);
+		exit(g_status);
 }
 
 void	free_main(t_mini *mini)

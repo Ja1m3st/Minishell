@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **env)
 		execute_commands(&mini);
 		free_main(&mini);
 	}
-	error(&mini, '!');
+	error(&mini, '0');
 	return (0);
 }
 

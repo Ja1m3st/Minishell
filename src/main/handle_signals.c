@@ -21,16 +21,16 @@ void	setup_signals(void)
 	ft_memset(&ctrl_c, 0, sizeof(ctrl_c));
 	ctrl_c.sa_handler = &handle_sigint;
 	ctrl_c.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
+		perror("sigaction ctrl + c");
 	ft_memset(&ctrl_d, 0, sizeof(ctrl_d));
 	ctrl_d.sa_handler = &handle_sigquit;
 	ctrl_d.sa_flags = SA_RESTART;
+	if (sigaction(SIGQUIT, &ctrl_d, NULL) == -1)
+		perror("sigaction ctrl + d");
 	ft_memset(&ctrl_quit, 0, sizeof(ctrl_quit));
 	ctrl_quit.sa_handler = SIG_IGN;
 	ctrl_quit.sa_flags = 0;
-	if (sigaction(SIGINT, &ctrl_c, NULL) == -1)
-		perror("sigaction ctrl + c");
-	if (sigaction(SIGQUIT, &ctrl_d, NULL) == -1)
-		perror("sigaction ctrl + d");
 	if (sigaction(SIGQUIT, &ctrl_quit, NULL) == -1)
 		perror("sigaction ctrl + \\");
 }

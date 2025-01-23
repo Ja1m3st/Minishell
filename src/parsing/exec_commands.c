@@ -69,6 +69,7 @@ void	fork_commands(t_mini *mini, t_token *token)
 	mini->i = 0;
 	while (token)
 	{
+		set_redirections(mini, token);
 		mini->pids[mini->i] = fork();
 		if (mini->pids[mini->i] == -1)
 			return (exit(EXIT_FAILURE), perror("Fork Error"));
@@ -76,7 +77,6 @@ void	fork_commands(t_mini *mini, t_token *token)
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			set_redirections(mini, token);
 			child_processing(mini, token);
 			execve_commands(mini, token);
 		}

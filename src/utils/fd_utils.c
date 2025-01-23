@@ -28,7 +28,15 @@ void	set_redirections(t_mini *mini, t_token *token)
 	}
 	else if (token->input_redir && !ft_strcmp(token->input_redir, "<<"))
 	{
-		here_doc(mini, token);
+		mini->infile = here_doc(mini, token);
+		if (mini->infile == -1)
+		{
+			perror(token->input_file);
+			g_status = 1;
+			if (!token->access)
+				exit(g_status);
+			token->access = 0;
+		}
 	}
 	set_redirections2(mini, token);
 }
@@ -62,13 +70,13 @@ void	set_redirections2(t_mini *mini, t_token *token)
 	}
 }
 
-void	here_doc(t_mini *mini, t_token *token)
+int	here_doc(t_mini *mini, t_token *token)
 {
 	char	*line;
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-		return (perror("Pipe Error\n"));
+		return (perror("Pipe Error\n"), -1);
 	token->delimeter = ft_strdelchar(token->delimeter, "\"\'");
 	while (1)
 	{
@@ -88,7 +96,7 @@ void	here_doc(t_mini *mini, t_token *token)
 		free(line);
 	}
 	close(fd[1]);
-	mini->infile = fd[0];
+	return (fd[0]);
 }
 
 void	close_or_free_pipes(t_mini *mini, int mod)

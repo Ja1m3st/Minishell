@@ -34,3 +34,27 @@ char	*ft_strdelchar(const char *str, const char *chars)
 	result[j] = '\0';
 	return (result);
 }
+
+char	*ft_strdelcharf(char *str, const char *chars)
+{
+	char	*result;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!str || !chars)
+		return (NULL);
+	result = malloc(ft_strlen(str) + 1);
+	if (!result)
+		return (NULL);
+	while (str[i])
+	{
+		if (!ft_strchr(chars, str[i]))
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	free(str);
+	return (result);
+}

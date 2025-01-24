@@ -44,7 +44,7 @@ int	tokenize_commands(t_mini *mini, char **cmds, t_token *cur)
 int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 {
 	g_status = 0;
-	if (is_input_redirect(*cmds))
+	if (*cmds && is_input_redirect(*cmds))
 	{
 		token->input_redir = ft_strdup(*cmds);
 		cmds++;
@@ -55,7 +55,7 @@ int	tokenize_redirections(t_token *token, char **cmds, t_mini *mini)
 		else
 			g_status = 1;
 	}
-	else if (is_output_redirect(*cmds))
+	else if (*cmds && is_output_redirect(*cmds))
 	{
 		if (token->output_redir)
 			free(token->output_redir);
@@ -78,7 +78,8 @@ int	tokenize_redirections_utils(t_token *token, char **cmds, t_mini *mini)
 		return (1);
 	if (ft_strchr(token->output_file, '$'))
 		token->output_file = expand_variable(mini, token->output_file);
-	if ((token->input_redir && !access(token->input_file, F_OK)
+	if ((token->input_file && token->input_redir
+			&& !access(token->input_file, F_OK)
 			&& !access(token->input_file, X_OK)) || !token->input_redir)
 	{
 		mini->outfile = open(token->output_file, 00 | 0100 | 02000, 0644);

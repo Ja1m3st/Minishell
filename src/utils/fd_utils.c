@@ -77,7 +77,7 @@ int	here_doc(t_mini *mini, t_token *token)
 
 	if (pipe(fd) == -1)
 		return (perror("Pipe Error\n"), -1);
-	token->delimeter = ft_strdelchar(token->delimeter, "\"\'");
+	token->delimeter = ft_strdelcharf(token->delimeter, "\"\'");
 	while (1)
 	{
 		write(1, "> ", 2);

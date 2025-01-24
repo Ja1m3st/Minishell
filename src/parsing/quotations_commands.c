@@ -51,9 +51,6 @@ int	process_token(t_mini *mini, t_quote *q, t_token *token)
 		}
 		if (is_builtin(token->cmd[0]))
 			token->is_builtin = 1;
-		if (!ft_strncmp(token->cmd[i], "./", 2))
-			token->path = ft_strjoin(ft_getenv("$HOME", mini->env),
-					token->cmd[0]);
 		i++;
 	}
 	return (1);

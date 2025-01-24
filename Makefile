@@ -36,8 +36,7 @@ SRCS = ./src/main/main.c ./src/main/init_struct.c ./src/parsing/exec_commands.c 
 	./src/utils/parsing_utils.c ./src/utils/count_commands_utils.c \
 	./src/parsing/process_commands.c ./src/parsing/quotations_commands.c ./src/utils/cd_utils.c \
 	./src/utils/quotations_commands_utils.c ./src/utils/check_path.c ./src/builtins/exit.c \
-	./src/utils/cd_oldpwd.c ./src/utils/save_shlvl.c \
-	./x_delete_after/delete_after.c
+	./src/utils/cd_oldpwd.c ./src/utils/save_shlvl.c
 	
 
 #OBJS--------------------------------------------------------------------------------------
@@ -57,7 +56,7 @@ $(LIBFT):
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS) $(LIBFT) 
-	$(CC) $(OBJS) $(LIBFT) -o $(NAME) -lreadline 
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline 
 	@echo "[100%] $(GREEN)(Minishell) Compilation  | Minishell | successful!$(RESET)"
 
 clean:

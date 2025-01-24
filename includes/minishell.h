@@ -205,8 +205,5 @@ char			*resolve_cd_path(t_mini *mini, t_token *token);
 char			*check_per(t_mini *mini, t_token *token, char *path);
 int				check_valid_var(char *var_name);
 void			save_shlvl(t_mini *mini);
-//--------------------------------------------------------------DELETE-AFTER
-void			print_tree_structure(t_mini *mini);
-void			print_tree_structure2(t_token *token);
 
 #endif

@@ -138,8 +138,10 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 /// @brief Writes the int n on the file descriptor fd.
 void	ft_putnbr_fd(int n, int fd);
-/// @brief Trims str by chars. No allocation.
+/// @brief Trims str by chars with malloc.
 char	*ft_strdelchar(const char *str, const char *chars);
+/// @brief Trims str by chars and frees str with malloc.
+char	*ft_strdelcharf(char *str, const char *chars);
 /// @brief Changes the size of the *memory pointed to by ptr to size bytes.
 void	*ft_realloc(void *ptr, size_t cur_size, size_t new_size);
 /// @brief Changes the size of the **memory pointed to by ptr to size bytes.

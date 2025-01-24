@@ -6,7 +6,7 @@
 /*   By: jaimesan <jaimesan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:28:08 by jaimesan          #+#    #+#             */
-/*   Updated: 2025/01/22 15:46:16 by jaimesan         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:05:09 by jaimesan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ char			*find_path(t_mini *mini, char *path);
 char			*resolve_cd_path(t_mini *mini, t_token *token);
 char			*check_per(t_mini *mini, t_token *token, char *path);
 int				check_valid_var(char *var_name);
+void			save_shlvl(t_mini *mini);
 //--------------------------------------------------------------DELETE-AFTER
 void			print_tree_structure(t_mini *mini);
 void			print_tree_structure2(t_token *token);
